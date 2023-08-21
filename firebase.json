@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "site": "aff-frontend",
+    "public": "dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "frameworksBackend": {
+      "region": "us-east1"
+    }
+  }
+}
