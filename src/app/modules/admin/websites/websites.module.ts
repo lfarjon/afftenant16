@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [WebsitesComponent],
@@ -21,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatButtonModule,
   ],
 })
 export class WebsitesModule {}

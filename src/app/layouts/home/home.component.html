@@ -1,0 +1,54 @@
+<nav
+  #navbar
+  id="navbar"
+  class="px-4 lg:px-20 h-16 lg:h-20 flex items-center justify-between fixed z-20 inset-x-0 transition-colors duration-500 ease-in-out"
+>
+  <div class="flex items-center">
+    <h1 routerLink="/" class="text-2xl lg:text-4xl text-black font-light">
+      aff<span class="font-medium">builder</span>
+    </h1>
+    <ng-container *ngIf="!(isHandset$ | async)">
+      <div class="flex items-center ml-10">
+        <a
+          *ngFor="let item of menuItems"
+          class="font-normal text-black text-lg px-4 hover:underline"
+          [routerLink]="item.routerLink"
+        >
+          {{ item.label }}
+        </a>
+      </div>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="!(isHandset$ | async)">
+    <div class="flex items-center">
+      <a class="text-black text-lg mr-10 hover:underline" routerLink="/login"
+        >Log in</a
+      >
+      <a
+        class="mb-2 inline-block rounded-full text-white bg-primary-500 px-6 pt-4 pb-3.5 text-xs font-medium uppercase leading-normal shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary lg:mr-2 lg:mb-0"
+        href="#!"
+        role="button"
+        routerLink="/register"
+        >Start free trial</a
+      >
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isHandset$ | async">
+    <div class="flex items-center">
+      <a class="underline text-primary mr-6" routerLink="/register"
+        >Start Free trial</a
+      >
+      <mat-icon (click)="drawer.toggle()" class="hover:cursor-pointer"
+        >menu</mat-icon
+      >
+    </div>
+  </ng-container>
+</nav>
+<mat-drawer-container autosize class="h-full relative">
+  <mat-drawer #drawer mode="over" class="h-screen w-4/5">
+    <p>Auto-resizing sidenav</p>
+  </mat-drawer>
+  <mat-drawer-content class="relative">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

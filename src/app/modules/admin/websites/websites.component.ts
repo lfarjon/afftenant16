@@ -15,6 +15,7 @@ import { Website } from 'src/app/core/models/website';
 import { ConfirmationService } from 'src/app/core/services/confirmation.service';
 import { CtaService } from 'src/app/core/services/cta.service';
 import { WebsiteService } from 'src/app/core/services/website.service';
+import { domainValidator } from 'src/app/core/validators/domain.validator';
 
 @Component({
   selector: 'app-websites',
@@ -38,7 +39,7 @@ export class WebsitesComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) {
     this.domainForm = this.fb.group({
-      domain: ['', Validators.required],
+      domain: ['', [Validators.required, domainValidator()]],
     });
     this.ctaService.action$
       .pipe(takeUntil(this.unsubscribe$))
@@ -73,6 +74,8 @@ export class WebsitesComponent implements OnInit, OnDestroy {
   addWebsite() {
     const dialogRef = this.dialog.open(this.addDomainDialog, {
       data: this.domainForm,
+      panelClass: ['w-96'],
+      maxWidth: 'max-w-96',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

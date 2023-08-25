@@ -186,7 +186,7 @@ export class LinksComponent implements OnInit, OnDestroy {
         form: this.linkForm,
         link: link,
       },
-      panelClass: ['lg:w-3/5', 'w-full', 'h-auto', 'px-2', 'min-h-fit'],
+      panelClass: ['lg:w-3/5', 'w-full', 'h-auto', 'min-h-fit'],
       maxWidth: '100vw',
     });
   }

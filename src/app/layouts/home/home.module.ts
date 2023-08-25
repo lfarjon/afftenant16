@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PublicComponent } from './public.component';
+import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
-import { TenantModule } from '../tenant/tenant.module';
-import { HomeModule } from '../home/home.module';
 
 @NgModule({
-  declarations: [PublicComponent],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -19,10 +16,7 @@ import { HomeModule } from '../home/home.module';
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
-    HttpClientModule,
-    TenantModule,
-    HomeModule,
   ],
-  exports: [PublicComponent],
+  exports: [HomeComponent],
 })
-export class PublicModule {}
+export class HomeModule {}

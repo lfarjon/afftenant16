@@ -23,8 +23,9 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <button
+                  mat-raised-button
+                  color="primary"
                   (click)="editWebsite(website)"
-                  class="bg-primary text-white px-4 w-20 py-2 rounded hover:bg-primary-700"
                 >
                   Edit
                 </button>
@@ -59,8 +60,8 @@
     <h2 mat-dialog-title>Add domain</h2>
   </div>
   <mat-dialog-content>
-    <form [formGroup]="domainForm">
-      <mat-form-field>
+    <form [formGroup]="domainForm" class="w-full">
+      <mat-form-field class="w-full">
         <mat-label>Domain Name</mat-label>
         <input
           matInput
@@ -68,6 +69,9 @@
           formControlName="domain"
           placeholder="site.com"
         />
+        <mat-hint
+          >Don't add https:// or www, just the domain. ie. nba.com</mat-hint
+        >
       </mat-form-field>
     </form>
   </mat-dialog-content>
@@ -77,6 +81,7 @@
       color="primary"
       type="submit"
       [mat-dialog-close]="data"
+      [disabled]="data.invalid"
     >
       Submit
     </button>

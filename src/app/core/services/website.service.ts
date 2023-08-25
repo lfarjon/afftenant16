@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
+  AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { uuidv4 } from '@firebase/util';
 import {
@@ -41,11 +42,14 @@ export class WebsiteService {
   }
 
   addWebsite(inputDomain: string): Promise<any> {
-    // Remove 'www.' from the start of the domain if it exists
-    let domain = inputDomain.replace(/^www\./, '');
+    // Remove 'http://', 'https://', 'www.' from the start of the domain if they exist and trailing slashes
+    let domain = inputDomain
+      .replace(/^(https?:\/\/)?www\./, '')
+      .replace(/\/$/, '')
+      .toLowerCase();
 
     // Replace the TLD with '.retailable.co'
-    const subdomain = domain.replace(/\./g, '-');
+    const subdomain = domain.replace(/\./g, '-').toLowerCase();
 
     const tenant = JSON.parse(localStorage.getItem('user')!);
     const websiteId = uuidv4();
@@ -480,5 +484,13 @@ export class WebsiteService {
     localStorage.setItem('website', JSON.stringify(websiteId));
     this.templateService.initWebsite();
     this.router.navigate(['/admin/website/' + websiteId + '/design']);
+  }
+
+  getWebsite(): AngularFirestoreDocument<any> {
+    const tenant = JSON.parse(localStorage.getItem('user')!);
+    const websiteId = JSON.parse(localStorage.getItem('website')!);
+    const websiteStatus = 'draft';
+
+    return this.afs.doc<any>(`websites/${websiteId}-${websiteStatus}`);
   }
 }

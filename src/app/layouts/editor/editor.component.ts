@@ -9,6 +9,7 @@ import { NavListWithIcon, NavListWithLabel } from 'src/app/core/models/menu';
 import { Page } from 'src/app/core/models/page';
 import { tailwindThemes } from 'src/app/core/models/tailwind-colors';
 import { Viewport, viewports } from 'src/app/core/models/viewport';
+import { Website } from 'src/app/core/models/website';
 import { CtaService } from 'src/app/core/services/cta.service';
 import { LayoutService } from 'src/app/core/services/layout.service';
 import { ShadeGeneratorService } from 'src/app/core/services/shade-generator.service';
@@ -36,6 +37,7 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
   viewports = viewports;
   websiteId: string;
   editingBlock: boolean = false;
+  website$: Observable<Website>;
   pages$: Observable<Page[]>;
   page$: Observable<Page>;
   currentPage: Page = {} as Page;
@@ -70,6 +72,7 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
     const routeSnapshot = this.route.snapshot;
     this.routeData = routeSnapshot.data;
     this.websiteId = routeSnapshot.params['websiteId'];
+    this.website$ = this.websiteService.getWebsite().valueChanges();
     this.isHandset$ = this.layoutService.isHandset$;
     this.viewPort$ = this.layoutService.viewPort$.pipe(
       takeUntil(this.unsubscribeAll),

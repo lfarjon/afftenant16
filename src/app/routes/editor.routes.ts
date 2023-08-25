@@ -24,7 +24,7 @@ export const editorRoutes: Route[] = [
       ),
     data: {
       theme: true,
-      title: 'Page',
+      title: 'Website',
       cta: 'Save',
       action: 'SAVE_WEBSITE',
       second_cta: 'Publish',
