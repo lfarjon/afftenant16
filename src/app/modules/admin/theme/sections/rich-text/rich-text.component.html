@@ -1,0 +1,8 @@
+<div
+  class="p-8"
+  [ngStyle]="{
+    'background-color': (styles$ | async)?.base100
+  }"
+>
+  <ng-template dynamicBlockLoader></ng-template>
+</div>

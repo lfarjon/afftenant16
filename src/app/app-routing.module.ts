@@ -1,10 +1,19 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Route } from '@angular/router';
+import { PublicComponent } from './layouts/public/public.component';
+import { adminRoutes } from './routes/admin.routes';
+import { AuthRoutes } from './routes/auth.routes';
+import { editorRoutes } from './routes/editor.routes';
 
-const routes: Routes = [];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+export const routes: Route[] = [
+  ...AuthRoutes,
+  ...adminRoutes,
+  ...editorRoutes,
+  {
+    component: PublicComponent,
+    path: '',
+    loadChildren: () =>
+      import('src/app/modules/public/home/home.module').then(
+        (m) => m.HomeModule
+      ),
+  },
+];

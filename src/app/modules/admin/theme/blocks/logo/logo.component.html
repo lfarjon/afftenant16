@@ -1,0 +1,41 @@
+<ng-container *ngIf="block">
+  <ng-container *ngIf="block.visible">
+    <div [ngClass]="logoClasses" class="h-full">
+      <img
+        [src]="logoImage"
+        class="object-contain py-2 h-16"
+        [ngClass]="viewport.viewport === 'desktop' ? 'h-20' : ''"
+      />
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #editorRef let-data>
+  <h2 mat-dialog-title>Logo</h2>
+  <mat-dialog-content>
+    <app-dropzone
+      [docRef]="docRef"
+      (downloadUrl)="saveDownloadUrl($event)"
+    ></app-dropzone>
+
+    PREVIEW
+    <div [ngClass]="logoClasses" class="h-full">
+      <img
+        [src]="data.form.value.fileUrl"
+        *ngIf="data.form.value.fileUrl"
+        class="object-contain py-2 h-16"
+      />
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [mat-dialog-close]="data"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</ng-template>

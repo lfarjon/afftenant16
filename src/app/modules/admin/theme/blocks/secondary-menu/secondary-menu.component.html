@@ -1,0 +1,92 @@
+<ng-container *ngIf="block">
+  <ng-container *ngIf="block.visible">
+    <ng-container *ngIf="styles$ | async as styles">
+      <div class="flex flex-row overflow-x-scroll w-full">
+        <!-- first section content goes here -->
+        <div class="flex items-center gap-x-8 w-auto flex-nowrap">
+          <button
+            *ngFor="let item of (block$ | async)?.model?.navListItems"
+            [routerLink]="item.routerLink"
+            [ngClass]="navButtonClasses"
+            [ngStyle]="{
+              color: styles.baseContent
+                ? styles.baseContent
+                : darkOrLight(styles.base100)
+            }"
+          >
+            <span class="whitespace-nowrap">{{ item.label }}</span>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Menu</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form">
+        <div formArrayName="navListItems">
+          <div
+            *ngFor="let control of navListItems.controls; let i = index"
+            [formGroupName]="i"
+            class="border-b border-b-2 mb-3 pb-3 flex flex-col"
+          >
+            <mat-form-field class="w-full">
+              <mat-label>Label:</mat-label>
+              <input matInput type="text" formControlName="label" required />
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Link:</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="routerLink"
+                required
+              />
+            </mat-form-field>
+
+            <button (click)="removeItem(i)" class="flex justify-end">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button mat-raised-button color="primary" (click)="addItem()">
+          Add
+        </button>
+      </form>
+      PREVIEW
+      <div class="flex items-center gap-x-8">
+        <button
+          *ngFor="let item of data.form.value.navListItems"
+          [routerLink]="item.routerLink"
+          [ngClass]="navButtonClasses"
+        >
+          {{ item.label }}
+        </button>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>

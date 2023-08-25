@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>New Page</h1>
+<form [formGroup]="form" class="flex flex-col w-full">
+  <mat-form-field class="w-full">
+    <mat-label>Template</mat-label>
+    <mat-select formControlName="template">
+      <mat-option
+        [value]="template"
+        *ngFor="let template of pageTemplates; let i = index"
+        >{{ template.title }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>Page title</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+  <mat-slide-toggle formControlName="default">Default page?</mat-slide-toggle>
+
+  <div class="mt-5">
+    <button
+      mat-raised-button
+      (click)="addPage()"
+      color="primary"
+      class="w-full"
+    >
+      Save page
+    </button>
+  </div>
+</form>

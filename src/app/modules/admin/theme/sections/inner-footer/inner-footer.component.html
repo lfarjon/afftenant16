@@ -1,0 +1,58 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <ng-container *ngIf="viewPort$ | async as viewport">
+    <div
+      class="min-h-60 h-full flex flex-col items-center justify-center font-light relative px-3 lg:px-20 py-10"
+      [ngStyle]="{
+        'background-color': styles.base200
+          ? styles.base200
+          : darken(styles.base100),
+        color: styles.baseContent
+          ? styles.baseContent
+          : darkOrLight(styles.base100)
+      }"
+    >
+      <ng-container *ngIf="menuBlock$ | async as menuBlock">
+        <!-- first section content goes here -->
+        <block-menu
+          [block]="menuBlock"
+          [sectionId]="section.sectionId"
+          [viewport]="viewport"
+        ></block-menu>
+      </ng-container>
+      <ng-container *ngIf="logoBlock$ | async as logoBlock">
+        <block-logo
+          [block]="logoBlock"
+          [sectionId]="section.sectionId"
+          [viewport]="viewport"
+        ></block-logo>
+      </ng-container>
+      <ng-container *ngIf="socialBlock$ | async as socialBlock">
+        <block-social
+          [styles]="styles"
+          [block]="socialBlock"
+          [sectionId]="section.sectionId"
+          [viewport]="viewport"
+        ></block-social>
+      </ng-container>
+      <ng-container *ngIf="emailBlock$ | async as emailBlock">
+        <block-email-signup
+          [styles]="styles"
+          [block]="emailBlock"
+          [sectionId]="section.sectionId"
+          [viewport]="viewport"
+        ></block-email-signup>
+      </ng-container>
+      <ng-container *ngIf="copyrightBlock$ | async as copyrightBlock">
+        <block-copyright
+          [styles]="styles"
+          [block]="copyrightBlock"
+          [sectionId]="section.sectionId"
+          [viewport]="viewport"
+        ></block-copyright>
+      </ng-container>
+      <div class="hidden">
+        <ng-template dynamicBlockLoader></ng-template>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

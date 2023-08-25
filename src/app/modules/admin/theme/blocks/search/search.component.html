@@ -1,0 +1,17 @@
+<ng-container *ngIf="block">
+  <ng-container *ngIf="block.visible">
+    <ng-container *ngIf="styles$ | async as styles">
+      <div class="flex items-center">
+        <mat-icon
+          [ngClass]="searchButtonClasses"
+          [ngStyle]="{
+            color: styles.baseContent
+              ? styles.baseContent
+              : darkOrLight(styles.base100)
+          }"
+          >search</mat-icon
+        >
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>

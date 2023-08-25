@@ -1,0 +1,13 @@
+<div
+  id="accordion-collapse"
+  data-accordion="collapse"
+  class="p-5"
+  [ngStyle]="{
+    color: (styles$ | async)?.baseContent
+      ? (styles$ | async)?.baseContent
+      : darkOrLight((styles$ | async)?.base100),
+    background: (styles$ | async)?.base100
+  }"
+>
+  <ng-template dynamicBlockLoader></ng-template>
+</div>

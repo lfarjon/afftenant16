@@ -1,0 +1,22 @@
+<swiper
+  [config]="config"
+  (swiper)="onSwiper($event)"
+  (slideChange)="onSlideChange()"
+  #slideshow
+  class="swiper-container"
+>
+  <ng-container *ngFor="let slide of slides">
+    <ng-container *ngIf="slide.visible">
+      <ng-template swiperSlide>
+        <block-announcement
+          [block]="slide"
+          [sectionId]="section.sectionId"
+        ></block-announcement>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+</swiper>
+
+<div class="hidden">
+  <ng-template dynamicBlockLoader></ng-template>
+</div>

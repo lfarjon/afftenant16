@@ -1,0 +1,42 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <ng-container *ngIf="block$ | async as block">
+    <h3
+      class="text-xl font-semibold mb-4"
+      [ngStyle]="{
+        color: styles.baseContent
+          ? styles.baseContent
+          : darkOrLight(styles.base100)
+      }"
+    >
+      {{ block.model?.subHeadingText }}
+    </h3>
+  </ng-container>
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Sub-heading</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form" class="flex flex-col">
+        <formly-form
+          [fields]="fields"
+          [model]="data.model"
+          [options]="options"
+        ></formly-form>
+      </form>
+
+      PREVIEW
+      <h3 class="text-xl font-semibold text-gray-600 mb-4">
+        {{ data.model?.subHeadingText }}
+      </h3>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>

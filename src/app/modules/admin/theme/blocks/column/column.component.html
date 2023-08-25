@@ -1,0 +1,68 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <ng-container *ngIf="block$ | async as block">
+    <div
+      class="p-4 rounded-lg shadow-lg"
+      [ngStyle]="{
+        'background-color': styles.base200
+          ? styles.base200
+          : darken(styles.base100),
+        color: styles.baseContent
+          ? styles.baseContent
+          : darkOrLight(styles.base100)
+      }"
+    >
+      <h2 class="text-xl font-bold mb-2">{{ block.model?.columnTitle }}</h2>
+      <p>
+        {{ block.model?.columnText }}
+      </p>
+      <button
+        class="mt-4 px-4 py-2 rounded"
+        [ngStyle]="{
+          'background-color': styles.primary,
+          color: styles.primaryContent
+            ? styles.primaryContent
+            : darkOrLight(styles.primary)
+        }"
+      >
+        {{ block.model?.columnButtonText }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Column</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form" class="flex flex-col">
+        <formly-form
+          [fields]="fields"
+          [model]="data.model"
+          [options]="options"
+        ></formly-form>
+      </form>
+
+      PREVIEW
+      <div class="border p-4 rounded">
+        <h2 class="text-xl font-bold mb-2">{{ data.model?.columnTitle }}</h2>
+        <p>
+          {{ data.model?.columnText }}
+        </p>
+        <button
+          class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          {{ data.model?.columnButtonText }}
+        </button>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>

@@ -1,0 +1,303 @@
+<ng-container *ngIf="viewPort$ | async as viewport">
+  <ng-container *ngIf="styles$ | async as styles">
+    <!-- NAV BAR -->
+    <ng-container *ngIf="showNavBar">
+      <nav
+        [ngStyle]="{ 'background-color': styles.base100 }"
+        class="min-h-16 px-3 flex flex-col"
+        [ngClass]="viewport.viewport === 'desktop' ? 'min-h-20 px-10' : ''"
+      >
+        <!-- LOGO CENTER -->
+        <ng-container *ngIf="logoPosition === 'CENTER'">
+          <div class="flex justify-between items-center h-full">
+            <div class="flex-1">
+              <div [ngClass]="viewport.viewport === 'desktop' ? '' : 'hidden'">
+                <ng-container *ngIf="menuBlock$ | async as menuBlock">
+                  <!-- first section content goes here -->
+                  <block-menu
+                    [block]="menuBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                  ></block-menu>
+                </ng-container>
+              </div>
+              <ng-container
+                *ngIf="
+                  viewport.viewport !== 'desktop' &&
+                  (searchBlock$ | async) as searchBlock
+                "
+              >
+                <div class="flex items-center gap-x-2">
+                  <mat-icon
+                    (click)="drawer.toggle()"
+                    [ngStyle]="{
+                      color: styles.baseContent
+                        ? styles.baseContent
+                        : darkOrLight(styles.base100)
+                    }"
+                    >menu</mat-icon
+                  >
+                  <block-search
+                    [block]="searchBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                    [ngClass]="searchButtonClasses"
+                  >
+                  </block-search>
+                </div>
+              </ng-container>
+            </div>
+            <div class="flex">
+              <ng-container *ngIf="logoBlock$ | async as logoBlock">
+                <block-logo
+                  [block]="logoBlock"
+                  [sectionId]="section.sectionId"
+                  [viewport]="viewport"
+                ></block-logo>
+              </ng-container>
+            </div>
+
+            <div class="flex-1 text-right">
+              <div class="flex justify-end items-center text-right gap-x-2">
+                <!-- last section content goes here -->
+                <ng-container *ngIf="ctaBlock$ | async as ctaBlock">
+                  <block-cta
+                    [block]="ctaBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                    [ngClass]="ctaClasses"
+                    >Sign up now</block-cta
+                  >
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    viewport.viewport === 'desktop' &&
+                    (searchBlock$ | async) as searchBlock
+                  "
+                >
+                  <block-search
+                    [block]="searchBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                    [searchButtonClasses]="searchButtonClasses"
+                  >
+                  </block-search>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- LOGO CENTER -->
+
+        <!-- LOGO LEFT -->
+        <ng-container *ngIf="logoPosition === 'LEFT'">
+          <div class="flex justify-between items-center h-full">
+            <div class="flex-1 flex-row items-center">
+              <ng-container *ngIf="logoBlock$ | async as logoBlock">
+                <block-logo
+                  [block]="logoBlock"
+                  [sectionId]="section.sectionId"
+                  [viewport]="viewport"
+                ></block-logo>
+              </ng-container>
+            </div>
+            <div class="flex items-center gap-x-8">
+              <div [ngClass]="viewport.viewport === 'desktop' ? '' : 'hidden'">
+                <ng-container *ngIf="menuBlock$ | async as menuBlock">
+                  <!-- first section content goes here -->
+                  <block-menu
+                    [block]="menuBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                  ></block-menu>
+                </ng-container>
+              </div>
+            </div>
+            <div class="flex-1 text-right">
+              <div class="flex items-center justify-end gap-x-2">
+                <ng-container *ngIf="ctaBlock$ | async as ctaBlock">
+                  <block-cta
+                    [block]="ctaBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                    [ngClass]="ctaClasses"
+                    >Sign up now</block-cta
+                  >
+                </ng-container>
+                <ng-container *ngIf="searchBlock$ | async as searchBlock">
+                  <block-search
+                    [block]="searchBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                    [searchButtonClasses]="searchButtonClasses"
+                  >
+                  </block-search>
+                </ng-container>
+
+                <ng-container *ngIf="viewport.viewport !== 'desktop'">
+                  <mat-icon
+                    (click)="drawer.toggle()"
+                    [ngStyle]="{
+                      color: styles.baseContent
+                        ? styles.baseContent
+                        : darkOrLight(styles.base100)
+                    }"
+                    >menu</mat-icon
+                  >
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- LOGO LEFT -->
+
+        <!-- LOGO TOP CENTER -->
+        <ng-container *ngIf="logoPosition === 'TOP_CENTER'">
+          <div class="flex flex-col">
+            <div class="flex justify-between items-center h-full">
+              <div class="flex-1">
+                <!-- first section content goes here -->
+                <div class="flex items-center gap-x-2">
+                  <ng-container *ngIf="viewport.viewport !== 'desktop'">
+                    <mat-icon
+                      (click)="drawer.toggle()"
+                      [ngStyle]="{
+                        color: styles.baseContent
+                          ? styles.baseContent
+                          : darkOrLight(styles.base100)
+                      }"
+                      >menu</mat-icon
+                    >
+                  </ng-container>
+                  <ng-container *ngIf="searchBlock$ | async as searchBlock">
+                    <block-search
+                      [block]="searchBlock"
+                      [sectionId]="section.sectionId"
+                      [viewport]="viewport"
+                      [searchButtonClasses]="searchButtonClasses"
+                    >
+                    </block-search>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="flex-1">
+                <ng-container *ngIf="logoBlock$ | async as logoBlock">
+                  <block-logo
+                    [block]="logoBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                  ></block-logo>
+                </ng-container>
+              </div>
+
+              <div class="flex-1 text-right">
+                <div class="flex justify-end items-center text-right gap-x-2">
+                  <!-- last section content goes here -->
+                  <ng-container *ngIf="ctaBlock$ | async as ctaBlock">
+                    <block-cta
+                      [block]="ctaBlock"
+                      [sectionId]="section.sectionId"
+                      [viewport]="viewport"
+                      [ngClass]="ctaClasses"
+                      >Sign up now</block-cta
+                    >
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="w-full justify-center flex items-center gap-x-8">
+              <div [ngClass]="viewport.viewport === 'desktop' ? '' : 'hidden'">
+                <ng-container *ngIf="menuBlock$ | async as menuBlock">
+                  <!-- first section content goes here -->
+                  <block-menu
+                    [block]="menuBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                  ></block-menu>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- LOGO TOP CENTER -->
+
+        <!-- LOGO TOP LEFT -->
+        <ng-container *ngIf="logoPosition === 'TOP_LEFT'">
+          <div class="flex flex-col">
+            <div class="flex justify-between items-center h-full">
+              <div class="flex-1 flex-row items-center">
+                <ng-container *ngIf="logoBlock$ | async as logoBlock">
+                  <block-logo
+                    [block]="logoBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                  ></block-logo>
+                </ng-container>
+              </div>
+              <div class="flex-1 text-right">
+                <div class="flex items-center justify-end gap-x-2">
+                  <ng-container *ngIf="ctaBlock$ | async as ctaBlock">
+                    <block-cta
+                      [block]="ctaBlock"
+                      [sectionId]="section.sectionId"
+                      [viewport]="viewport"
+                      [ngClass]="ctaClasses"
+                      >Sign up now</block-cta
+                    >
+                  </ng-container>
+                  <ng-container *ngIf="searchBlock$ | async as searchBlock">
+                    <block-search
+                      [block]="searchBlock"
+                      [sectionId]="section.sectionId"
+                      [viewport]="viewport"
+                      [searchButtonClasses]="searchButtonClasses"
+                    >
+                    </block-search>
+                  </ng-container>
+
+                  <ng-container *ngIf="viewport.viewport !== 'desktop'">
+                    <mat-icon
+                      (click)="drawer.toggle()"
+                      [ngStyle]="{
+                        color: styles.baseContent
+                          ? styles.baseContent
+                          : darkOrLight(styles.base100)
+                      }"
+                      >menu</mat-icon
+                    >
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-x-8">
+              <div [ngClass]="viewport.viewport === 'desktop' ? '' : 'hidden'">
+                <ng-container *ngIf="menuBlock$ | async as menuBlock">
+                  <!-- first section content goes here -->
+                  <block-menu
+                    [block]="menuBlock"
+                    [sectionId]="section.sectionId"
+                    [viewport]="viewport"
+                  ></block-menu>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- LOGO TOP LEFT -->
+
+        <!-- SECONDARY MENU -->
+        <ng-container *ngIf="secondaryMenuBlock$ | async as secondaryMenu">
+          <block-secondary-menu
+            [block]="secondaryMenu"
+            [sectionId]="section.sectionId"
+            [viewport]="viewport"
+          ></block-secondary-menu>
+        </ng-container>
+      </nav>
+    </ng-container>
+    <!-- NAV BAR -->
+  </ng-container>
+</ng-container>
+<div class="hidden">
+  <ng-template dynamicBlockLoader></ng-template>
+</div>

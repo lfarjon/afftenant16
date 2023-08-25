@@ -1,0 +1,30 @@
+<section
+  class="py-8 px-4"
+  [ngStyle]="{
+    'background-color': (styles$ | async)?.base100
+  }"
+>
+  <div class="max-w-2xl mx-auto text-center">
+    <ng-template dynamicBlockLoader></ng-template>
+
+    <form action="#" method="post" class="flex justify-center">
+      <input
+        type="email"
+        class="rounded-l-lg p-4 border-t mr-0 border-b border-l bg-white"
+        placeholder="your@email.com"
+      />
+      <button
+        [ngStyle]="{
+          'border-color': (styles$ | async)?.primary,
+          'background-color': (styles$ | async)?.primary,
+          color: (styles$ | async)?.primaryContent
+            ? (styles$ | async)?.primaryContent
+            : darkOrLight((styles$ | async)?.primary)
+        }"
+        class="px-8 rounded-r-lg font-normal p-4 uppercase border-t border-b border-r"
+      >
+        Subscribe
+      </button>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+<ng-container *ngIf="viewPort$ | async as viewport">
+  <div
+    [ngStyle]="{ background: (styles$ | async)?.base100 }"
+    class="flex flex-wrap items-center"
+    [ngClass]="viewport.viewport === 'desktop' ? 'flex-nowrap' : ''"
+  >
+    <div
+      class="w-full"
+      [ngClass]="viewport.viewport === 'desktop' ? 'w-1/2' : ''"
+    >
+      <img
+        class="w-full h-full object-cover"
+        [src]="image"
+        alt="Your alt text"
+      />
+    </div>
+    <div
+      class="w-full p-4"
+      [ngClass]="viewport.viewport === 'desktop' ? 'w-1/2 p-8' : ''"
+    >
+      <ng-template dynamicBlockLoader></ng-template>
+    </div>
+  </div>
+</ng-container>

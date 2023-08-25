@@ -1,0 +1,17 @@
+<input
+  class="h-8 w-8 border border-black rounded-lg"
+  [cpOutputFormat]="'hex'"
+  [(colorPicker)]="color"
+  (colorPickerSelect)="changeColor($event)"
+  [style.background]="color"
+  [cpOKButton]="true"
+  [cpOKButtonText]="'Save color'"
+  [cpOKButtonClass]="
+    'px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg'
+  "
+  [cpCancelButton]="true"
+  [cpCancelButtonText]="'Cancel'"
+  [cpCancelButtonClass]="
+    'px-4 py-2 bg-red-500 text-white font-semibold rounded-lg'
+  "
+/>

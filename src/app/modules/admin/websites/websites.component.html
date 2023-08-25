@@ -1,0 +1,84 @@
+<div class="min-h-screen p-5">
+  <ng-container *ngIf="websites$ | async as websites; else loader">
+    <ng-container *ngIf="websites.length > 0; else addWebsite">
+      <div class="grid grid-cols-12 gap-5">
+        <ng-container *ngFor="let website of websites; let i = index">
+          <div
+            class="col-span-12 lg:col-span-4 lg:col-span-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+          >
+            <a href="#">
+              <img class="rounded-t-lg" src="assets/image-1.jpeg" alt="" />
+            </a>
+            <div class="p-5 h-auto flex flex-col">
+              <span>{{ website.domain }}</span>
+              <a
+                target="_blank"
+                class="underline text-primary"
+                [attr.href]="'https://' + website.subdomain + '.retailable.co'"
+                >{{ website.subdomain + ".retailable.co" }}</a
+              >
+
+              <div class="flex justify-between items-center mt-5">
+                <button>
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <button
+                  (click)="editWebsite(website)"
+                  class="bg-primary text-white px-4 w-20 py-2 rounded hover:bg-primary-700"
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #addWebsite>
+  <div class="mx-auto mt-10 flex flex-col">
+    <span class="font-semibold text-center mb-5"> No website yet. </span>
+    <app-cta
+      buttonText="Add a website"
+      action="ADD_WEBSITE"
+      color="primary"
+      type="raised"
+    ></app-cta>
+  </div>
+</ng-template>
+<ng-template #loader>
+  <app-loader
+    class="flex items-center justify-center w-full h-screen"
+  ></app-loader>
+</ng-template>
+
+<ng-template #addDomainDialog let-data>
+  <div class="flex flex-row items-center justify-between w-full">
+    <h2 mat-dialog-title>Add domain</h2>
+  </div>
+  <mat-dialog-content>
+    <form [formGroup]="domainForm">
+      <mat-form-field>
+        <mat-label>Domain Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="domain"
+          placeholder="site.com"
+        />
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [mat-dialog-close]="data"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</ng-template>

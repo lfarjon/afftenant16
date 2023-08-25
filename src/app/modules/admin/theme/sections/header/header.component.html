@@ -1,0 +1,46 @@
+<ng-container *ngIf="templateService.header$ | async as components">
+  <div
+    cdkDropList
+    (cdkDropListDropped)="templateService.drop($event, components, 'HEADER')"
+  >
+    <div
+      class="relative"
+      [style.order]="component.order"
+      *ngFor="let component of components; let i = index"
+      cdkDrag
+      [cdkDragDisabled]="
+        component.dragDisabled || isSelected$.value !== component.sectionId
+      "
+      (cdkDragStarted)="dragDropService.onDragStart()"
+      (cdkDragEnded)="dragDropService.onDragEnd()"
+      [attr.id]="'section-' + component.sectionId"
+    >
+      <ng-container *ngIf="isSelected$.value === component.sectionId">
+        <div
+          class="absolute top-0 right-0 transform cursor-move text-white z-10 flex flex-row items-center gap-2 bg-accent p-2 rounded-bl-lg w-auto opacity-90"
+        >
+          <app-mobile-edit
+            class="lg:hidden"
+            [drawer]="drawer"
+            [section]="component"
+          ></app-mobile-edit>
+          <app-drag-handle
+            cdkDragHandle
+            [component]="component"
+            *ngIf="component.allowDrag"
+          ></app-drag-handle>
+        </div>
+      </ng-container>
+      <div
+        *ngIf="component.visible"
+        (click)="selectSection(component)"
+        [ngClass]="{
+          'border-offset-2 border-2 border-accent':
+            isSelected$.value === component.sectionId
+        }"
+      >
+        <ng-template dynamicChildLoader></ng-template>
+      </div>
+    </div>
+  </div>
+</ng-container>

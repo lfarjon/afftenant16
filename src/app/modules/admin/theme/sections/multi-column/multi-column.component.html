@@ -1,0 +1,13 @@
+<ng-container *ngIf="viewPort$ | async as viewport">
+  <div
+    class="p-5 flex flex-col"
+    [ngStyle]="{ 'background-color': (styles$ | async)?.base100 }"
+  >
+    <div
+      class="grid grid-cols-1 gap-4"
+      [ngClass]="viewport.viewport !== 'desktop' ? '' : 'grid-cols-3'"
+    >
+      <ng-template dynamicBlockLoader> </ng-template>
+    </div>
+  </div>
+</ng-container>

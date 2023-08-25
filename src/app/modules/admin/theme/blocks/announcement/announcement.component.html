@@ -1,0 +1,58 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <ng-container *ngIf="viewPort$ | async as viewport">
+    <ng-container *ngIf="block">
+      <div
+        [ngClass]="style"
+        [ngStyle]="{
+          'background-color': styles.info ? styles.info : '#3b82f6',
+          color: styles.infoContent
+            ? styles.infoContent
+            : styles.info
+            ? darkOrLight(styles.info)
+            : '#fff'
+        }"
+      >
+        {{ block.model?.announcement }}
+      </div>
+    </ng-container>
+    <ng-template #editorRef let-data>
+      <div class="flex flex-row items-center justify-between w-full">
+        <h2 mat-dialog-title>Announcement</h2>
+      </div>
+      <mat-dialog-content>
+        <form [formGroup]="form" class="flex flex-col">
+          <formly-form
+            [fields]="fields"
+            [model]="data.model"
+            [options]="options"
+          ></formly-form>
+        </form>
+
+        PREVIEW
+        <div
+          [ngClass]="style"
+          [ngStyle]="{
+            'background-color': styles.info ? styles.info : '#3b82f6',
+            color: styles.infoContent
+              ? styles.infoContent
+              : styles.info
+              ? darkOrLight(styles.info)
+              : '#fff'
+          }"
+        >
+          {{ data.model?.announcement }}
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [mat-dialog-close]="data"
+        >
+          Submit
+        </button>
+      </mat-dialog-actions>
+    </ng-template>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,56 @@
+<mat-toolbar
+  color="primary"
+  class="flex flex-row justify-between align-center sticky z-20 inset-0"
+>
+  <div class="flex flex-row items-center">
+    <mat-icon *ngIf="isHandset$ | async" class="mr-2" (click)="drawer.toggle()"
+      >menu</mat-icon
+    >
+    <span>{{ routeData["title"] }}</span>
+  </div>
+  <ng-container *ngIf="routeData['cta']">
+    <app-cta
+      [color]="'accent'"
+      [buttonText]="routeData['cta']"
+      [action]="routeData['action']"
+      type="raised"
+    ></app-cta>
+  </ng-container>
+</mat-toolbar>
+<mat-drawer-container autosize class="h-screen relative">
+  <mat-drawer
+    #drawer
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)"
+    class="w-4/5 md:w-1/5"
+  >
+    <!-- <mat-toolbar
+      color="primary"
+      class="flex flex-row justify-between align-center sticky z-10 inset-0"
+    >
+      <span>Aff Builder</span>
+      <mat-icon *ngIf="isHandset$ | async" (click)="drawer.toggle()"
+        >close</mat-icon
+      >
+    </mat-toolbar> -->
+    <div class="flex flex-col gap-2 w-full p-2 min-h-screen">
+      <ul class="w-full">
+        <li
+          class="w-full"
+          *ngFor="let item of navListItems"
+          [routerLink]="item.routerLink"
+        >
+          <button
+            class="px-2 py-2 flex items-center justify-between rounded w-full hover:bg-accent"
+          >
+            <span class="text-sm text-left">{{ item.label }}</span>
+            <mat-icon>{{ item.icon }}</mat-icon>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

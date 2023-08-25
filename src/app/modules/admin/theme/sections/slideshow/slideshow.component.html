@@ -1,0 +1,26 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <swiper
+    [config]="config"
+    (swiper)="onSwiper($event, styles)"
+    (slideChange)="onSlideChange()"
+    #slideshow
+    class="swiper-container"
+    [ngStyle]="{ 'next-class': '#000000' }"
+  >
+    >
+    <ng-container *ngFor="let slide of slides">
+      <ng-container *ngIf="slide.visible">
+        <ng-template swiperSlide>
+          <block-slide
+            [styles]="styles"
+            [block]="slide"
+            [sectionId]="section.sectionId"
+          ></block-slide>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </swiper>
+</ng-container>
+<div class="hidden">
+  <ng-template dynamicBlockLoader></ng-template>
+</div>

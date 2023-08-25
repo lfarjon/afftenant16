@@ -1,0 +1,103 @@
+<ng-container *ngIf="viewPort$ | async as viewport">
+  <ng-container *ngIf="block">
+    <div
+      class="relative h-56 rounded-lg bg-cover bg-center"
+      [ngClass]="viewport.viewport === 'desktop' ? 'h-96' : ''"
+      [ngStyle]="{
+        'background-image':
+          'url(' +
+          (block.model?.fileUrl ? block.model.fileUrl : slideImage) +
+          ')'
+      }"
+    >
+      <div
+        class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+      >
+        <div class="text-center">
+          <h1 class="text-4xl text-white font-bold mb-4">
+            {{ block.model?.title }}
+          </h1>
+          <p class="text-lg text-white mb-4">
+            {{ block.model?.content }}
+          </p>
+          <div class="space-x-4">
+            <button
+              class="px-4 py-2 font-normal rounded-lg"
+              [ngStyle]="{
+                'background-color': styles.primary,
+                color: styles.primaryContent
+                  ? styles.primaryContent
+                  : darkOrLight(styles.primary)
+              }"
+            >
+              {{ block.model?.button1 }}
+            </button>
+            <button
+              class="px-4 py-2 font-normal rounded-lg border text-white border-white"
+            >
+              {{ block.model?.button2 }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Slide</h2>
+    <mat-dialog-content>
+      <app-dropzone
+        [docRef]="docRef"
+        (downloadUrl)="saveDownloadUrl($event)"
+      ></app-dropzone>
+      <form [formGroup]="form" class="flex flex-col">
+        <formly-form
+          [fields]="fields"
+          [model]="data.model"
+          [options]="options"
+        ></formly-form>
+      </form>
+
+      PREVIEW
+      <div
+        class="relative h-56 rounded-lg bg-cover bg-center"
+        [ngClass]="viewport.viewport === 'desktop' ? 'h-96' : ''"
+        [style.background-image]="'url(' + data.form.value.fileUrl + ')'"
+      >
+        <div
+          class="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        >
+          <div class="text-center">
+            <h1 class="text-4xl text-white font-bold mb-4">
+              {{ data.model?.title }}
+            </h1>
+            <p class="text-lg text-white mb-4">
+              {{ data.model?.content }}
+            </p>
+            <div class="space-x-4">
+              <button
+                class="px-4 py-2 bg-white text-black font-semibold rounded-lg"
+              >
+                {{ data.model?.button1 }}
+              </button>
+              <button
+                class="px-4 py-2 bg-white text-black font-semibold rounded-lg"
+              >
+                {{ data.model?.button2 }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>

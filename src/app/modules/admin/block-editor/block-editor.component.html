@@ -1,0 +1,10 @@
+<ng-container *ngIf="data">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <formly-form
+      [fields]="fields"
+      [model]="model"
+      [options]="options"
+    ></formly-form>
+    <button type="submit">Submit</button>
+  </form>
+</ng-container>

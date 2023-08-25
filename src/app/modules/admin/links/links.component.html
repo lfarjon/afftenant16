@@ -1,0 +1,214 @@
+<div class="flex min-h-screen w-full p-5">
+  <ng-container *ngIf="filteredLinks$ | async as filteredLinks; else loader">
+    <div class="flex flex-col gap-5 w-full">
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Title, url or category"
+          #input
+        />
+      </mat-form-field>
+      <ng-container *ngIf="filteredLinks.length > 0; else addLink">
+        <ng-container *ngFor="let link of filteredLinks; let i = index">
+          <div
+            (click)="openLinkDialog(link)"
+            class="z-10 flex flex-row items-center justify-between p-2 bg-slate-100 rounded rounded-lg"
+          >
+            <div class="w-full flex items-center justify-between">
+              <div class="flex items-center">
+                <div
+                  class="h-10 w-10 flex items-center justify-center"
+                  [ngClass]="
+                    link.imageUrl ? 'rounded-lg' : ' bg-pink-500 rounded-full'
+                  "
+                >
+                  <span *ngIf="!link.imageUrl">{{ link.title[0] }}</span>
+                  <img
+                    *ngIf="link.imageUrl"
+                    [src]="link.imageUrl"
+                    class="h-10 w-10 object-cover rounded-lg"
+                  />
+                </div>
+
+                <div class="ml-3 flex flex-col">
+                  <span class="font-semibold">
+                    {{ link.title }}
+                  </span>
+                  <span class="font-light text-sm">
+                    {{ link.url }}
+                  </span>
+                </div>
+              </div>
+              <mat-slide-toggle
+                class="z-20"
+                [checked]="link.active"
+                (toggleChange)="toggleStatus(link)"
+                (click)="stopPropagation($event)"
+              ></mat-slide-toggle>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #addLink>
+  <div class="mx-auto mt-10 flex flex-col">
+    <span class="font-semibold text-center mb-5"> No links. </span>
+    <app-cta
+      buttonText="Add a link"
+      action="ADD_LINK"
+      color="primary"
+      type="raised"
+    ></app-cta>
+  </div>
+</ng-template>
+
+<ng-template #loader>
+  <app-loader
+    class="flex items-center justify-center w-full h-screen"
+  ></app-loader>
+</ng-template>
+
+<ng-template #linkFormTemplate let-data>
+  <form [formGroup]="linkForm">
+    <div class="flex flex-col w-full">
+      <div class="flex flex-col">
+        <div class="h-auto w-full mb-2 flex flex-col">
+          <ng-container *ngIf="!!linkForm.value.imageUrl; else dropZone">
+            <img
+              (click)="linkForm.patchValue({ imageUrl: '' })"
+              class="object-contain h-32 w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              [src]="linkForm.value.imageUrl"
+            />
+
+            <button
+              class="text-blue-500 text-sm font-light text-center"
+              (click)="linkForm.patchValue({ imageUrl: '' })"
+            >
+              Change picture
+            </button>
+          </ng-container>
+          <ng-template #dropZone>
+            <app-dropzone
+              [height]="'h-32'"
+              [width]="'w-full'"
+              [docRef]="getDocRef(linkForm.value)"
+              (downloadUrl)="saveDownloadUrl($event)"
+            ></app-dropzone>
+            <button
+              *ngIf="linkForm.value.imageUrl === '' && !!data.link?.imageUrl"
+              class="text-red-500 text-sm font-light text-center"
+              (click)="linkForm.patchValue({ imageUrl: data.link?.imageUrl })"
+            >
+              Cancel
+            </button>
+          </ng-template>
+        </div>
+        <div class="flex flex-col w-full gap-1">
+          <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>URL</mat-label>
+            <input matInput formControlName="url" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-chip-grid #chipList>
+              <mat-chip-row
+                *ngFor="let category of categories"
+                [removable]="true"
+                (removed)="removeCategory(category)"
+              >
+                {{ category.name }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip-row>
+              <input
+                (input)="updateCategoryFilter($event)"
+                placeholder="New category..."
+                [matChipInputFor]="chipList"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addCategory($event)"
+              />
+            </mat-chip-grid>
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="selectedCategory($event)"
+            >
+              <mat-option
+                *ngFor="let category of filteredCategories$ | async"
+                [value]="category.name"
+              >
+                {{ category.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full flex items-center justify-between mt-1">
+      <div class="flex items-center">
+        <mat-form-field style="visibility: hidden; position: absolute">
+          <input
+            matInput
+            [ngxMatDatetimePicker]="picker"
+            placeholder="Choose a date and time"
+            formControlName="active_at"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="$any(picker)"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker [touchUi]="false">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+        <button (click)="openPicker($event)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+            />
+          </svg>
+        </button>
+        <ng-container *ngIf="!!data.active_at">
+          <div class="ml-2 text-sm flex flex-col items-start justify-center">
+            <span class="font-light">Activated on</span>
+            <span>{{ data?.active_at?.seconds * 1000 | date : "short" }}</span>
+          </div>
+        </ng-container>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          mat-button
+          color="warn"
+          class="flex items-center"
+          (click)="deleteLink(linkForm.value)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="linkForm.invalid"
+          (click)="saveLink(linkForm.value)"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

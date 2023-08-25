@@ -1,0 +1,78 @@
+<!-- Jumbotron -->
+<section
+  class="px-4 lg:px-20 h-screen text-center flex flex-col justify-center items-center bg-gradient-to-b from-white to-primary-200"
+>
+  <h1 class="mb-16 text-5xl font-bold tracking-tight lg:text-6xl xl:text-7xl">
+    The #1 <br /><span class="text-primary">affiliate website builder</span>
+    <br />
+    on the market
+  </h1>
+  <ng-container *ngIf="!(isHandset$ | async)">
+    <div class="relative max-w-xl w-full h-16 mx-auto">
+      <form [formGroup]="form" class="h-full w-full">
+        <input
+          class="mb-2 inline-block border border-primary-800 rounded-full bg-white w-full px-12 h-full text-sm text-black transition duration-150 ease-in-out lg:mr-2 lg:mb-0"
+          formControlName="email"
+          placeholder="Enter your email address"
+        />
+      </form>
+      <a
+        class="absolute top-1 bottom-1 right-1 inline-block rounded-full bg-primary-500 px-12 flex items-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+        data-te-ripple-init
+        data-te-ripple-color="light"
+        routerLink="/register"
+        role="button"
+        >Start free trial</a
+      >
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isHandset$ | async">
+    <form [formGroup]="form" class="w-full">
+      <input
+        class="max-w-xs mb-2 inline-block border border-primary-800 pt-4 pb-3.5 text-center rounded-full bg-white px-12 w-full text-sm text-black transition duration-150 ease-in-out"
+        formControlName="email"
+        placeholder="Enter your email address"
+      />
+    </form>
+    <a
+      class="max-w-xs mb-2 inline-block rounded-full bg-primary-500 px-12 pt-4 pb-3.5 w-full text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] lg:mr-2 lg:mb-0"
+      data-te-ripple-init
+      data-te-ripple-color="light"
+      routerLink="/register"
+      role="button"
+      >Start free trial</a
+    >
+  </ng-container>
+</section>
+<!-- Jumbotron -->
+<section
+  class="px-4 lg:px-20 h-screen text-center flex flex-col justify-center items-center bg-gradient-to-b from-white via-primary-50 to-primary-300"
+>
+  <h1 class="mb-16 text-5xl font-bold tracking-tight lg:text-6xl xl:text-7xl">
+    The #1 <br /><span class="text-primary">affiliate website builder</span>
+    <br />
+    on the market
+  </h1>
+  <ng-container *ngIf="!(isHandset$ | async)">
+    <div class="relative max-w-xl w-full h-16 mx-auto">
+      <a
+        class="absolute top-1 bottom-1 right-1 inline-block rounded-full bg-primary-500 px-12 flex items-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+        data-te-ripple-init
+        data-te-ripple-color="light"
+        href="#!"
+        role="button"
+        >Start free trial</a
+      >
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isHandset$ | async">
+    <a
+      class="mb-2 inline-block rounded-full bg-primary-500 px-12 pt-4 pb-3.5 w-full text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] lg:mr-2 lg:mb-0"
+      data-te-ripple-init
+      data-te-ripple-color="light"
+      href="#!"
+      role="button"
+      >Start free trial</a
+    >
+  </ng-container>
+</section>

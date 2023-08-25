@@ -1,0 +1,54 @@
+<ng-container *ngIf="block">
+  <ng-container *ngIf="block.visible">
+    <div
+      class="flex gap-x-3"
+      [ngStyle]="{
+        color: styles.baseContent
+          ? styles.baseContent
+          : darkOrLight(styles.base100)
+      }"
+    >
+      <ng-container *ngFor="let social of socials">
+        <button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="1em"
+            [attr.viewBox]="social.icon.viewBox"
+          >
+            <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+            <style>
+              svg {
+                fill: #ffffff;
+              }
+            </style>
+            <path [attr.d]="social.icon.path" />
+          </svg>
+        </button>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>
+<ng-template #editorRef let-data>
+  <h2 mat-dialog-title>Social links</h2>
+  <mat-dialog-content>
+    <form [formGroup]="form" class="flex flex-col">
+      <formly-form
+        [fields]="fields"
+        [model]="data.model"
+        [options]="options"
+      ></formly-form>
+    </form>
+
+    PREVIEW
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [mat-dialog-close]="data"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</ng-template>

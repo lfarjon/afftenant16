@@ -1,0 +1,82 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <ng-container *ngIf="block$ | async as block">
+    <div class="space-x-4">
+      <button
+        class="px-4 py-2 font-normal rounded-lg"
+        [ngStyle]="{
+          'background-color': styles.primary,
+          color: styles.primaryContent
+            ? styles.primaryContent
+            : darkOrLight(styles.primary)
+        }"
+      >
+        {{ block.model?.buttonOneText }}
+      </button>
+      <button
+        class="px-4 py-2 font-normal rounded-lg border"
+        [ngStyle]="{
+          'border-color':
+            context === 'image-banner'
+              ? '#fff'
+              : !isDark(styles.base100)
+              ? styles.baseContent
+                ? styles.baseContent
+                : '#000'
+              : '#fff',
+          color:
+            context === 'image-banner'
+              ? '#fff'
+              : !isDark(styles.base100)
+              ? styles.baseContent
+                ? styles.baseContent
+                : '#000'
+              : '#fff'
+        }"
+      >
+        {{ block.model?.buttonTwoText }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Buttons</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form" class="flex flex-col">
+        <formly-form
+          [fields]="fields"
+          [model]="data.model"
+          [options]="options"
+        ></formly-form>
+      </form>
+      PREVIEW
+      <div class="space-x-4">
+        <button
+          class="px-4 py-2 font-normal rounded-lg"
+          [ngStyle]="{
+            'background-color': styles.primary,
+            color: styles.primaryContent
+              ? styles.primaryContent
+              : darkOrLight(styles.primary)
+          }"
+        >
+          {{ data.model?.buttonOneText }}
+        </button>
+        <button
+          class="px-4 py-2 font-normal rounded-lg border text-white border-white"
+        >
+          {{ data.model?.buttonTwoText }}
+        </button>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>

@@ -1,0 +1,69 @@
+<ng-container *ngIf="block">
+  <ng-container *ngIf="block.visible">
+    <ng-container *ngIf="styles$ | async as styles">
+      <div class="flex-1">
+        <!-- first section content goes here -->
+        <div class="flex items-center gap-x-8">
+          <button
+            *ngFor="let item of (block$ | async)?.model?.navListItems"
+            [routerLink]="item.routerLink"
+            [ngClass]="navButtonClasses"
+            [ngStyle]="{
+              color: styles.baseContent
+                ? styles.baseContent
+                : darkOrLight(styles.base100)
+            }"
+          >
+            <span class="whitespace-nowrap">{{ item.label }}</span>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Menu</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form">
+        <div formArrayName="navListItems">
+          <div
+            *ngFor="let control of navListItems.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <label>Label:</label>
+            <input type="text" formControlName="label" required />
+
+            <label>Icon:</label>
+            <input type="string" formControlName="icon" required />
+
+            <label>Link:</label>
+            <input type="string" formControlName="routerLink" required />
+
+            <button type="button" (click)="removeItem(i)">Remove</button>
+            <hr />
+          </div>
+        </div>
+        <button type="button" (click)="addItem()">Add</button>
+      </form>
+      PREVIEW
+      <div class="flex items-center gap-x-8">
+        <button
+          *ngFor="let item of data.form.value.navListItems"
+          [routerLink]="item.routerLink"
+          [ngClass]="navButtonClasses"
+        >
+          {{ item.label }}
+        </button>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>

@@ -1,0 +1,181 @@
+<ng-container [ngSwitch]="section">
+  <span *ngSwitchCase="'HEADER'" class="text-xs"> Header </span>
+  <span *ngSwitchCase="'FOOTER'" class="text-xs"> Footer </span>
+  <span *ngSwitchCase="'TEMPLATE'" class="text-xs"> Template </span>
+</ng-container>
+<ul class="w-full" cdkDropList (cdkDropListDropped)="drop($event)">
+  <li
+    class="w-full"
+    *ngFor="let component of components; let i = index"
+    cdkDrag
+    (cdkDragStarted)="dragDropService.onDragStart()"
+    (cdkDragEnded)="dragDropService.onDragEnd()"
+    [cdkDragDisabled]="component.dragDisabled"
+  >
+    <button
+      class="group px-2 py-2 flex items-center justify-between rounded w-full hover:bg-accent"
+      (click)="selectSection(component)"
+      [ngClass]="isSelected === component.sectionId ? 'bg-accent' : ''"
+    >
+      <div class="flex w-full justify-start items-center">
+        <app-expand-section
+          [component]="component"
+          [isSelected]="isSelected"
+        ></app-expand-section>
+        <span class="text-sm text-left">{{ component.title }}</span>
+      </div>
+      <div class="items-center gap-x-2 flex">
+        <ng-container *ngIf="component.allowHide">
+          <app-visibility-toggle
+            [component]="component"
+            (toggler)="toggleSection(component, i)"
+          ></app-visibility-toggle>
+        </ng-container>
+
+        <ng-container *ngIf="component.allowDrag">
+          <app-drag-handle
+            cdkDragHandle
+            [component]="component"
+            [panel]="true"
+          ></app-drag-handle>
+        </ng-container>
+        <ng-container *ngIf="component.allowDelete">
+          <button
+            class="opacity-50 hover:opacity-100"
+            (click)="removeSection(component, i)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+              />
+            </svg>
+          </button>
+        </ng-container>
+      </div>
+    </button>
+    <ng-container *ngIf="component.sectionId === isSelected">
+      <div class="pl-8 w-full">
+        <ng-container *ngIf="component.blocks | async as blocks">
+          <div
+            cdkDropList
+            (cdkDropListDropped)="dropBlock(component, $event, blocks)"
+          >
+            <div
+              cdkDrag
+              (cdkDragStarted)="dragDropService.onDragStart()"
+              (cdkDragEnded)="dragDropService.onDragEnd()"
+              [cdkDragDisabled]="block.dragDisabled"
+              *ngFor="let block of blocks; let y = index"
+            >
+              <div class="flex flex-col">
+                <button
+                  class="group px-2 py-2 flex items-center justify-between hover:bg-accent rounded"
+                >
+                  <div
+                    class="flex w-full justify-start items-center"
+                    (click)="editBlock(block)"
+                  >
+                    <span class="text-sm text-left">{{ block.title }}</span>
+                  </div>
+                  <div class="flex items-center gap-x-2">
+                    <ng-container *ngIf="block.allowHide">
+                      <app-visibility-toggle
+                        [component]="block"
+                        (toggler)="toggleBlock(component, block, y)"
+                      ></app-visibility-toggle>
+                    </ng-container>
+                    <ng-container *ngIf="block.allowDrag">
+                      <app-drag-handle
+                        cdkDragHandle
+                        [block]="block"
+                        [panel]="true"
+                      ></app-drag-handle>
+                    </ng-container>
+                    <ng-container *ngIf="block.allowDelete">
+                      <button
+                        class="opacity-50 hover:opacity-100"
+                        (click)="removeBlock(component, y)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                          />
+                        </svg>
+                      </button>
+                    </ng-container>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="component.allowAddBlocks">
+          <button
+            [matMenuTriggerFor]="blockMenu"
+            (click)="openBlockMenu(component)"
+            class="w-full -mx-2 px-2 py-2 flex items-center text-primary rounded text-sm"
+          >
+            <mat-icon class="mr-2">add_circle</mat-icon>
+            Add block
+          </button>
+          <mat-menu #blockMenu="matMenu">
+            <ng-container *ngFor="let block of blockMenu$ | async">
+              <button mat-menu-item (click)="addBlock(component, block)">
+                {{ block.title }}
+              </button>
+            </ng-container>
+          </mat-menu>
+        </ng-container>
+      </div>
+    </ng-container>
+  </li>
+</ul>
+<ng-container *ngIf="moreSections">
+  <button
+    [matMenuTriggerFor]="sectionMenu"
+    (click)="openSectionMenu(section)"
+    class="w-full p-2 flex items-center text-primary rounded text-sm"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1"
+      stroke="currentColor"
+      class="w-5 h-5"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 4.5v15m7.5-7.5h-15"
+      />
+    </svg>
+
+    <span class="ml-2">Add Section</span>
+  </button>
+  <mat-menu #sectionMenu="matMenu">
+    <ng-container *ngFor="let section of sectionMenu$ | async">
+      <button mat-menu-item (click)="addSection(section)">
+        {{ section.title }}
+      </button>
+    </ng-container>
+  </mat-menu>
+</ng-container>

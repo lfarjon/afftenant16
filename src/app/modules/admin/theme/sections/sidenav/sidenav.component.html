@@ -1,0 +1,31 @@
+<ng-container *ngIf="viewPort$ | async as viewport">
+  <ng-container *ngIf="styles$ | async as styles">
+    <ng-container *ngIf="menuBlock$ | async as menuBlock">
+      <!-- first section content goes here -->
+      <block-side-menu
+        [block]="menuBlock"
+        [sectionId]="section.sectionId"
+        [viewport]="viewport"
+      ></block-side-menu>
+    </ng-container>
+    <ng-container *ngIf="logoBlock$ | async as logoBlock">
+      <block-logo
+        [block]="logoBlock"
+        [sectionId]="section.sectionId"
+        [viewport]="viewport"
+      ></block-logo>
+    </ng-container>
+    <ng-container *ngIf="ctaBlock$ | async as ctaBlock">
+      <block-cta
+        [block]="ctaBlock"
+        [sectionId]="section.sectionId"
+        [viewport]="viewport"
+        [ngClass]="ctaClasses"
+        >Sign up now</block-cta
+      >
+    </ng-container>
+  </ng-container>
+</ng-container>
+<div class="hidden">
+  <ng-template dynamicBlockLoader></ng-template>
+</div>

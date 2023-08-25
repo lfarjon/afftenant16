@@ -1,0 +1,55 @@
+<ng-container *ngIf="styles$ | async as styles">
+  <ng-container *ngIf="block$ | async as block">
+    <button
+      [ngClass]="classes"
+      [ngStyle]="{
+        'background-color': styles.primary,
+        color: styles.primaryContent
+          ? styles.primaryContent
+          : darkOrLight(styles.primary)
+      }"
+      [routerLink]="[route]"
+    >
+      <span class="whitespace-nowrap">{{
+        (block$ | async)?.model?.buttonText
+      }}</span>
+    </button>
+  </ng-container>
+  <ng-template #editorRef let-data>
+    <h2 mat-dialog-title>Single button</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form" class="flex flex-col">
+        <formly-form
+          [fields]="fields"
+          [model]="data.model"
+          [options]="options"
+        ></formly-form>
+      </form>
+
+      PREVIEW
+      <button
+        [ngClass]="classes"
+        [ngStyle]="{
+          'background-color': styles.primary,
+          color: styles.primaryContent
+            ? styles.primaryContent
+            : darkOrLight(styles.primary)
+        }"
+        [routerLink]="[route]"
+      >
+        <span class="whitespace-nowrap">{{ data.model.buttonText }}</span>
+      </button>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="data"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-container>
