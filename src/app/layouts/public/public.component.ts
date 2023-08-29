@@ -1,9 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { EMPTY, Observable, catchError, map, of, take } from 'rxjs';
-import { Website } from 'src/app/core/models/website';
+import { EMPTY, Observable, catchError, map, of, take, tap } from 'rxjs';
+import { DomainService } from 'src/app/core/services/domain.service';
 
-import { LayoutService } from 'src/app/core/services/layout.service';
 import { WebsiteLoaderService } from 'src/app/core/services/website-loader.service';
 
 @Component({
@@ -16,14 +14,10 @@ export class PublicComponent implements OnInit {
   error$!: Observable<string>;
 
   constructor(
-    private layoutService: LayoutService,
-    private http: HttpClient,
+    private domainService: DomainService,
     private websiteService: WebsiteLoaderService
-  ) {}
-
-  ngOnInit() {
-    const domain = window.location.hostname;
-    const cleanedDomain = domain.replace(/^www\./, '');
+  ) {
+    const cleanedDomain = this.domainService.getDomain();
 
     if (cleanedDomain === 'retailable.co' || cleanedDomain === 'localhost') {
       this.website$ = of({ domain: 'main' });
@@ -57,6 +51,8 @@ export class PublicComponent implements OnInit {
       })
     );
   }
+
+  ngOnInit() {}
 
   redirectToMainDomain() {
     window.location.href = 'http://localhost:4200';

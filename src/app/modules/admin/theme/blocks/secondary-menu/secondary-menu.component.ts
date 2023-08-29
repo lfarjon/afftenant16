@@ -127,7 +127,6 @@ export class SecondaryMenuComponent
   }
 
   openEditor() {
-    console.log(this.form.value);
     const dialogRef = this.dialog.open(this.editorRef, {
       data: {
         block: { ...this.blockService.editingBlock.value.block },
@@ -138,9 +137,7 @@ export class SecondaryMenuComponent
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(this.form.value);
       if (result !== undefined) {
-        console.log(result.form.value);
         const block: Block = {
           ...result.block,
           model: result.form.value,

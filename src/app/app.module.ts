@@ -24,7 +24,9 @@ firebase.initializeApp(environment.firebase);
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabledBlocking',
+    }),
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -36,6 +38,7 @@ firebase.initializeApp(environment.firebase);
     { provide: Storage, useValue: {} },
     { provide: FIREBASE_APP_NAME, useValue: environment.firebase },
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+    { provide: 'host', useValue: 'localhost' }, // This can be 'retailable.co' or any other default value.
   ],
   bootstrap: [AppComponent],
 })

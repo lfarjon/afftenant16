@@ -5,6 +5,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -30,10 +31,12 @@ import { DynamicSection } from 'src/app/core/models/dynamic-section';
   styleUrls: ['./announcement-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnnouncementBarComponent implements AfterViewInit, OnDestroy {
+export class AnnouncementBarComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChildren(DynamicBlockLoaderDirective)
   dynamicChildren!: QueryList<DynamicBlockLoaderDirective>;
-  @ViewChild('slideshow') slideshow!: any;
+  @ViewChild('announcementBar') announcementBar!: any;
 
   @Input() section!: DynamicSection;
   private swiper: Swiper | undefined;
@@ -70,10 +73,9 @@ export class AnnouncementBarComponent implements AfterViewInit, OnDestroy {
       }, 3000);
     }
   }
-  onSlideChange() {
-    console.log('slide change');
-  }
+  onSlideChange() {}
 
+  ngOnInit() {}
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
@@ -83,7 +85,8 @@ export class AnnouncementBarComponent implements AfterViewInit, OnDestroy {
       .pipe(
         takeUntil(this.unsubscribeAll),
         tap((blocks) => {
-          this.slides = blocks;
+          this.slides = blocks.sort((a, b) => b.order - a.order);
+
           this.blockService.loadBlocksComponents(
             this.section.sectionId,
             blocks,
@@ -93,6 +96,7 @@ export class AnnouncementBarComponent implements AfterViewInit, OnDestroy {
         })
       )
       .subscribe();
+    this.cd.detectChanges();
   }
 
   ngOnDestroy() {

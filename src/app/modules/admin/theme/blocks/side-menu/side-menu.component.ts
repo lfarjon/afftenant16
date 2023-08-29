@@ -92,7 +92,6 @@ export class SideMenuComponent implements OnInit, AfterViewInit, OnDestroy {
       ?.pipe(
         takeUntil(this.unsubscribeAll),
         tap((items) => {
-          console.log(items);
           const navListItems = items.model.navListItems;
           if (navListItems.length > 0) {
             navListItems.map((item: any) => {
@@ -130,7 +129,6 @@ export class SideMenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        console.log(result);
         const block: Block = {
           ...result.block,
           model: result.form.value,

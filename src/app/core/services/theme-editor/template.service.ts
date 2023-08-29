@@ -108,7 +108,6 @@ export class TemplateService {
 
   setPage(page: Page) {
     localStorage.setItem('page', JSON.stringify(page.pageId));
-    console.log(page);
     this.currentPage.next(page);
     //TEMPLATE NEEDS TO BE Current page template from behavior subject map
     this.template = this.pageTemplateSections.get(

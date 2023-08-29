@@ -36,7 +36,6 @@ export class DropzoneComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     // if (changes['docRef']) {
-    //   console.log('docRef changed:', changes['docRef'].currentValue);
     // }
   }
 
@@ -46,7 +45,6 @@ export class DropzoneComponent implements OnInit, OnChanges {
     const filepath = this.docRef + file.name;
 
     const fileRef = ref(this.storage, filepath);
-    console.log(fileRef);
     try {
       await uploadBytes(fileRef, file);
     } catch (uploadError) {

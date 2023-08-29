@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { TenantModule } from '../tenant/tenant.module';
 import { HomeModule } from '../home/home.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   declarations: [PublicComponent],
@@ -22,6 +23,7 @@ import { HomeModule } from '../home/home.module';
     HttpClientModule,
     TenantModule,
     HomeModule,
+    ComponentsModule,
   ],
   exports: [PublicComponent],
 })

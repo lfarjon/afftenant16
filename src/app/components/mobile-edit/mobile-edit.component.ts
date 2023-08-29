@@ -17,7 +17,6 @@ export class MobileEditComponent implements OnInit {
 
   editSection() {
     if (!this.drawer.opened) this.drawer.open();
-    console.log('opeeenm');
     this.templateService.isSelected.next(this.section.sectionId);
   }
 }

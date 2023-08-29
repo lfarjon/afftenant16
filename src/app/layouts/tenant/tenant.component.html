@@ -1,3 +1,6 @@
-<div *ngIf="website">
-  <h1>{{ website.subdomain }}</h1>
-</div>
+<ng-container>
+  <app-header-panel-tenant></app-header-panel-tenant>
+  <app-template-panel-tenant></app-template-panel-tenant>
+  <app-footer-panel-tenant></app-footer-panel-tenant>
+</ng-container>
+<router-outlet></router-outlet>

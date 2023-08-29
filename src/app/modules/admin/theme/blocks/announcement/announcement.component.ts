@@ -9,21 +9,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
-import {
-  blockAnnouncementField,
-  styleBlocks,
-  styleFields,
-} from 'src/app/core/forms/block-announcement';
+import { blockAnnouncementField } from 'src/app/core/forms/block-announcement';
 import { Block } from 'src/app/core/models/block';
 import { Viewport } from 'src/app/core/models/viewport';
 import { LayoutService } from 'src/app/core/services/layout.service';
@@ -45,7 +35,6 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 })
 export class AnnouncementComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('editorRef') editorRef!: TemplateRef<any>;
-  @ViewChild('styleEditor') styleEditor!: TemplateRef<any>;
 
   //Input the BlockId and sectionId
   @Input() blockId!: string;
@@ -60,10 +49,8 @@ export class AnnouncementComponent implements OnInit, AfterViewInit, OnDestroy {
   editing$!: Observable<BlockEditing>;
 
   fields: FormlyFieldConfig[] = [];
-  styleFields: FormlyFieldConfig[] = [];
   form = new FormGroup({});
-  background: string = '';
-  color: string = '';
+
   model: any;
   options: FormlyFormOptions = {};
   viewPort$!: Observable<Viewport>;
@@ -81,7 +68,6 @@ export class AnnouncementComponent implements OnInit, AfterViewInit, OnDestroy {
     private fb: FormBuilder
   ) {
     this.fields = [...blockAnnouncementField];
-    this.styleFields = [...styleFields];
     this.viewPort$ = this.layoutService.viewPort$.pipe(
       takeUntil(this.unsubscribeAll),
       map((viewport) => viewport)
@@ -115,7 +101,6 @@ export class AnnouncementComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openEditor() {
-    console.log('editin');
     const dialogRef = this.dialog.open(this.editorRef, {
       data: {
         block: { ...this.blockService.editingBlock.value.block },

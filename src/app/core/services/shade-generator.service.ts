@@ -7,7 +7,6 @@ import tinycolor from 'tinycolor2';
 export class ShadeGeneratorService {
   generateShades(hex: string): { [key: string]: string } {
     const baseColor = tinycolor(hex);
-    console.log(baseColor.toString());
     const colors = tinycolor(hex).monochromatic();
     // You can modify these percentages to fit your needs
     const shades = {

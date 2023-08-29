@@ -35,7 +35,6 @@ export class HomeComponent {
   onWindowScroll() {
     this.isScrolled =
       this.drawerContent.getElementRef().nativeElement.scrollTop > 15;
-    console.log(this.isScrolled);
     if (this.isScrolled) {
       this.navbarElement.nativeElement.classList.add(
         'bg-white',

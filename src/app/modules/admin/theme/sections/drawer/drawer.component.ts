@@ -51,7 +51,6 @@ export class DrawerComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         takeUntil(this.unsubscribeAll),
         tap((sections) => {
-          console.log(sections);
           setTimeout(
             () =>
               this.sectionService.loadSectionsComponents(

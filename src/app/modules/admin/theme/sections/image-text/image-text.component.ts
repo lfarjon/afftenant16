@@ -58,7 +58,7 @@ export class ImageTextComponent implements OnInit, AfterViewInit, OnDestroy {
         tap((blocks) => {
           const image = blocks.find((block) => block.type === 'block-image')
             ?.model.fileUrl;
-          if (image.length > 0) {
+          if (image?.length > 0) {
             this.image = image;
           }
           this.blockService.loadBlocksComponents(

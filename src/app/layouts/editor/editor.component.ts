@@ -185,7 +185,6 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
   }
 
   loadDrawer() {
-    console.log(this.drawer);
     this.templateService.drawer.next(this.drawer);
   }
 }

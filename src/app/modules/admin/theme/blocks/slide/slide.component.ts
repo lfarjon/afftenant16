@@ -22,6 +22,7 @@ import {
   BlockEditing,
   BlockService,
 } from 'src/app/core/services/theme-editor/block.service';
+import { ThemeService } from 'src/app/core/services/theme.service';
 
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
@@ -39,7 +40,7 @@ export class SlideComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() blockId!: string;
   @Input() sectionId!: string;
   @Input() block!: Block;
-  @Input() styles: any;
+
   block$!: Observable<Block> | undefined;
   editing$!: Observable<BlockEditing>;
   docRef!: string;
@@ -50,6 +51,7 @@ export class SlideComponent implements OnInit, AfterViewInit, OnDestroy {
   model: any;
   options: FormlyFormOptions = {};
   viewPort$!: Observable<Viewport>;
+  styles$: Observable<any>;
 
   private unsubscribeAll = new Subject();
 
@@ -59,13 +61,15 @@ export class SlideComponent implements OnInit, AfterViewInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private layoutService: LayoutService,
     private fb: FormBuilder,
-    private shadeService: ShadeGeneratorService
+    private shadeService: ShadeGeneratorService,
+    private themeService: ThemeService
   ) {
     this.fields = [...blockSlideField];
     this.viewPort$ = this.layoutService.viewPort$.pipe(
       takeUntil(this.unsubscribeAll),
       map((viewport) => viewport)
     );
+    this.styles$ = this.themeService.getTheme(false).valueChanges();
   }
 
   ngOnInit(): void {}
@@ -93,8 +97,6 @@ export class SlideComponent implements OnInit, AfterViewInit, OnDestroy {
       ?.pipe(
         takeUntil(this.unsubscribeAll),
         tap((items) => {
-          console.log(items.model.fileUrl);
-
           const logoFile = items.model.fileUrl;
           if (logoFile?.length > 0) {
             this.imageForm.patchValue({ fileUrl: logoFile });

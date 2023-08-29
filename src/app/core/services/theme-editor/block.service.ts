@@ -69,6 +69,7 @@ export class BlockService {
         });
       } else {
         if (savedBlocks) {
+          console.log('saved');
           savedBlocks.forEach((block) => {
             this.addBlock(sectionId, block, false);
           });
@@ -148,7 +149,6 @@ export class BlockService {
             const componentInstance: any = componentRef.instance;
             componentInstance.blockId = block.blockId;
             componentInstance.sectionId = sectionId;
-            console.log(context);
             componentInstance.context = context;
           } else {
             console.warn(`Unknown component type: ${block.type}`);

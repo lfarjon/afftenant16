@@ -35,7 +35,6 @@ export class PagesComponent implements OnInit {
   ngOnInit(): void {}
 
   handleSelectionChange(selectedRows: any) {
-    console.log(selectedRows);
     // You can handle selected rows here.
   }
 

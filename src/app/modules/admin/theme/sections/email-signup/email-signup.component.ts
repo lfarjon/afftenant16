@@ -23,7 +23,7 @@ import { ThemeService } from 'src/app/core/services/theme.service';
   selector: 'theme-email-signup',
   templateUrl: './email-signup.component.html',
   styleUrls: ['./email-signup.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailSignupComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(DynamicBlockLoaderDirective)

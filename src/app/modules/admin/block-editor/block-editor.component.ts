@@ -51,10 +51,8 @@ export class BlockEditorComponent implements OnInit, OnDestroy {
       // Handle form submission based on the block type
       if (this.blockType === 'text') {
         // const textBlock = this.model as TextBlock;
-        //console.log('Text Block:', textBlock);
       } else if (this.blockType === 'image') {
         //const imageBlock = this.model as ImageBlock;
-        //console.log('Image Block:', imageBlock);
       }
     }
   }

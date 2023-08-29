@@ -1,0 +1,8 @@
+<ng-container *ngIf="components$ | async as components">
+  <app-expansion-panel
+    [components]="components"
+    [expanded]="true"
+    section="HEADER"
+    [moreSections]="moreSections"
+  ></app-expansion-panel>
+</ng-container>

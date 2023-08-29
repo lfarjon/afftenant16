@@ -73,16 +73,14 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
     this.styles$ = this.themeService.getTheme(false).valueChanges();
   }
 
-  onSwiper(swiper: any, styles: any) {
+  onSwiper(swiper: any) {
     if (swiper) {
       this.interval = setInterval(() => {
         swiper?.slideNext();
       }, 3000);
     }
   }
-  onSlideChange() {
-    console.log('slide change');
-  }
+  onSlideChange() {}
 
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
@@ -93,8 +91,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
       .pipe(
         takeUntil(this.unsubscribeAll),
         tap((blocks) => {
-          this.slides = blocks;
-
+          this.slides = blocks.sort((a, b) => b.order - a.order);
           this.blockService.loadBlocksComponents(
             this.section.sectionId,
             blocks,
@@ -104,6 +101,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
         })
       )
       .subscribe();
+    this.cd.detectChanges();
   }
 
   ngOnDestroy() {

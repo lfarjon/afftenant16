@@ -134,7 +134,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(this.form.value);
       if (result !== undefined) {
         const block: Block = {
           ...result.block,

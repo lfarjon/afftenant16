@@ -34,7 +34,6 @@ export class WebsitesComponent implements OnInit, OnDestroy {
     private ctaService: CtaService,
     private websiteService: WebsiteService,
     private confirmationService: ConfirmationService,
-    private router: Router,
     private dialog: MatDialog,
     private fb: FormBuilder
   ) {

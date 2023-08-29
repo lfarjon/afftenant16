@@ -154,7 +154,7 @@
       </div>
 
       <div class="w-full flex items-center justify-between mt-1">
-        <div class="flex items-center">
+        <!-- <div class="flex items-center">
           <mat-form-field style="visibility: hidden; position: absolute">
             <input
               matInput
@@ -193,26 +193,28 @@
               }}</span>
             </div>
           </ng-container>
-        </div>
-        <div class="flex items-center gap-2">
-          <button
-            mat-button
-            color="warn"
-            class="flex items-center"
-            (click)="deleteLink(linkForm.value)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            [disabled]="linkForm.invalid"
-            (click)="saveLink(linkForm.value)"
-          >
-            Save
-          </button>
-        </div>
+        </div> -->
       </div>
     </form>
   </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="flex items-center gap-2">
+      <button
+        mat-button
+        color="warn"
+        class="flex items-center"
+        (click)="deleteLink(linkForm.value)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="linkForm.invalid"
+        (click)="saveLink(linkForm.value)"
+      >
+        Save
+      </button>
+    </div>
+  </mat-dialog-actions>
 </ng-template>

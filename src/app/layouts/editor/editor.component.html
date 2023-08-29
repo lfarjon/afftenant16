@@ -32,11 +32,9 @@
           (click)="drawer.toggle()"
           >menu</mat-icon
         >
-        <ng-container *ngIf="website$ | async as website">
-          <span class="text-2xl font-semibold text-center">{{
-            website.domain
-          }}</span>
-        </ng-container>
+        <span class="text-base lg:text-2xl font-semibold text-center"
+          >Editor</span
+        >
       </button>
     </div>
     <div class="flex items-center gap-x-1">
@@ -304,6 +302,12 @@
         </mat-nav-list>
       </ng-container>
       <ng-container *ngIf="routeData['theme']">
+        <ng-container *ngIf="website$ | async as website">
+          <span
+            class="p-2 g:text-base text-2xl font-semibold text-left w-full"
+            >{{ website.domain }}</span
+          >
+        </ng-container>
         <div class="flex flex-col gap-2 w-full p-2 min-h-screen">
           <ng-container>
             <app-header-panel></app-header-panel>

@@ -1,6 +1,6 @@
 <ng-container *ngIf="website$ | async as website">
   <ng-container *ngIf="website.domain !== 'main'">
-    <app-tenant [website]="website"></app-tenant>
+    <app-tenant></app-tenant>
   </ng-container>
   <ng-container *ngIf="website.domain === 'main'">
     <app-home></app-home>

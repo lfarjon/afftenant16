@@ -69,6 +69,12 @@ export class WebsiteService {
     });
 
     let headers = [...headerSections].map((section) => {
+      //generate new UUID to be sure
+      section = {
+        ...section,
+        sectionId: uuidv4(),
+      };
+
       this.blockService.getBlocks(
         section.sectionId,
         section.type,
@@ -82,6 +88,11 @@ export class WebsiteService {
     });
 
     let sidenavs = [...sidenavSections].map((section) => {
+      //generate new UUID to be sure
+      section = {
+        ...section,
+        sectionId: uuidv4(),
+      };
       this.blockService.getBlocks(
         section.sectionId,
         section.type,
@@ -95,6 +106,11 @@ export class WebsiteService {
     });
 
     let footers = [...footerSections].map((section) => {
+      //generate new UUID to be sure
+      section = {
+        ...section,
+        sectionId: uuidv4(),
+      };
       this.blockService.getBlocks(
         section.sectionId,
         section.type,
@@ -156,8 +172,17 @@ export class WebsiteService {
     // (see defaultPages)
 
     defaultPages.map((page: Page) => {
+      page = {
+        ...page,
+        pageId: uuidv4(),
+      };
       //Add the blocks to each section
       page.templateSections = page.templateSections.map((section) => {
+        //generate new UUID to be sure
+        section = {
+          ...section,
+          sectionId: uuidv4(),
+        };
         this.blockService.getBlocks(
           section.sectionId,
           section.type,

@@ -100,7 +100,6 @@ export class PageEditorComponent implements OnInit, OnDestroy {
   }
 
   onContentChanged(event: any) {
-    console.log(event);
     const strippedValue = event.text
       .replace(/<br>|\\n|\\r/g, ' ')
       .trim()

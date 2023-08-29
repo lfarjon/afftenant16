@@ -20,7 +20,6 @@ export class AdminComponent {
     private route: ActivatedRoute
   ) {
     this.routeData = this.route.snapshot.data;
-    console.log(this.routeData);
     this.isHandset$ = this.layoutService.isHandset$;
   }
 }

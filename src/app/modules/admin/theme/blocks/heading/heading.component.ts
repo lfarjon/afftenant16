@@ -69,7 +69,6 @@ export class HeadingComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         tap(({ editing, block }) => {
           if (editing && block?.blockId === this.blockId) {
-            console.log('here');
             this.openEditor();
           }
         })
