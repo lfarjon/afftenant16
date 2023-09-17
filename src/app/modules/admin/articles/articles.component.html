@@ -1,0 +1,15 @@
+<div class="flex min-h-screen w-full p-5">
+  <ng-container *ngIf="articles$ | async as articles; else loader">
+    <app-table
+      class="w-full"
+      [data]="articles"
+      [displayedColumns]="['title', 'status', 'last_saved']"
+      (selectionChange)="handleSelectionChange($event)"
+      (rowAction)="handleAction($event)"
+    ></app-table>
+  </ng-container>
+
+  <ng-template #loader>
+    <app-loader class="m-auto"></app-loader>
+  </ng-template>
+</div>

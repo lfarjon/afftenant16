@@ -17,11 +17,8 @@ export class CtaComponent {
 
   doAction() {
     switch (this.action) {
-      case 'NEW_PAGE':
-        this.ctaService.changeAction('NEW_PAGE');
-        break;
-      case 'SAVE_PAGE':
-        this.ctaService.changeAction('SAVE_PAGE');
+      case 'NEW_ARTICLE':
+        this.ctaService.changeAction('NEW_ARTICLE');
         break;
       case 'ADD_WEBSITE':
         this.ctaService.changeAction('ADD_WEBSITE');
@@ -35,13 +32,21 @@ export class CtaComponent {
       case 'SAVE_WEBSITE':
         this.ctaService.changeAction('SAVE_WEBSITE');
         break;
+      case 'SWITCH_WEBSITE':
+        this.ctaService.changeAction('SWITCH_WEBSITE');
+        break;
       case 'ADD_LINK':
         this.ctaService.changeAction('ADD_LINK');
         break;
       case 'SAVE_LINK':
         this.ctaService.changeAction('SAVE_LINK');
         break;
-
+      case 'NEW_TOOL':
+        this.ctaService.changeAction('NEW_TOOL');
+        break;
+      case 'SAVE_TOOL':
+        this.ctaService.changeAction('SAVE_TOOL');
+        break;
       default:
         break;
     }

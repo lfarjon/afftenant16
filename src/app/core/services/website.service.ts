@@ -316,6 +316,8 @@ export class WebsiteService {
     const draftWebsiteRef = this.afs.firestore.doc(draftRef);
     const liveWebsiteRef = this.afs.firestore.doc(liveRef);
 
+    //SAVE THEME HERE
+
     //Add blocks value
     let headers = this.templateService.header$.value?.map((section) => {
       this.blockService.getBlocks(section.sectionId, section.type);
@@ -504,16 +506,28 @@ export class WebsiteService {
     }
   }
 
-  editWebsite(websiteId: string) {
+  editWebsite({ websiteId, domain }: Website, switching?: boolean) {
     localStorage.removeItem('website');
     localStorage.setItem('website', JSON.stringify(websiteId));
     this.templateService.initWebsite();
-    this.router.navigate(['/admin/website/' + websiteId + '/design']);
+
+    if (switching) {
+      const confirmation: Confirmation = {
+        message: `Switched to ${domain}!`,
+        action: 'DISMISS',
+        type: 'SNACKBAR',
+      };
+
+      this.confirmationService.confirm(confirmation);
+
+      this.router.navigate(['/admin']);
+    }
   }
 
   getWebsite(): AngularFirestoreDocument<any> {
     const tenant = JSON.parse(localStorage.getItem('user')!);
     const websiteId = JSON.parse(localStorage.getItem('website')!);
+    console.log(websiteId);
     const websiteStatus = 'draft';
 
     return this.afs.doc<any>(`websites/${websiteId}-${websiteStatus}`);

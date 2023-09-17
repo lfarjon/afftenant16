@@ -4,7 +4,7 @@
       <div class="grid grid-cols-12 gap-5">
         <ng-container *ngFor="let website of websites; let i = index">
           <div
-            class="col-span-12 lg:col-span-4 lg:col-span-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+            class="col-span-12 lg:col-span-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <a href="#">
               <img class="rounded-t-lg" src="assets/image-1.jpeg" alt="" />
@@ -19,15 +19,17 @@
               >
 
               <div class="flex justify-between items-center mt-5">
-                <button>
-                  <mat-icon>more_vert</mat-icon>
-                </button>
                 <button
                   mat-raised-button
                   color="primary"
                   (click)="editWebsite(website)"
+                  [disabled]="currentWebsite === website.websiteId"
                 >
-                  Edit
+                  {{
+                    currentWebsite === website.websiteId
+                      ? "Currently editing"
+                      : "Edit"
+                  }}
                 </button>
               </div>
             </div>

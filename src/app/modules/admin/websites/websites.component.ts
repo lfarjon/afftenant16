@@ -25,6 +25,7 @@ import { domainValidator } from 'src/app/core/validators/domain.validator';
 export class WebsitesComponent implements OnInit, OnDestroy {
   @ViewChild('addDomainDialog') addDomainDialog!: TemplateRef<any>;
   websites$: Observable<Website[]>;
+  currentWebsite: string = JSON.parse(localStorage.getItem('website')!);
 
   domainForm: FormGroup;
 
@@ -35,7 +36,8 @@ export class WebsitesComponent implements OnInit, OnDestroy {
     private websiteService: WebsiteService,
     private confirmationService: ConfirmationService,
     private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.domainForm = this.fb.group({
       domain: ['', [Validators.required, domainValidator()]],
@@ -101,7 +103,12 @@ export class WebsitesComponent implements OnInit, OnDestroy {
     });
   }
 
-  editWebsite({ websiteId }: Website) {
-    this.websiteService.editWebsite(websiteId);
+  editWebsite(website: Website) {
+    const switching = true;
+    this.websiteService.editWebsite(website, switching);
+  }
+
+  blog({ websiteId }: Website) {
+    this.router.navigate(['/admin', 'website', websiteId, 'blog', 'create']);
   }
 }

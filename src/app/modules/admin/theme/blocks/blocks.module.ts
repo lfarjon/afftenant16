@@ -38,6 +38,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MatSliderModule } from '@angular/material/slider';
 import { ColorPickerComponent } from 'src/app/components/color-picker/color-picker.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,8 @@ import { ColorPickerComponent } from 'src/app/components/color-picker/color-pick
     MatIconModule,
     ComponentsModule,
     ColorPickerModule,
+    MatSelectModule,
+    MatAutocompleteModule,
   ],
   exports: [
     SlideComponent,

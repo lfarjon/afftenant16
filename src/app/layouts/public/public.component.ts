@@ -1,61 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { EMPTY, Observable, catchError, map, of, take, tap } from 'rxjs';
-import { DomainService } from 'src/app/core/services/domain.service';
-
-import { WebsiteLoaderService } from 'src/app/core/services/website-loader.service';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatDrawerContent } from '@angular/material/sidenav';
+import { Observable, Subscription } from 'rxjs';
+import { publicNavListItems } from 'src/app/core/menus/public.menu';
+import { NavListWithIcon, NavListWithLabel } from 'src/app/core/models/menu';
+import { LayoutService } from 'src/app/core/services/layout.service';
 
 @Component({
   selector: 'app-public',
   templateUrl: './public.component.html',
   styleUrls: ['./public.component.scss'],
 })
-export class PublicComponent implements OnInit {
-  website$!: Observable<any>;
-  error$!: Observable<string>;
+export class PublicComponent {
+  @ViewChild(MatDrawerContent) drawerContent!: MatDrawerContent;
+  @ViewChild('navbar', { static: false }) navbarElement!: ElementRef;
 
-  constructor(
-    private domainService: DomainService,
-    private websiteService: WebsiteLoaderService
-  ) {
-    const cleanedDomain = this.domainService.getDomain();
+  isScrolled = false;
+  private scrollSubscription!: Subscription;
+  isHandset$: Observable<boolean> = this.layoutService.isHandset$;
+  menuItems: (NavListWithLabel | NavListWithIcon)[] = publicNavListItems;
+  constructor(private layoutService: LayoutService) {}
 
-    if (cleanedDomain === 'retailable.co' || cleanedDomain === 'localhost') {
-      this.website$ = of({ domain: 'main' });
-      return;
-    }
-
-    this.website$ = this.websiteService.getWebsiteData(cleanedDomain).pipe(
-      map((data) => {
-        if (
-          !data &&
-          (cleanedDomain.includes('.retailable.co') ||
-            cleanedDomain.includes('.localhost'))
-        ) {
-          this.redirectToMainDomain();
-          return null; // No data to pass further down the chain
-        } else if (!data) {
-          return { domain: 'main' }; // Default to main domain without redirection
-        }
-        return data; // If data exists, just pass it down
-      }),
-      catchError((error) => {
-        console.error('Error fetching website data:', error);
-        if (
-          cleanedDomain.includes('.retailable.co') ||
-          cleanedDomain.includes('.localhost')
-        ) {
-          this.redirectToMainDomain();
-          return EMPTY; // No further emissions after redirection
-        }
-        return of({ domain: 'main' });
-      })
-    );
+  ngAfterViewInit() {
+    this.scrollSubscription = this.drawerContent
+      .elementScrolled()
+      .subscribe(() => this.onWindowScroll());
   }
 
-  ngOnInit() {}
+  onWindowScroll() {
+    this.isScrolled =
+      this.drawerContent.getElementRef().nativeElement.scrollTop > 15;
+    if (this.isScrolled) {
+      this.navbarElement.nativeElement.classList.add(
+        'bg-white',
+        'border-b',
+        'border-b-slate-300'
+      );
+    } else {
+      this.navbarElement.nativeElement.classList.remove(
+        'bg-white',
+        'border-b',
+        'border-b-slate-300'
+      );
+    }
+  }
 
-  redirectToMainDomain() {
-    window.location.href = 'http://localhost:4200';
-    // window.location.href = 'https://retailable.co'; // Change to your main domain URL
+  ngOnDestroy() {
+    this.scrollSubscription.unsubscribe();
   }
 }

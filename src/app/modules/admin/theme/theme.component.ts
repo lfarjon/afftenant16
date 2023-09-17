@@ -7,12 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDrawer, MatDrawerContent } from '@angular/material/sidenav';
-import { Observable, Subject, map, takeUntil } from 'rxjs';
+import { Observable, Subject, map, take, takeUntil, tap } from 'rxjs';
 import { Viewport } from 'src/app/core/models/viewport';
+import { Website } from 'src/app/core/models/website';
 import { LayoutService } from 'src/app/core/services/layout.service';
 import { ShadeGeneratorService } from 'src/app/core/services/shade-generator.service';
 import { TemplateService } from 'src/app/core/services/theme-editor/template.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
+import { WebsiteService } from 'src/app/core/services/website.service';
 
 @Component({
   selector: 'app-theme',
@@ -33,9 +35,11 @@ export class ThemeComponent implements OnInit, OnDestroy, AfterViewInit {
   styles$: Observable<any>;
   isSelected!: string;
   drawer!: MatDrawer;
+  websites$: Observable<Website[]>;
   private unsubscribeAll = new Subject();
 
   constructor(
+    private websiteService: WebsiteService,
     private templateService: TemplateService,
     private layoutService: LayoutService,
     private themeService: ThemeService,
@@ -48,6 +52,25 @@ export class ThemeComponent implements OnInit, OnDestroy, AfterViewInit {
       map((viewport) => viewport)
     );
 
+    this.websites$ = this.websiteService
+      .getWebsites()
+      .snapshotChanges()
+      .pipe(
+        map((actions: any) => {
+          return actions.map((action: any) => {
+            const id = action.payload.doc.id;
+            const data = action.payload.doc.data();
+            return { id, ...data };
+          });
+        })
+      );
+
+    this.websites$
+      .pipe(
+        take(1),
+        tap((websites) => this.websiteService.editWebsite(websites[0]))
+      )
+      .subscribe();
     this.isHandset$ = this.layoutService.isHandset$;
     this.theme$ = this.templateService.theme;
     this.templateService.isSelected
@@ -63,7 +86,11 @@ export class ThemeComponent implements OnInit, OnDestroy, AfterViewInit {
             const navHeight = 120; // adjust this to your actual nav height
             const scrollToPosition = targetElement.offsetTop - navHeight;
 
-            this.drawerContent.nativeElement.scrollTop = scrollToPosition;
+            // Use scrollTo for smooth behavior
+            this.drawerContent.nativeElement.scrollTo({
+              top: scrollToPosition,
+              behavior: 'smooth',
+            });
           }
         }
       });

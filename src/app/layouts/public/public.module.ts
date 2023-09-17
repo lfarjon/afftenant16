@@ -7,8 +7,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-import { TenantModule } from '../tenant/tenant.module';
-import { HomeModule } from '../home/home.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
@@ -21,8 +19,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     MatToolbarModule,
     MatIconModule,
     HttpClientModule,
-    TenantModule,
-    HomeModule,
     ComponentsModule,
   ],
   exports: [PublicComponent],

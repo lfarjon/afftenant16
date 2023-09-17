@@ -4,16 +4,26 @@ export const adminNavListItems: (NavListWithIcon | NavListWithLabel)[] = [
   {
     routerLink: '/admin',
     label: 'Dashboard',
-    icon: 'dashboard',
+    icon: 'query_stats',
+  },
+  {
+    routerLink: '/admin/theme',
+    label: 'Theme',
+    icon: 'palette',
+  },
+  {
+    routerLink: '/admin/articles',
+    label: 'Articles',
+    icon: 'article',
+  },
+  {
+    routerLink: '/admin/affiliate-tools',
+    label: 'Affiliate tools',
+    icon: 'hotel_class',
   },
   {
     routerLink: '/admin/links',
     label: 'Links',
     icon: 'link',
-  },
-  {
-    routerLink: '/admin/websites',
-    label: 'Websites',
-    icon: 'website',
   },
 ];

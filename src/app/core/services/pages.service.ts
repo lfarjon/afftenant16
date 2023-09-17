@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  AngularFirestoreDocument,
-} from '@angular/fire/compat/firestore';
-import { map } from 'rxjs';
-import { defaultPages, Page } from '../models/page';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { defaultPages } from '../models/page';
 
 @Injectable({
   providedIn: 'root',
@@ -22,17 +17,5 @@ export class PagesService {
     });
 
     return batch.commit();
-  }
-
-  getPages(): AngularFirestoreCollection<Page> {
-    return this.afs.collection('pages');
-  }
-
-  getPage(id: string): AngularFirestoreDocument<any> {
-    return this.afs.doc<Page>('pages/' + id);
-  }
-  savePage(page: Page): Promise<any> {
-    const pageRef = this.afs.doc('pages/' + page?.pageId);
-    return pageRef.set(page, { merge: true });
   }
 }

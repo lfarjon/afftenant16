@@ -32,13 +32,12 @@
         </div>
       </ng-container>
       <div
-        *ngIf="component.visible"
         (click)="selectSection(component)"
-        [ngClass]="
-          isSelected$.value === component.sectionId
-            ? 'border-offset-2 border-2 border-accent'
-            : ''
-        "
+        [ngClass]="{
+          'border-offset-2 border-2 border-accent':
+            isSelected$.value === component.sectionId,
+          hidden: !component.visible
+        }"
       >
         <ng-template dynamicChildLoader></ng-template>
       </div>

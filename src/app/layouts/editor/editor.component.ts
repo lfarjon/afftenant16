@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import { Observable, Subject, interval, map, take, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { editorNavListItems } from 'src/app/core/menus/editor.menu';
 import { NavListWithIcon, NavListWithLabel } from 'src/app/core/models/menu';
 import { Page } from 'src/app/core/models/page';
@@ -71,7 +71,7 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
   ) {
     const routeSnapshot = this.route.snapshot;
     this.routeData = routeSnapshot.data;
-    this.websiteId = routeSnapshot.params['websiteId'];
+    this.websiteId = JSON.parse(localStorage.getItem('website')!);
     this.website$ = this.websiteService.getWebsite().valueChanges();
     this.isHandset$ = this.layoutService.isHandset$;
     this.viewPort$ = this.layoutService.viewPort$.pipe(

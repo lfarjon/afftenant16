@@ -1,0 +1,45 @@
+<div class="flex min-h-screen w-full p-5">
+  <ng-container *ngIf="tools$ | async as tools; else loader">
+    <app-table
+      class="w-full"
+      [data]="tools"
+      [displayedColumns]="['title', 'type', 'last_saved']"
+      (selectionChange)="handleSelectionChange($event)"
+      (rowAction)="handleAction($event)"
+    ></app-table>
+  </ng-container>
+
+  <ng-template #loader>
+    <app-loader class="m-auto"></app-loader>
+  </ng-template>
+</div>
+
+<ng-template #addToolDialog let-data>
+  <h2 mat-dialog-title>New affiliate tool</h2>
+  <mat-dialog-content>
+    <form [formGroup]="toolForm" class="flex flex-col w-full gap-2">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Choose a tool</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let tool of tools" [value]="tool.type">{{
+            tool.displayName
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [mat-dialog-close]="true"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</ng-template>

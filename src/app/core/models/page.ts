@@ -1,5 +1,5 @@
 import { uuidv4 } from '@firebase/util';
-import { DynamicSection, templateSections } from './dynamic-section';
+import { templateSections } from './dynamic-section';
 
 export interface Page {
   default: boolean;

@@ -1,3 +1,19 @@
 .no-scroll {
-  overflow: hidden;
+  overflow: hidden !important;
+}
+
+/* Make the mat-drawer scrollable */
+mat-drawer .flex {
+  overflow-y: auto;
+}
+
+/* Make the mat-drawer-content scrollable */
+mat-drawer-content {
+  overflow-y: auto !important;
+  min-height: 100% !important;
+}
+
+mat-drawer-container {
+  overflow-y: hidden !important;
+  height: calc(100vh - 4rem) !important;
 }

@@ -11,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Page } from 'src/app/core/models/page';
+import { Article } from 'src/app/core/models/article';
 
 @Component({
   selector: 'app-table',
@@ -28,7 +28,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   dataSource!: MatTableDataSource<any>;
   filterValue: string = '';
-  selection = new SelectionModel<Page>(true, []);
+  selection = new SelectionModel<Article>(true, []);
 
   allColumns!: string[]; // <-- new array to hold all columns
 

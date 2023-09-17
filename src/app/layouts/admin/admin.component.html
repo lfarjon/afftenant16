@@ -6,7 +6,12 @@
     <mat-icon *ngIf="isHandset$ | async" class="mr-2" (click)="drawer.toggle()"
       >menu</mat-icon
     >
-    <span>{{ routeData["title"] }}</span>
+    <div class="flex flex-col">
+      <span class="text-base mb-0">{{ routeData["title"] }}</span>
+      <ng-container *ngIf="website$ | async as website">
+        <span class="text-sm font-light">{{ website.domain }}</span>
+      </ng-container>
+    </div>
   </div>
   <ng-container *ngIf="routeData['cta']">
     <app-cta
@@ -24,15 +29,6 @@
     [opened]="!(isHandset$ | async)"
     class="w-4/5 md:w-1/5"
   >
-    <!-- <mat-toolbar
-      color="primary"
-      class="flex flex-row justify-between align-center sticky z-10 inset-0"
-    >
-      <span>Aff Builder</span>
-      <mat-icon *ngIf="isHandset$ | async" (click)="drawer.toggle()"
-        >close</mat-icon
-      >
-    </mat-toolbar> -->
     <div class="flex flex-col gap-2 w-full p-2 min-h-screen">
       <ul class="w-full">
         <li
@@ -45,6 +41,14 @@
           >
             <span class="text-sm text-left">{{ item.label }}</span>
             <mat-icon>{{ item.icon }}</mat-icon>
+          </button>
+        </li>
+        <li class="border-t mt-2 pt-2 w-full" [routerLink]="'/admin/websites'">
+          <button
+            class="px-2 py-2 flex items-center justify-between rounded w-full hover:bg-accent"
+          >
+            <span class="text-sm text-left">Switch websites</span>
+            <mat-icon>dashboard_customize</mat-icon>
           </button>
         </li>
       </ul>

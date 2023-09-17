@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 import { DynamicSection } from '../models/dynamic-section';
 import { Website } from '../models/website';
-import { Page } from '../models/page';
+import { Page } from '../models/articles';
 import { MatDrawer } from '@angular/material/sidenav';
 
 @Injectable({

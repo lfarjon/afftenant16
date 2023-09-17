@@ -9,10 +9,18 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
 import { Block } from 'src/app/core/models/block';
+import { Page } from 'src/app/core/models/page';
 import { Viewport } from 'src/app/core/models/viewport';
 import { LayoutService } from 'src/app/core/services/layout.service';
 import { ShadeGeneratorService } from 'src/app/core/services/shade-generator.service';
@@ -20,6 +28,7 @@ import {
   BlockEditing,
   BlockService,
 } from 'src/app/core/services/theme-editor/block.service';
+import { TemplateService } from 'src/app/core/services/theme-editor/template.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
 
 @Component({
@@ -49,6 +58,10 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   form!: FormGroup;
   styles$: Observable<any>;
   viewPort$!: Observable<Viewport>;
+  pages$: Observable<Page[]>;
+  manualLink: boolean[] = [];
+  latestPages: Page[] = [];
+
   private unsubscribeAll = new Subject();
 
   constructor(
@@ -58,8 +71,18 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private themeService: ThemeService,
-    private shadeService: ShadeGeneratorService
+    private shadeService: ShadeGeneratorService,
+    private templateService: TemplateService
   ) {
+    this.pages$ = this.templateService.pages$.pipe(
+      takeUntil(this.unsubscribeAll),
+      map((pages) =>
+        pages.sort((a, b) => Number(b.default) - Number(a.default))
+      )
+    );
+
+    this.pages$.subscribe((pages) => (this.latestPages = pages));
+
     this.styles$ = this.themeService.getTheme(false).valueChanges();
     this.viewPort$ = this.layoutService.viewPort$.pipe(
       takeUntil(this.unsubscribeAll),
@@ -100,10 +123,15 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
             }
 
             navListItems.map((item: any) => {
+              const routerLinkControl = this.fb.control(item.routerLink, [
+                Validators.required,
+                this.linkValidator.bind(this),
+              ]);
               const newGroup = this.fb.group({
                 label: ['', Validators.required],
-                routerLink: ['', Validators.required],
+                routerLink: routerLinkControl,
                 icon: [''],
+                type: ['internal'], // defaulting to internal, but it will be overridden by the validator
               });
               newGroup.patchValue(item);
               this.navListItems.push(newGroup);
@@ -161,11 +189,41 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.form.get('navListItems') as FormArray;
   }
 
+  isHTTPSLink(value: any): boolean {
+    const httpsRegex =
+      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    return typeof value === 'string' && httpsRegex.test(value);
+  }
+
+  linkValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    const group = control.parent;
+
+    if (this.latestPages.map((p) => p.title).includes(value)) {
+      group?.get('type')?.setValue('internal');
+      return null;
+    } else if (this.isHTTPSLink(value)) {
+      group?.get('type')?.setValue('external');
+      return null;
+    }
+
+    return { invalidLink: true }; // invalid
+  }
+
+  getLinkType(control: AbstractControl): 'internal' | 'external' {
+    return control.get('type')?.value;
+  }
+
   addItem() {
+    const routerLinkControl = this.fb.control('', [
+      Validators.required,
+      this.linkValidator.bind(this),
+    ]);
     const newGroup = this.fb.group({
       label: ['', Validators.required],
-      routerLink: ['', Validators.required],
+      routerLink: routerLinkControl,
       icon: [''],
+      type: ['internal'], // defaulting to internal, but it will be overridden by the validator
     });
     this.navListItems.push(newGroup);
   }
