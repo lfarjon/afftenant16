@@ -5,58 +5,7 @@
         <mat-label>Title</mat-label>
         <input matInput type="text" />
       </mat-form-field>
-      <div id="toolbar">
-        <span class="ql-formats">
-          <button class="ql-bold"></button>
-          <button class="ql-italic"></button>
-          <button class="ql-underline"></button>
-          <button class="ql-strike"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-blockquote"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-list" value="ordered"></button>
-          <button class="ql-list" value="bullet"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-align" value=""></button>
-          <button class="ql-align" value="center"></button>
-          <button class="ql-align" value="right"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-link"></button>
-          <button class="ql-image"></button>
-        </span>
-        <span class="ql-formats">
-          <select class="ql-color"></select>
-        </span>
-        <span class="ql-formats">
-          <select class="ql-background"></select>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-strike"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-clean"></button>
-        </span>
-
-        <!-- And now, add your custom dropdown for components -->
-        <span class="ql-formats">
-          <select (change)="addComponent($event)">
-            <option value="insert">Insert Component</option>
-            <option *ngFor="let component of componentList" [value]="component">
-              {{ component }}
-            </option>
-          </select>
-        </span>
-      </div>
-      <quill-editor
-        *ngIf="!!editorModules"
-        class="h-96 overflow-scroll"
-        [modules]="editorModules"
-        rows
-      ></quill-editor>
+      <app-text-editor></app-text-editor>
     </div>
 
     <div class="lg:w-2/5 w-full flex flex-col">

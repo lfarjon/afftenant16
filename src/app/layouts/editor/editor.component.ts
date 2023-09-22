@@ -128,6 +128,7 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
   compareFn(c1: Page, c2: Page): boolean {
     return c1 && c2 ? c1.pageId === c2.pageId : c1 === c2;
   }
+
   ngOnDestroy() {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();

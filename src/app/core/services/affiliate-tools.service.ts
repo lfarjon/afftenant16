@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -20,8 +20,14 @@ export class AffiliateToolsService {
     return this.afs.doc<AffiliateTool>('affiliate-tools/' + id);
   }
 
-  saveTool(tool: AffiliateTool): Promise<any> {
+  saveTool(tool: AffiliateTool, data?: any, merge?: boolean): Promise<any> {
     const toolRef = this.afs.doc('affiliate-tools/' + tool?.id);
-    return toolRef.set(tool, { merge: true });
+    if (data) {
+      tool = {
+        ...tool,
+        data: data,
+      };
+    }
+    return toolRef.set(tool, { merge: merge ? merge : true });
   }
 }

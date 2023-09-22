@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CtaService } from 'src/app/core/services/cta.service';
+import { LayoutService } from 'src/app/core/services/layout.service';
 
 @Component({
   selector: 'app-cta',
@@ -12,8 +14,15 @@ export class CtaComponent {
   @Input() action: string = '';
   @Input() params: any;
   @Input() type!: string;
+  @Input() icon!: string;
 
-  constructor(private ctaService: CtaService) {}
+  isHandset$: Observable<boolean>;
+  constructor(
+    private ctaService: CtaService,
+    private layoutService: LayoutService
+  ) {
+    this.isHandset$ = this.layoutService.isHandset$;
+  }
 
   doAction() {
     switch (this.action) {
@@ -46,6 +55,9 @@ export class CtaComponent {
         break;
       case 'SAVE_TOOL':
         this.ctaService.changeAction('SAVE_TOOL');
+        break;
+      case 'ADD_TOOL':
+        this.ctaService.changeAction('ADD_TOOL');
         break;
       default:
         break;

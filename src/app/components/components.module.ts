@@ -29,7 +29,10 @@ import { MobileEditComponent } from './mobile-edit/mobile-edit.component';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { FIREBASE_APP_NAME, FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TextEditorComponent } from './text-editor/text-editor.component';
+import { QuillModule } from 'ngx-quill';
+import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DynamicBlockLoaderDirective,
     DropzoneComponent,
     MobileEditComponent,
+    TextEditorComponent,
+    ImageUploaderComponent,
   ],
   imports: [
     CommonModule,
@@ -64,7 +69,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatMenuModule,
     DragDropModule,
     ReactiveFormsModule,
+    FormsModule,
     AngularFireStorageModule,
+    QuillModule,
   ],
   exports: [
     LoaderComponent,
@@ -78,6 +85,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DynamicBlockLoaderDirective,
     DropzoneComponent,
     MobileEditComponent,
+    TextEditorComponent,
+    ImageUploaderComponent,
   ],
   providers: [
     { provide: FIREBASE_APP_NAME, useValue: environment.firebase },

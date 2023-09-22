@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AffiliateTool } from 'src/app/core/models/affiliate-tool';
+import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
 
 @Component({
   selector: 'app-tool-builder',
@@ -6,14 +10,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./tool-builder.component.scss'],
 })
 export class ToolBuilderComponent {
-  tools: string[] = [
-    'comparison table',
-    'product box',
-    'top 3 box',
-    'pros & cons box',
-    'rating box',
-    'versus box',
-    'product slider',
-  ];
-  selectedTool: string = ''; // This will be bound to the mat-select
+  selectedTool$: Observable<AffiliateTool>;
+
+  constructor(
+    private toolsService: AffiliateToolsService,
+    private route: ActivatedRoute
+  ) {
+    const toolId = this.route.snapshot.params['toolId'];
+    this.selectedTool$ = this.toolsService.getTool(toolId).valueChanges();
+  }
 }

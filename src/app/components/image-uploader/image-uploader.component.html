@@ -1,0 +1,17 @@
+<button mat-raised-button color="accent" (click)="uploader.click()">
+  {{
+    filename
+      ? filename.length > 20
+        ? (filename | slice : 0 : 20) + "..."
+        : filename
+      : text
+  }}
+</button>
+
+<input
+  #uploader
+  type="file"
+  class="hidden"
+  accept="image/png, image/jpg, image/jpeg, image/svg"
+  (change)="upload($event)"
+/>

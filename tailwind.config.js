@@ -4,6 +4,10 @@ module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
+      backgroundColor: {
+        amazonBlue: "#146eb4",
+        amazonDarkBlue: "#0f58a0",
+      },
       colors: {
         primary: {
           DEFAULT: "#3b5ba5",

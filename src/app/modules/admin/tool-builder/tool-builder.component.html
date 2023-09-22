@@ -1,16 +1,15 @@
-<mat-form-field>
-  <mat-label>Choose a tool</mat-label>
-  <mat-select [(value)]="selectedTool">
-    <mat-option *ngFor="let tool of tools" [value]="tool">{{
-      tool
-    }}</mat-option>
-  </mat-select>
-</mat-form-field>
-
-<!-- Dynamic tool content will be displayed here -->
-<div [ngSwitch]="selectedTool">
-  <!-- <app-comparison-table *ngSwitchCase="'comparison table'"></app-comparison-table>
-      <app-product-box *ngSwitchCase="'product box'"></app-product-box> -->
-  <!-- ... other components -->
-  <div *ngSwitchDefault>Select a tool to begin.</div>
-</div>
+<ng-container *ngIf="selectedTool$ | async as selectedTool">
+  <!-- Dynamic tool content will be displayed here -->
+  <div [ngSwitch]="selectedTool.type">
+    <app-ranking-cards
+      [tool]="selectedTool"
+      *ngSwitchCase="'RANKING_CARDS'"
+    ></app-ranking-cards>
+    <app-comparison-table
+      *ngSwitchCase="'COMPARISON_TABLE'"
+      [tool]="selectedTool"
+    ></app-comparison-table>
+    <!-- ... other components -->
+    <div *ngSwitchDefault>Select a tool to begin.</div>
+  </div>
+</ng-container>

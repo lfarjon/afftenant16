@@ -6,9 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { articleRoutes } from './article.routing';
-import { QuillModule } from 'ngx-quill';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   declarations: [ArticleComponent],
@@ -19,8 +19,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    QuillModule,
     MatSlideToggleModule,
+    ComponentsModule,
   ],
 })
 export class ArticleModule {}

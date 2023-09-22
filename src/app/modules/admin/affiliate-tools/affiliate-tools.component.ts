@@ -18,13 +18,15 @@ export class AffiliateToolsComponent {
   tools$!: Observable<AffiliateTool[]>;
   toolForm: FormGroup;
   tools: { type: string; displayName: string }[] = [
-    { type: 'COMPARISON TABLE', displayName: 'Comparison table' },
-    { type: 'PRODUCT BOX', displayName: 'Product box' },
-    { type: 'TOP 3 BOX', displayName: 'Top 3 box' },
-    { type: 'PROS & CONS BOX', displayName: 'Pros & cons box' },
-    { type: 'RATING BOX', displayName: 'Rating box' },
-    { type: 'VERSUS BOX', displayName: 'Versus box' },
-    { type: 'PRODUCT SLIDER', displayName: 'Product slider' },
+    { type: 'RANKING_CARDS', displayName: 'Ranking cards' },
+    { type: 'COMPARISON_TABLE', displayName: 'Comparison table' },
+    { type: 'PRODUCT_BOX', displayName: 'Product box' },
+    { type: 'TOP_3_BOX', displayName: 'Top 3 box' },
+    { type: 'PROS_CONS_BOX', displayName: 'Pros & cons box' },
+    { type: 'RATING_BOX', displayName: 'Rating box' },
+    { type: 'VERSUS_BOX', displayName: 'Versus box' },
+    { type: 'PRODUCT_SLIDER', displayName: 'Product slider' },
+    { type: 'PRODUCT_COLLAGE', displayName: 'Product collage' },
   ];
   private unsubscribe$ = new Subject<void>();
 

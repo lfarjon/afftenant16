@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { toolBuilderRoutes } from './tool-builder.routing';
+import { RankingCardsModule } from '../ranking-cards/ranking-cards.module';
+import { ComparisonTableModule } from '../comparison-table/comparison-table.module';
 
 @NgModule({
   declarations: [ToolBuilderComponent],
@@ -17,6 +19,8 @@ import { toolBuilderRoutes } from './tool-builder.routing';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
+    RankingCardsModule,
+    ComparisonTableModule,
   ],
 })
 export class ToolBuilderModule {}
