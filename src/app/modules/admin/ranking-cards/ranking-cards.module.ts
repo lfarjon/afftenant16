@@ -11,6 +11,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [RankingCardsComponent],
@@ -26,6 +27,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatToolbarModule,
     MatIconModule,
     MatRadioModule,
+    MatBottomSheetModule,
   ],
   exports: [RankingCardsComponent],
 })

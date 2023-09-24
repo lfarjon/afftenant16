@@ -18,7 +18,7 @@ import {
 import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
 import { ConfirmationService } from 'src/app/core/services/confirmation.service';
 import { CtaService } from 'src/app/core/services/cta.service';
-import { v4 as uuid } from 'uuid';
+import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
   selector: 'app-ranking-cards',
@@ -40,8 +40,10 @@ export class RankingCardsComponent implements OnDestroy {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private affToolsService: AffiliateToolsService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private routeDataService: RouteDataService
   ) {
+    this.updateRouteData();
     //CTA OBSERVING
     this.ctaService.action$
       .pipe(takeUntil(this.unsubscribeAll))
@@ -87,6 +89,20 @@ export class RankingCardsComponent implements OnDestroy {
     this.unsubscribeAll.complete();
   }
 
+  updateRouteData() {
+    //Update Route Data
+    const initialData = this.route.snapshot.data; // get initial route data
+    this.routeDataService.setRouteData(initialData);
+    // Update with the required route data
+    const updatedData = {
+      second_cta: 'Add card',
+      second_action: 'ADD_TOOL',
+      second_icon: 'add_circle',
+      // Other properties...
+    };
+    const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
+    this.routeDataService.setRouteData(mergedData);
+  }
   patchValue(data: RankingCards[]) {
     // Patching products
     data.forEach((product: RankingCards) => {
@@ -94,15 +110,23 @@ export class RankingCardsComponent implements OnDestroy {
     });
   }
 
-  openDialog() {
+  openDialog(data?: RankingCards, index?: number) {
+    if (data) this.form.patchValue(data);
     const dialogRef = this.dialog.open(this.formDialog, {
-      data: {},
       panelClass: ['lg:w-3/5', 'w-full', 'h-auto', 'min-h-fit'],
       maxWidth: '100vw',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.addLinkToTool();
+      if (result === true) {
+        if (!!data) {
+          this.editLink(this.form.value, index!);
+        } else {
+          this.addLinkToTool();
+        }
+      } else {
+        this.form.reset();
+      }
     });
   }
 
@@ -139,5 +163,15 @@ export class RankingCardsComponent implements OnDestroy {
     };
     this.confirmationService.confirm(confirmation);
   };
+
+  editLink(link: RankingCards, index: number) {
+    this.links.splice(index, 1, link);
+    this.form.reset();
+  }
+
+  delete(index: number) {
+    this.links.splice(index, 1);
+  }
+
   onImageSelected() {}
 }

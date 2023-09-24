@@ -9,9 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { QuillModule } from 'ngx-quill';
-import { MatDialogModule } from '@angular/material/dialog';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [ComparisonTableComponent],
@@ -23,12 +23,12 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatInputModule,
     MatButtonModule,
     QuillModule,
-    MatDialogModule,
     MatToolbarModule,
     MatIconModule,
     ComponentsModule,
     MatRadioModule,
     MatStepperModule,
+    MatBottomSheetModule,
   ],
   exports: [ComparisonTableComponent],
 })

@@ -4,6 +4,7 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { Article } from 'src/app/core/models/article';
 import { BlogService } from 'src/app/core/services/blog.service';
 import { CtaService } from 'src/app/core/services/cta.service';
+import { RouteDataService } from 'src/app/core/services/route-data.service';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -19,8 +20,13 @@ export class ArticlesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private ctaService: CtaService,
-    private blogService: BlogService
+    private blogService: BlogService,
+    private routeDataService: RouteDataService
   ) {
+    //Set Route Data
+    const initialData = this.route.snapshot.data; // get initial route data
+    this.routeDataService.setRouteData(initialData);
+
     this.ctaService.action$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((action) => {

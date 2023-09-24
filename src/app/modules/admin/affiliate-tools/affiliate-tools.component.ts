@@ -1,12 +1,13 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { CtaService } from 'src/app/core/services/cta.service';
 import { Subject, takeUntil, Observable, map } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AffiliateTool } from 'src/app/core/models/affiliate-tool';
 import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
 import { v4 as uuid } from 'uuid';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
   selector: 'app-affiliate-tools',
@@ -35,8 +36,14 @@ export class AffiliateToolsComponent {
     private router: Router,
     private ctaService: CtaService,
     private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private routeDataService: RouteDataService
   ) {
+    //Set Route Data
+    const initialData = this.route.snapshot.data; // get initial route data
+    this.routeDataService.setRouteData(initialData);
+
     this.ctaService.action$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((action) => {

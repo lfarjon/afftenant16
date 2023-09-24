@@ -107,9 +107,6 @@ export const adminRoutes: Route[] = [
       title: 'Tool builder',
       cta: 'Save',
       action: 'SAVE_TOOL',
-      second_cta: 'Add',
-      second_action: 'ADD_TOOL',
-      second_icon: 'add_circle',
     },
   },
 ];

@@ -14,8 +14,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { Subject, take, takeUntil, tap } from 'rxjs';
 import { ImageUploaderComponent } from 'src/app/components/image-uploader/image-uploader.component';
 import { AffiliateTool } from 'src/app/core/models/affiliate-tool';
@@ -27,6 +28,7 @@ import { Confirmation } from 'src/app/core/models/confirmation';
 import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
 import { ConfirmationService } from 'src/app/core/services/confirmation.service';
 import { CtaService } from 'src/app/core/services/cta.service';
+import { RouteDataService } from 'src/app/core/services/route-data.service';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -35,7 +37,7 @@ import { v4 as uuid } from 'uuid';
   styleUrls: ['./comparison-table.component.scss'],
 })
 export class ComparisonTableComponent implements OnDestroy {
-  @ViewChild('formDialog') formDialog!: TemplateRef<any>;
+  @ViewChild('bottomSheetPreview') bottomSheetPreview!: TemplateRef<any>;
   @ViewChildren(ImageUploaderComponent)
   imageUploaders!: QueryList<ImageUploaderComponent>;
   @Input() tool!: AffiliateTool;
@@ -43,7 +45,6 @@ export class ComparisonTableComponent implements OnDestroy {
   uploadedImagesCount = 0;
   comparisonTableForm: FormGroup;
   data!: ComparisonTable;
-
   // Dummy data
   dummyData = dummyComparisonTableData;
 
@@ -56,11 +57,13 @@ export class ComparisonTableComponent implements OnDestroy {
     private route: ActivatedRoute,
     private affToolsService: AffiliateToolsService,
     private fb: FormBuilder,
-    private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet,
     private confirmationService: ConfirmationService,
-    private ctaService: CtaService
+    private ctaService: CtaService,
+    private routeDataService: RouteDataService
   ) {
-    //CTA OBSERVING
+    //UPDATE ROUTE DATA
+    this.updateRouteData();
     this.ctaService.action$
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((action) => {
@@ -68,8 +71,8 @@ export class ComparisonTableComponent implements OnDestroy {
           this.saveTable();
           this.ctaService.clearAction();
         }
-        if (action === 'ADD_TOOL') {
-          this.openDialog();
+        if (action === 'PREVIEW_TOOL') {
+          this.openPreview();
           this.ctaService.clearAction();
         }
       });
@@ -90,6 +93,22 @@ export class ComparisonTableComponent implements OnDestroy {
       comparisonPoints: this.fb.array([]), // Rows
       products: this.fb.array([]), // Columns
     });
+  }
+
+  updateRouteData() {
+    const initialData = this.route.snapshot.data; // get initial route data
+    this.routeDataService.setRouteData(initialData);
+    // Update with the required route data
+    const updatedData = {
+      second_cta: 'Preview',
+      second_action: 'PREVIEW_TOOL',
+      second_icon: 'preview',
+      // Other properties...
+    };
+
+    const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
+
+    this.routeDataService.setRouteData(mergedData);
   }
 
   ngOnDestroy() {
@@ -166,8 +185,6 @@ export class ComparisonTableComponent implements OnDestroy {
       const productsDetails = cp.get('productsDetails') as FormArray;
       productsDetails.push(this.fb.group({ detail: '' }));
     });
-
-    console.log(this.comparisonTableForm.value);
   }
 
   removeProduct(index: number): void {
@@ -193,14 +210,13 @@ export class ComparisonTableComponent implements OnDestroy {
     return cp.get('productsDetails') as FormArray;
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(this.formDialog, {
+  openPreview() {
+    const dialogRef = this.bottomSheet.open(this.bottomSheetPreview, {
       data: {},
       panelClass: ['lg:w-5/6', 'w-full', 'h-5/6', 'overflow-y-scroll'],
-      maxWidth: '100vw',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterDismissed().subscribe((result) => {
       //if (result) this.addToComparisonTable();
     });
   }
@@ -208,6 +224,7 @@ export class ComparisonTableComponent implements OnDestroy {
   async saveTable() {
     const uploaders: ImageUploaderComponent[] = this.imageUploaders.toArray();
     for (const uploader of uploaders) {
+      console.log(uploader);
       if (uploader.newFileSelected && !uploader.hasFile()) {
         alert('Please select a file for all uploaders before saving.');
         return;
@@ -221,6 +238,7 @@ export class ComparisonTableComponent implements OnDestroy {
       this.currentUploadIndex = i;
       const uploader: ImageUploaderComponent = uploaders[i];
       if (uploader.newFileSelected) {
+        console.log(uploader.newFileSelected);
         // Only start the upload if a new file has been selected
         await uploader.startUpload();
       } else {

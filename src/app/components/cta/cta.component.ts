@@ -56,6 +56,9 @@ export class CtaComponent {
       case 'SAVE_TOOL':
         this.ctaService.changeAction('SAVE_TOOL');
         break;
+      case 'PREVIEW_TOOL':
+        this.ctaService.changeAction('PREVIEW_TOOL');
+        break;
       case 'ADD_TOOL':
         this.ctaService.changeAction('ADD_TOOL');
         break;

@@ -10,6 +10,22 @@
       {{ i + 1 }}
     </div>
 
+    <!-- Absolute Actions -->
+    <div class="flex absolute -top-5 right-5 items-center">
+      <button
+        (click)="delete(i)"
+        class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      <button
+        (click)="openDialog(link, i)"
+        class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
     <!-- Image Section -->
     <div class="w-full md:w-1/4 flex flex-col justify-center mb-4 md:mb-0">
       <img
