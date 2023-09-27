@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { toolBuilderRoutes } from './tool-builder.routing';
 import { RankingCardsModule } from '../ranking-cards/ranking-cards.module';
 import { ComparisonTableModule } from '../comparison-table/comparison-table.module';
+import { ProductBoxModule } from '../product-box/product-box.module';
 
 @NgModule({
   declarations: [ToolBuilderComponent],
@@ -21,6 +22,7 @@ import { ComparisonTableModule } from '../comparison-table/comparison-table.modu
     MatSelectModule,
     RankingCardsModule,
     ComparisonTableModule,
+    ProductBoxModule,
   ],
 })
 export class ToolBuilderModule {}

@@ -1,9 +1,11 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { getApp } from 'firebase/app';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
@@ -14,9 +16,13 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
   styleUrls: ['./image-uploader.component.scss'],
 })
 export class ImageUploaderComponent {
+  @ViewChild('uploader') uploader!: ElementRef;
+
   @Input() docRef: any;
   @Input() text: string = 'Click to upload';
   @Input() fileType: string = '';
+  @Input() style: string = '';
+  @Input() filename: string | null = null;
   @Output() downloadUrl = new EventEmitter<{ file: any; url: string }>();
   @Output() filePreview = new EventEmitter<string>();
 
@@ -24,14 +30,16 @@ export class ImageUploaderComponent {
   selectedFile: File | null = null;
   newFileSelected: boolean = false; // New flag to check whether a new file has been selected or not
 
-  @Input() filename: string | null = null;
-
   private storage = getStorage(getApp());
 
   constructor(private cd: ChangeDetectorRef) {}
 
   hasFile(): boolean {
     return !!this.filename; // This will return true if this.selectedFile is not null or undefined, else false
+  }
+
+  triggerFileInputClick() {
+    this.uploader.nativeElement.click();
   }
 
   upload(event: any) {

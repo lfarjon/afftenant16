@@ -1,0 +1,14 @@
+::ng-deep .quill-content ul li {
+  list-style-type: none;
+  position: relative;
+  padding-left: 1em;
+}
+
+::ng-deep .quill-content ul li:before {
+  color: #10b981; /* This is the Tailwind green-500 color value */
+  content: "✓"; /* or you can use a checkmark from FontAwesome or similar */
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}

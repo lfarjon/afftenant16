@@ -9,6 +9,10 @@
       *ngSwitchCase="'COMPARISON_TABLE'"
       [tool]="selectedTool"
     ></app-comparison-table>
+    <app-product-box
+      *ngSwitchCase="'PRODUCT_BOX'"
+      [tool]="selectedTool"
+    ></app-product-box>
     <!-- ... other components -->
     <div *ngSwitchDefault>Select a tool to begin.</div>
   </div>

@@ -15,8 +15,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Data } from '@angular/router';
+
+import { ActivatedRoute } from '@angular/router';
 import { Subject, take, takeUntil, tap } from 'rxjs';
 import { ImageUploaderComponent } from 'src/app/components/image-uploader/image-uploader.component';
 import { AffiliateTool } from 'src/app/core/models/affiliate-tool';

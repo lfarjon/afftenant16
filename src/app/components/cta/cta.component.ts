@@ -62,6 +62,9 @@ export class CtaComponent {
       case 'ADD_TOOL':
         this.ctaService.changeAction('ADD_TOOL');
         break;
+      case 'EDIT_TOOL':
+        this.ctaService.changeAction('EDIT_TOOL');
+        break;
       default:
         break;
     }
