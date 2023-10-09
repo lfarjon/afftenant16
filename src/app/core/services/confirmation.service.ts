@@ -12,6 +12,24 @@ export class ConfirmationService {
 
   constructor(private _snackBar: MatSnackBar) {}
 
+  handleSuccess(message: string) {
+    const confirmation: Confirmation = {
+      message: message,
+      action: 'DISMISS',
+      type: 'SNACKBAR',
+    };
+    this.confirm(confirmation);
+  }
+
+  handleError = (err: any) => {
+    const confirmation: Confirmation = {
+      message: err,
+      action: 'DISMISS',
+      type: 'SNACKBAR',
+    };
+    this.confirm(confirmation);
+  };
+
   confirm({ message, action, type }: Confirmation) {
     switch (type) {
       case 'SNACKBAR':

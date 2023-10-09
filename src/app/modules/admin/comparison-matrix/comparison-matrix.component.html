@@ -1,0 +1,75 @@
+<!-- UI (FINAL RESULT) -->
+<table
+  class="mx-auto w-auto divide-y divide-gray-200 shadow-md rounded-md relative pl-48 m-4"
+>
+  <!-- Matrix Header -->
+  <thead>
+    <tr class="flex">
+      <th class="text-center py-2 w-48 bg-white z-10">
+        <!-- Changed to absolute here -->
+      </th>
+      <th
+        *ngFor="let product of products; let i = index"
+        class="text-center py-2 w-48"
+      >
+        <div class="flex items-center gap-x-1 justify-center">
+          <button (click)="edit(product, i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button (click)="delete(product, i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </th>
+    </tr>
+    <tr class="flex">
+      <th class="text-center py-2 w-48 bg-white z-10">
+        <!-- Changed to absolute here -->
+      </th>
+      <th *ngFor="let product of products" class="text-center py-2 w-48">
+        {{ product.title }}
+      </th>
+    </tr>
+  </thead>
+  <!-- Matrix Body -->
+  <tbody>
+    <!-- Row for Badge -->
+    <tr class="flex">
+      <td class="text-center py-2 w-48 bg-white z-10"></td>
+      <td *ngFor="let product of products" class="text-center py-2 w-48">
+        {{ product.badge }}
+      </td>
+    </tr>
+    <!-- Row for Image -->
+    <tr class="flex">
+      <td class="text-center py-2 w-48 bg-white z-10"></td>
+      <td
+        *ngFor="let product of products; let j = index"
+        class="text-center py-2 w-48 flex items-center"
+      >
+        <img [src]="product.image" class="w-48 object-contain" />
+      </td>
+    </tr>
+    <!-- Rows for Comparison Points and their Details -->
+    <tr *ngFor="let feature of features; let i = index" class="flex">
+      <td class="text-center py-2 w-48 font-semibold bg-white z-10">
+        {{ feature.name }}
+      </td>
+      <td *ngFor="let product of products" class="text-center py-2 w-48">
+        {{ feature.values[product.id] }}
+      </td>
+    </tr>
+    <!-- Row for Link -->
+    <tr class="flex">
+      <td class="text-center py-2 w-48 bg-white z-10"></td>
+      <td *ngFor="let product of products" class="text-center p-2 w-48">
+        <button
+          class="p-2 w-full bg-primary text-white rounded"
+          [attr.href]="product.buttonLink"
+        >
+          {{ product.buttonText }}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

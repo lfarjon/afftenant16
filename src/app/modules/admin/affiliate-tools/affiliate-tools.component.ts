@@ -6,8 +6,23 @@ import { AffiliateTool } from 'src/app/core/models/affiliate-tool';
 import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
 import { v4 as uuid } from 'uuid';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
+import { Link } from 'src/app/core/models/links';
+import { AddLinkComponent } from '../add-link/add-link.component';
+
+import {
+  buildFeatures,
+  buildProductFeatures,
+  dummyFeatures,
+} from 'src/app/core/models/feature';
+import { createProduct, createProducts } from 'src/app/core/models/product';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-affiliate-tools',
@@ -18,17 +33,33 @@ export class AffiliateToolsComponent {
   @ViewChild('addToolDialog') addToolDialog!: TemplateRef<any>;
   tools$!: Observable<AffiliateTool[]>;
   toolForm: FormGroup;
-  tools: { type: string; displayName: string }[] = [
-    { type: 'RANKING_CARDS', displayName: 'Ranking cards' },
-    { type: 'COMPARISON_TABLE', displayName: 'Comparison table' },
-    { type: 'PRODUCT_BOX', displayName: 'Product box' },
-    { type: 'TOP_3_BOX', displayName: 'Top 3 box' },
-    { type: 'PROS_CONS_BOX', displayName: 'Pros & cons box' },
-    { type: 'RATING_BOX', displayName: 'Rating box' },
-    { type: 'VERSUS_BOX', displayName: 'Versus box' },
-    { type: 'PRODUCT_SLIDER', displayName: 'Product slider' },
-    { type: 'PRODUCT_COLLAGE', displayName: 'Product collage' },
+  tools: {
+    type: string;
+    displayName: string;
+    multiple: boolean;
+    max?: number;
+  }[] = [
+    { type: 'RANKING_CARDS', displayName: 'Ranking cards', multiple: true },
+    {
+      type: 'COMPARISON_TABLE',
+      displayName: 'Comparison table',
+      multiple: true,
+    },
+    {
+      type: 'COMPARISON_MATRIX',
+      displayName: 'Comparison matrix',
+      multiple: true,
+    },
+    { type: 'TOP_3_BOX', displayName: 'Top 3 box', multiple: true, max: 3 },
+    { type: 'VERSUS_BOX', displayName: 'Versus box', multiple: true, max: 2 },
+
+    { type: 'PRODUCT_BOX', displayName: 'Product box', multiple: false },
+    { type: 'PROS_CONS_BOX', displayName: 'Pros & cons box', multiple: false },
+    { type: 'RATING_BOX', displayName: 'Rating box', multiple: true },
+    { type: 'PRODUCT_SLIDER', displayName: 'Product slider', multiple: true },
+    { type: 'PRODUCT_COLLAGE', displayName: 'Product collage', multiple: true },
   ];
+
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -68,13 +99,56 @@ export class AffiliateToolsComponent {
 
     this.toolForm = this.fb.group({
       title: ['', Validators.required],
-      type: ['', Validators.required],
+      tool: [{}, Validators.required],
+      links: [[], []], // Initialize without any validators
+      generateAIContent: [false],
     });
+
+    // Subscribe to changes in the "tool" control
+    this.toolForm
+      .get('tool')
+      ?.valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((selectedTool) => {
+        const linksControl = this.toolForm.get('links');
+
+        // Check if the selected tool has a "max" property
+        if (selectedTool && selectedTool.max) {
+          // Add the max validator to the "links" control
+          linksControl?.setValidators([
+            Validators.required,
+            this.maxArrayLength(selectedTool.max),
+          ]);
+        } else {
+          // Remove any validators from the "links" control
+          linksControl?.clearValidators();
+        }
+
+        // Update the validation status of the "links" control
+        linksControl?.updateValueAndValidity();
+      });
+  }
+
+  // Custom validator function to enforce maximum array length
+  maxArrayLength(max: number) {
+    return (control: AbstractControl) => {
+      if (control.value && control.value.length > max) {
+        return { maxArrayLength: true };
+      }
+      return null;
+    };
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  openAddLinkDialog(link?: Link) {
+    const dialogRef = this.dialog.open(AddLinkComponent, {
+      data: link,
+      panelClass: ['lg:w-3/5', 'w-full', 'h-auto', 'min-h-fit'],
+      maxWidth: '100vw',
+    });
   }
 
   openNewToolDialog() {
@@ -90,7 +164,7 @@ export class AffiliateToolsComponent {
   }
 
   newTool() {
-    const tool: AffiliateTool = {
+    let tool: AffiliateTool = {
       id: uuid(),
       websiteId: JSON.parse(localStorage.getItem('website')!),
       title: this.toolForm.value.title,
@@ -99,12 +173,64 @@ export class AffiliateToolsComponent {
         title: '',
         description: '',
       },
-      type: this.toolForm.value.type,
+      type: this.toolForm.value.tool.type,
     } as AffiliateTool;
+
+    const links = this.toolForm.value.links;
+    if (links) {
+      const products = this.generateData(
+        this.toolForm.value.tool,
+        this.toolForm.value.links
+      );
+
+      tool = {
+        ...tool,
+        data: products,
+        features: Array.isArray(links)
+          ? buildFeatures(products, dummyFeatures)
+          : buildProductFeatures(),
+      };
+    }
 
     this.toolsService.saveTool(tool).then(() => {
       this.router.navigate(['/admin/tool-builder/' + tool.id]);
     });
+  }
+
+  generateData({ type }: AffiliateTool, links: Link[] | Link) {
+    let data: any;
+
+    switch (type) {
+      case 'RANKING_CARDS':
+        data = createProducts(links as Link[]);
+        break;
+      case 'COMPARISON_MATRIX':
+        data = createProducts(links as Link[]);
+        break;
+      case 'COMPARISON_TABLE':
+        data = createProducts(links as Link[]);
+        break;
+      case 'TOP_3_BOX':
+        data = createProducts(links as Link[]);
+        break;
+      case 'PRODUCT_BOX':
+        data = createProduct(links as Link);
+        break;
+      default:
+        break;
+    }
+    return data;
+  }
+
+  limitSelection(links: Link[]) {
+    const selectedTool = this.toolForm.value.tool;
+
+    if (selectedTool?.max) {
+      if (links.length > selectedTool.max) {
+        // If the selected links exceed the max limit, truncate the selection
+        this.toolForm.get('links')?.setValue(links.slice(0, selectedTool.max));
+      }
+    }
   }
 
   handleSelectionChange(selectedRows: any) {

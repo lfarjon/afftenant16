@@ -1,19 +1,113 @@
-<ng-container *ngIf="selectedTool$ | async as selectedTool">
+<ng-container *ngIf="selectedTool$ | async as selectedTool; else loader">
   <!-- Dynamic tool content will be displayed here -->
   <div [ngSwitch]="selectedTool.type">
     <app-ranking-cards
-      [tool]="selectedTool"
+      [products]="products"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'RANKING_CARDS'"
     ></app-ranking-cards>
+    <app-comparison-matrix
+      *ngSwitchCase="'COMPARISON_MATRIX'"
+      [products]="products"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
+    ></app-comparison-matrix>
     <app-comparison-table
+      [products]="products"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'COMPARISON_TABLE'"
-      [tool]="selectedTool"
     ></app-comparison-table>
+    <app-top-three
+      [products]="products"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
+      *ngSwitchCase="'TOP_3_BOX'"
+    ></app-top-three>
     <app-product-box
       *ngSwitchCase="'PRODUCT_BOX'"
-      [tool]="selectedTool"
+      [product]="product"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
     ></app-product-box>
     <!-- ... other components -->
     <div *ngSwitchDefault>Select a tool to begin.</div>
   </div>
+
+  <!-- FORM TO BUILD THE TOOL -->
+  <ng-template #formDialog>
+    <h2 mat-dialog-title>{{ newProduct ? "Add product" : "Edit product" }}</h2>
+    <mat-dialog-content>
+      <form [formGroup]="productForm" class="flex flex-col w-full">
+        <!-- ADD NEW LINK -->
+        <ng-container *ngIf="this.newProduct">
+          <app-link-selector
+            (linkSelected)="patchLink($event)"
+            [form]="productForm"
+            [multiple]="false"
+          ></app-link-selector>
+        </ng-container>
+        <!-- Title and Badge -->
+        <div class="flex lg:flex-row flex-col gap-x-2">
+          <mat-form-field class="w-full lg:w-1/2">
+            <mat-label>Title</mat-label>
+            <input matInput type="text" formControlName="title" />
+          </mat-form-field>
+          <mat-form-field class="w-full lg:w-1/2">
+            <mat-label>Badge</mat-label>
+            <input matInput type="text" formControlName="badge" />
+          </mat-form-field>
+        </div>
+        <!-- Ratings and CTA-->
+        <div class="flex lg:flex-row flex-col gap-x-2">
+          <mat-form-field class="w-full lg:w-1/2">
+            <mat-label>Score (1 to 10)</mat-label>
+            <input matInput type="number" formControlName="ratings" />
+          </mat-form-field>
+          <mat-form-field class="w-full lg:w-1/2">
+            <mat-label>Button text</mat-label>
+            <input matInput type="text" formControlName="buttonText" />
+          </mat-form-field>
+        </div>
+      </form>
+      <form [formGroup]="featuresForm">
+        <!-- FEATURES -->
+        <ng-container formArrayName="features">
+          <div
+            *ngFor="let control of globalFeatures.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <mat-form-field class="w-full">
+              <mat-label>{{ control.value.name }}</mat-label>
+              <input matInput type="text" formControlName="value" required />
+            </mat-form-field>
+          </div>
+        </ng-container>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="w-full flex items-center justify-between">
+        <!-- <button
+          [disabled]="productForm.value.linkId === ''"
+          mat-stroked-button
+          color="accent"
+          (click)="editLink(productForm.value)"
+        >
+          Edit link
+        </button> -->
+        <button mat-raised-button color="primary" [mat-dialog-close]="true">
+          Submit
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </ng-template>
 </ng-container>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

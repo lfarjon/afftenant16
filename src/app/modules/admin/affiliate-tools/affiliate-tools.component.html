@@ -1,19 +1,32 @@
 <div class="flex min-h-screen w-full p-5">
   <ng-container *ngIf="tools$ | async as tools; else loader">
-    <app-table
-      class="w-full"
-      [data]="tools"
-      [displayedColumns]="['title', 'last_saved']"
-      (selectionChange)="handleSelectionChange($event)"
-      (rowAction)="handleAction($event)"
-    ></app-table>
+    <ng-container *ngIf="tools.length > 0; else addTool">
+      <app-table
+        class="w-full"
+        [data]="tools"
+        [displayedColumns]="['title', 'last_saved']"
+        (selectionChange)="handleSelectionChange($event)"
+        (rowAction)="handleAction($event)"
+      ></app-table>
+    </ng-container>
   </ng-container>
+
+  <ng-template #addTool>
+    <div class="mx-auto mt-10 flex flex-col">
+      <span class="font-semibold text-center mb-5"> No tools yet. </span>
+      <app-cta
+        buttonText="Add a tool"
+        action="NEW_TOOL"
+        color="primary"
+        type="raised"
+      ></app-cta>
+    </div>
+  </ng-template>
 
   <ng-template #loader>
     <app-loader class="m-auto"></app-loader>
   </ng-template>
 </div>
-
 <ng-template #addToolDialog let-data>
   <h2 mat-dialog-title>New affiliate tool</h2>
   <mat-dialog-content>
@@ -24,22 +37,50 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Choose a tool</mat-label>
-        <mat-select formControlName="type">
-          <mat-option *ngFor="let tool of tools" [value]="tool.type">{{
+        <mat-select formControlName="tool">
+          <mat-option *ngFor="let tool of tools" [value]="tool">{{
             tool.displayName
           }}</mat-option>
         </mat-select>
       </mat-form-field>
+      <ng-container *ngIf="toolForm.value.tool.multiple === false">
+        <app-link-selector
+          [form]="toolForm"
+          [multiple]="false"
+        ></app-link-selector>
+      </ng-container>
+      <ng-container *ngIf="toolForm.value.tool.multiple === true">
+        <app-link-selector
+          [form]="toolForm"
+          [multiple]="true"
+          (limitSelected)="limitSelection($event)"
+        ></app-link-selector>
+      </ng-container>
+      <ng-container *ngIf="toolForm.valid">
+        <mat-slide-toggle formControlName="generateAIContent" class="z-20"
+          >Generate AI content</mat-slide-toggle
+        >
+      </ng-container>
     </form>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [mat-dialog-close]="true"
-    >
-      Submit
-    </button>
+  <mat-dialog-actions>
+    <div class="flex justify-between items-center w-full">
+      <button
+        mat-stroked-button
+        color="accent"
+        type="submit"
+        (click)="openAddLinkDialog()"
+      >
+        Add link
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [mat-dialog-close]="true"
+      >
+        Submit
+      </button>
+    </div>
   </mat-dialog-actions>
 </ng-template>

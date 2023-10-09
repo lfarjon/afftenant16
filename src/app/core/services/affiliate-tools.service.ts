@@ -5,6 +5,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { AffiliateTool } from '../models/affiliate-tool';
+import { Feature } from '../models/feature';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +21,18 @@ export class AffiliateToolsService {
     return this.afs.doc<AffiliateTool>('affiliate-tools/' + id);
   }
 
-  saveTool(tool: AffiliateTool, data?: any, merge?: boolean): Promise<any> {
+  saveTool(
+    tool: AffiliateTool,
+    data?: any,
+    features?: Feature[],
+    merge?: boolean
+  ): Promise<any> {
     const toolRef = this.afs.doc('affiliate-tools/' + tool?.id);
-    if (data) {
+    if (data && features) {
       tool = {
         ...tool,
         data: data,
+        features: features,
       };
     }
     return toolRef.set(tool, { merge: merge ? merge : true });

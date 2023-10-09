@@ -1,0 +1,102 @@
+<mat-dialog-content>
+  <form [formGroup]="linkForm">
+    <div class="flex flex-col w-full">
+      <div class="flex flex-col">
+        <div class="h-auto w-full mb-2 flex flex-col">
+          <ng-container *ngIf="!!linkForm.value.imageUrl; else dropZone">
+            <img
+              (click)="linkForm.patchValue({ imageUrl: '' })"
+              class="object-contain h-32 w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              [src]="linkForm.value.imageUrl"
+            />
+
+            <button
+              class="text-blue-500 text-sm font-light text-center"
+              (click)="linkForm.patchValue({ imageUrl: '' })"
+            >
+              Change picture
+            </button>
+          </ng-container>
+          <ng-template #dropZone>
+            <app-dropzone
+              [height]="'h-32'"
+              [width]="'w-full'"
+              [docRef]="getDocRef(linkForm.value)"
+              (downloadUrl)="saveDownloadUrl($event)"
+            ></app-dropzone>
+            <button
+              *ngIf="linkForm.value.imageUrl === '' && !!link?.imageUrl"
+              class="text-red-500 text-sm font-light text-center"
+              (click)="linkForm.patchValue({ imageUrl: link.imageUrl })"
+            >
+              Cancel
+            </button>
+          </ng-template>
+        </div>
+        <div class="flex flex-col w-full gap-1">
+          <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>URL</mat-label>
+            <input matInput formControlName="url" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-chip-grid #chipList>
+              <mat-chip-row
+                *ngFor="let category of categories"
+                [removable]="true"
+                (removed)="removeCategory(category)"
+              >
+                {{ category.name }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip-row>
+              <input
+                (input)="updateCategoryFilter($event)"
+                placeholder="New category..."
+                [matChipInputFor]="chipList"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addCategory($event)"
+              />
+            </mat-chip-grid>
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="selectedCategory($event)"
+            >
+              <mat-option
+                *ngFor="let category of filteredCategories$ | async"
+                [value]="category.name"
+              >
+                {{ category.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full flex items-center justify-between mt-1"></div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="flex items-center gap-2">
+    <!-- <button
+      mat-button
+      color="warn"
+      class="flex items-center"
+      (click)="deleteLink(linkForm.value)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button> -->
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="linkForm.invalid"
+      (click)="saveLink(linkForm.value)"
+    >
+      Save
+    </button>
+  </div>
+</mat-dialog-actions>

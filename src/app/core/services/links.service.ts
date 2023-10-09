@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
+  AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Link } from '../models/links';
 import { Observable, map } from 'rxjs';
@@ -18,6 +19,11 @@ export class LinksService {
     return this.afs.collection('tenants/' + tenant.uid + '/links', (ref) =>
       ref.orderBy('published_at', 'desc')
     );
+  }
+
+  getLink(id: string): AngularFirestoreDocument<Link> {
+    const tenant = JSON.parse(localStorage.getItem('user')!);
+    return this.afs.doc('tenants/' + tenant.uid + '/links/' + id);
   }
 
   addLink(link: Link): Promise<any> {

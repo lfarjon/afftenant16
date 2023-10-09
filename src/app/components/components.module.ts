@@ -33,6 +33,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextEditorComponent } from './text-editor/text-editor.component';
 import { QuillModule } from 'ngx-quill';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ImageUploaderComponent } from './image-uploader/image-uploader.componen
     MobileEditComponent,
     TextEditorComponent,
     ImageUploaderComponent,
+    ConfirmComponent,
   ],
   imports: [
     CommonModule,
@@ -87,6 +89,7 @@ import { ImageUploaderComponent } from './image-uploader/image-uploader.componen
     MobileEditComponent,
     TextEditorComponent,
     ImageUploaderComponent,
+    ConfirmComponent,
   ],
   providers: [
     { provide: FIREBASE_APP_NAME, useValue: environment.firebase },

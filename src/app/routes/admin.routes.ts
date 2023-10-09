@@ -32,8 +32,8 @@ export const adminRoutes: Route[] = [
     component: AdminComponent,
     path: 'admin/links',
     loadChildren: () =>
-      import('src/app/modules/admin/links/links.module').then(
-        (m) => m.LinksModule
+      import('src/app/modules/admin/links-page/links-page.module').then(
+        (m) => m.LinksPageModule
       ),
     data: {
       title: 'Links',

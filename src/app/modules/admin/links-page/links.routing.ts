@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
-import { LinksComponent } from './links.component';
+import { LinksPageComponent } from './links-page.component';
 
 export const linksRoutes: Route[] = [
   {
     path: '',
-    component: LinksComponent,
+    component: LinksPageComponent,
   },
 ];

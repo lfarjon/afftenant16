@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { Link } from './links';
 
 export interface ProductBox {
   id: string;
@@ -12,6 +13,19 @@ export interface ProductBox {
   price: number;
   discountedPrice: number;
 }
+
+export const createProductBoxData = (link: Link): ProductBox => ({
+  id: uuid(),
+  title: link.title,
+  feature: 'First choice',
+  buttonLink: link.url,
+  buttonText: 'Shop now',
+  image: link.imageUrl,
+  score: 4.5,
+  price: 399,
+  discountedPrice: 200,
+  description: '',
+});
 
 export const dummyProductBoxData: ProductBox = {
   id: uuid(),

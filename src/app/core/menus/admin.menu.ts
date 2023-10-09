@@ -7,14 +7,9 @@ export const adminNavListItems: (NavListWithIcon | NavListWithLabel)[] = [
     icon: 'query_stats',
   },
   {
-    routerLink: '/admin/theme',
-    label: 'Theme',
-    icon: 'palette',
-  },
-  {
-    routerLink: '/admin/articles',
-    label: 'Articles',
-    icon: 'article',
+    routerLink: '/admin/links',
+    label: 'Links',
+    icon: 'link',
   },
   {
     routerLink: '/admin/affiliate-tools',
@@ -22,8 +17,13 @@ export const adminNavListItems: (NavListWithIcon | NavListWithLabel)[] = [
     icon: 'hotel_class',
   },
   {
-    routerLink: '/admin/links',
-    label: 'Links',
-    icon: 'link',
+    routerLink: '/admin/articles',
+    label: 'Articles',
+    icon: 'article',
+  },
+  {
+    routerLink: '/admin/theme',
+    label: 'Theme',
+    icon: 'palette',
   },
 ];

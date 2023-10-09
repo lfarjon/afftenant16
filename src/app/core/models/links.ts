@@ -1,9 +1,9 @@
+import { FormControl } from '@angular/forms';
 import { Category } from './category';
-import { Image } from './image';
 
 export interface Link {
   id: string;
-  imageUrl: Image;
+  imageUrl: string;
   active: boolean;
   title: string;
   categories: Category[];
@@ -12,4 +12,5 @@ export interface Link {
   clicks: number;
   active_at: any;
   published_at: any;
+  selected?: boolean;
 }

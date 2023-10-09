@@ -25,6 +25,7 @@ export class ImageUploaderComponent {
   @Input() filename: string | null = null;
   @Output() downloadUrl = new EventEmitter<{ file: any; url: string }>();
   @Output() filePreview = new EventEmitter<string>();
+  @Output() fileEvent = new EventEmitter<any>();
 
   loading: boolean = false;
   selectedFile: File | null = null;
@@ -45,6 +46,10 @@ export class ImageUploaderComponent {
   upload(event: any) {
     this.selectedFile = event.target.files[0];
     if (this.selectedFile) {
+      this.fileEvent.emit({
+        file: this.selectedFile,
+        newFileSelected: true,
+      });
       this.filename = this.selectedFile.name;
       this.newFileSelected = true; // Set the flag to true when a new file is selected
 
@@ -56,20 +61,26 @@ export class ImageUploaderComponent {
     }
   }
 
-  async startUpload() {
-    if (!this.selectedFile) {
+  async startUpload(file?: File) {
+    if (!this.selectedFile && !file) {
       return;
     }
 
+    let selectedFile: File | undefined = this.selectedFile || file;
+
     this.loading = true;
-    const filepath = this.docRef + this.selectedFile.name;
+    const filepath = this.docRef + selectedFile?.name;
+    console.log('Filepath:', filepath);
+    console.log('DocRef:', this.docRef);
+    console.log('SelectedFile:', selectedFile);
     const fileRef = ref(this.storage, filepath);
 
     try {
-      await uploadBytes(fileRef, this.selectedFile);
+      await uploadBytes(fileRef, selectedFile!);
       const url = await getDownloadURL(fileRef);
-      this.downloadUrl.emit({ file: this.selectedFile, url: url });
+      this.downloadUrl.emit({ file: selectedFile, url: url });
       this.newFileSelected = false; // Reset the flag after a successful upload
+      selectedFile = undefined;
     } catch (error) {
       console.error('Error during upload process:', error);
     } finally {

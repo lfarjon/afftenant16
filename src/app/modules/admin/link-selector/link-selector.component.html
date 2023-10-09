@@ -1,0 +1,100 @@
+<form [formGroup]="form" class="w-full">
+  <ng-container *ngIf="multiple === true">
+    <mat-form-field class="w-full">
+      <mat-label>Add links</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Title, url or category"
+        #input
+        (click)="toggleSelect(select)"
+      />
+      <mat-select
+        formControlName="links"
+        multiple
+        #select
+        (selectionChange)="limitSelection($event)"
+      >
+        <mat-select-trigger>{{
+          form.value.links.length + " links selected"
+        }}</mat-select-trigger>
+        <mat-option
+          *ngFor="let link of filteredLinks; let i = index"
+          [value]="link"
+          class="flex flex-row items-center justify-between"
+        >
+          <div class="flex items-center">
+            <div
+              class="h-10 w-10 flex items-center justify-center"
+              [ngClass]="
+                link.imageUrl ? 'rounded-lg' : ' bg-pink-500 rounded-full'
+              "
+            >
+              <span *ngIf="!link.imageUrl">{{ link.title[0] }}</span>
+              <img
+                *ngIf="link.imageUrl"
+                [src]="link.imageUrl"
+                class="h-10 w-10 object-cover rounded-lg"
+              />
+            </div>
+
+            <div class="ml-3 flex flex-col">
+              <span class="font-semibold">
+                {{ link.title }}
+              </span>
+              <span class="font-light text-sm">
+                {{ link.url }}
+              </span>
+            </div>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+  <ng-container *ngIf="multiple === false">
+    <mat-form-field class="w-full">
+      <mat-label>Add link</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Title, url or category"
+        #input
+        (click)="toggleSelect(select)"
+      />
+      <mat-select formControlName="links" #select d>
+        <mat-select-trigger>{{ form.value.links.title }}</mat-select-trigger>
+        <mat-option
+          (click)="newSelection(form.value.links)"
+          *ngFor="let link of filteredLinks; let i = index"
+          [value]="link"
+          class="flex flex-row items-center justify-between"
+        >
+          <div class="flex items-center">
+            <div
+              class="h-10 w-10 flex items-center justify-center"
+              [ngClass]="
+                link.imageUrl ? 'rounded-lg' : ' bg-pink-500 rounded-full'
+              "
+            >
+              <span *ngIf="!link.imageUrl">{{ link.title[0] }}</span>
+              <img
+                *ngIf="link.imageUrl"
+                [src]="link.imageUrl"
+                class="h-10 w-10 object-cover rounded-lg"
+              />
+            </div>
+
+            <div class="ml-3 flex flex-col">
+              <span class="font-semibold">
+                {{ link.title }}
+              </span>
+              <span class="font-light text-sm">
+                {{ link.url }}
+              </span>
+            </div>
+          </div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+</form>

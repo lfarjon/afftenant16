@@ -12,6 +12,7 @@ import { QuillModule } from 'ngx-quill';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ComparisonTableComponent],
@@ -29,6 +30,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
     MatRadioModule,
     MatStepperModule,
     MatBottomSheetModule,
+    MatDialogModule,
   ],
   exports: [ComparisonTableComponent],
 })

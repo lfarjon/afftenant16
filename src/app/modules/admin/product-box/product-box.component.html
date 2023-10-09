@@ -1,146 +1,50 @@
-<ng-container *ngIf="link; else loader">
-  <div class="hidden">
-    <app-image-uploader
-      #imageUploader
-      [docRef]="getDocRef(link)"
-      text="Upload image"
-      [filename]="form.value.image && 'Replace image'"
-      (downloadUrl)="continueSaving($event)"
-      (filePreview)="updateImagePreview($event)"
-    ></app-image-uploader>
+<div class="w-full grid grid-cols-12 p-5">
+  <div class="md:col-span-6 col-span-12 flex items-center justify-center">
+    <img
+      *ngIf="product.image"
+      [src]="product.image"
+      alt="{{ product.title }}"
+      class="object-contain"
+    />
   </div>
-  <div class="w-full grid grid-cols-12 p-5">
-    <div class="md:col-span-6 col-span-12 flex items-center justify-center">
-      <img
-        *ngIf="imageBeingUploaded; else patchedImagePreview"
-        [src]="imagePreview"
-        alt="{{ link.title }}"
-        class="object-contain"
-      />
-      <ng-template #patchedImagePreview>
-        <img
-          *ngIf="link.image"
-          [src]="link.image"
-          alt="{{ link.title }}"
-          class="object-contain"
-        />
-      </ng-template>
-    </div>
-    <div
-      class="md:col-span-6 col-span-12 flex flex-col items-start justify-center bg-slate-100 p-5 md:p-10 drop-shadow-md rounded"
+  <div
+    class="md:col-span-6 col-span-12 flex flex-col items-start justify-center bg-slate-100 p-5 md:p-10 drop-shadow-md rounded"
+  >
+    <!-- Highlighted Badge -->
+    <span
+      class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
     >
-      <!-- Highlighted Badge -->
-      <span
-        class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+      {{ product.badge }}
+    </span>
+    <!-- Product Title -->
+    <h2 class="text-xl lg:text-3xl font-semibold mt-2">
+      {{ product.title }}
+    </h2>
+    <!-- Star Rating & Score -->
+    <div class="flex items-center mt-2 mb-3">
+      <div class="flex text-yellow-400">
+        <!-- Add the stars based on rating -->
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star_half</mat-icon>
+        <mat-icon>star_border</mat-icon>
+      </div>
+      <span class="ml-2 font-semibold">{{ product.ratings }}</span>
+    </div>
+    <!-- Features -->
+    <ul class="relative">
+      <li *ngFor="let feature of features">
+        {{ feature }}
+      </li>
+    </ul>
+    <!-- CTA -->
+    <div class="w-full flex flex-col justify-center pt-5">
+      <button
+        class="text-white bg-primary py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
       >
-        {{ link.feature }}
-      </span>
-      <!-- Product Title -->
-      <h2 class="text-xl lg:text-3xl font-semibold mt-2">
-        {{ link.title }}
-      </h2>
-      <!-- Star Rating & Score -->
-      <div class="flex items-center mt-2 mb-3">
-        <div class="flex text-yellow-400">
-          <!-- Add the stars based on rating -->
-          <mat-icon>star</mat-icon>
-          <mat-icon>star</mat-icon>
-          <mat-icon>star</mat-icon>
-          <mat-icon>star_half</mat-icon>
-          <mat-icon>star_border</mat-icon>
-        </div>
-        <span class="ml-2 font-semibold">{{ link.score }}</span>
-      </div>
-      <!-- Features -->
-      <div [innerHTML]="link.description" class="quill-content"></div>
-
-      <!-- CTA -->
-      <div class="w-full flex flex-col justify-center pt-5">
-        <button
-          class="text-white bg-primary py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
-        >
-          {{ link.buttonText }}
-        </button>
-      </div>
+        {{ product.buttonText }}
+      </button>
     </div>
   </div>
-
-  <!-- FORM TO BUILD THE TOOL -->
-  <ng-template #formDialog>
-    <h2 mat-dialog-title>Add link</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form" class="flex flex-col w-full">
-        <!-- Title and Feature -->
-        <mat-form-field class="w-full">
-          <mat-label>Title</mat-label>
-          <input matInput type="text" formControlName="title" />
-        </mat-form-field>
-        <div class="flex lg:flex-row flex-col gap-x-2">
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Feature</mat-label>
-            <input matInput type="text" formControlName="feature" />
-          </mat-form-field>
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Score (1 to 5)</mat-label>
-            <input matInput type="number" formControlName="score" />
-          </mat-form-field>
-        </div>
-
-        <!-- IMAGE -->
-        <div class="w-full flex">
-          <img
-            *ngIf="imageBeingUploaded; else patchedImagePreview"
-            [src]="imagePreview"
-            alt="{{ link.title }}"
-            class="object-contain h-14 w-14 mx-auto"
-          />
-          <ng-template #patchedImagePreview>
-            <img
-              *ngIf="link.image"
-              [src]="link.image"
-              alt="{{ link.title }}"
-              class="object-contain h-14 w-14 mx-auto"
-            />
-          </ng-template>
-        </div>
-        <button
-          mat-raised-button
-          color="accent"
-          class="w-full mb-4"
-          (click)="imageUploader.triggerFileInputClick()"
-        >
-          {{ form.value.image ? "Replace image" : "Upload image" }}
-        </button>
-
-        <!-- Button Link -->
-        <div class="flex flex-col lg:flex-row items-center lg:gap-x-2">
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Button text</mat-label>
-            <input matInput type="text" formControlName="buttonText" />
-          </mat-form-field>
-
-          <!-- Button Type and Button Text or Upload Button Image -->
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Link URL</mat-label>
-            <input matInput type="text" formControlName="buttonLink" />
-          </mat-form-field>
-        </div>
-
-        <!-- Quill Editor -->
-        <app-text-editor
-          height="h-48"
-          [form]="form"
-          control="description"
-        ></app-text-editor>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-raised-button color="primary" [mat-dialog-close]="true">
-        Submit
-      </button>
-    </mat-dialog-actions>
-  </ng-template>
-</ng-container>
-<ng-template #loader>
-  <app-loader></app-loader>
-</ng-template>
+</div>

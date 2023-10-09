@@ -1,179 +1,81 @@
-<ng-container *ngIf="links; else loader">
-  <!-- UI (FINAL RESULT) -->
-  <ng-container *ngFor="let link of links; let i = index">
+<!-- UI (FINAL RESULT) -->
+<ng-container *ngFor="let card of products; let i = index">
+  <div
+    class="relative flex flex-col md:flex-row p-4 bg-white shadow-md rounded-md m-4"
+  >
+    <!-- Absolute Position Number -->
     <div
-      class="relative flex flex-col md:flex-row p-4 bg-white shadow-md rounded-md m-4"
+      class="absolute -top-5 left-5 m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
     >
-      <!-- Absolute Position Number -->
-      <div
-        class="absolute -top-5 left-5 m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
-      >
-        {{ i + 1 }}
-      </div>
-
-      <!-- Absolute Actions -->
-      <div class="flex absolute -top-5 right-5 items-center">
-        <button
-          (click)="delete(i)"
-          class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-
-        <button
-          (click)="openDialog(link, i)"
-          class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-      <!-- Image Section -->
-      <div class="w-full md:w-1/4 flex flex-col justify-center mb-4 md:mb-0">
-        <img
-          class="object-cover w-full rounded-md"
-          src="assets/placeholders/450x250.png"
-          alt="Product Image"
-        />
-      </div>
-
-      <!-- Middle Section -->
-      <div class="w-full md:w-full lg:w-1/2 px-4 mb-4 md:mb-0">
-        <!-- Highlighted Badge -->
-        <span
-          class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-        >
-          {{ link.feature }}
-        </span>
-        <!-- Product Title -->
-        <h2 class="text-xl font-semibold mt-2">
-          {{ link.title }}
-        </h2>
-        <!-- Star Rating & Score -->
-        <div class="flex items-center mt-2">
-          <div class="flex text-yellow-400">
-            <!-- Add the stars based on rating -->
-            <mat-icon>star</mat-icon>
-            <mat-icon>star</mat-icon>
-            <mat-icon>star</mat-icon>
-            <mat-icon>star_half</mat-icon>
-            <mat-icon>star_border</mat-icon>
-          </div>
-          <span class="ml-2 font-semibold">{{ link.score }}</span>
-        </div>
-        <!-- Features -->
-        <div [innerHTML]="link.description" class="quill-content"></div>
-      </div>
-
-      <!-- Right Section (CTA) -->
-      <div class="w-full md:w-1/4 flex flex-col justify-center gap-y-4">
-        <button
-          class="text-white bg-amazonBlue py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
-        >
-          {{ link.buttonText }}
-        </button>
-        <button
-          class="text-white bg-amazonBlue py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
-        >
-          {{ link.buttonText2 }}
-        </button>
-      </div>
+      {{ i + 1 }}
     </div>
-  </ng-container>
 
-  <!-- FORM TO BUILD THE TOOL -->
-  <ng-template #formDialog>
-    <h2 mat-dialog-title>Add link</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form" class="flex flex-col w-full">
-        <!-- Title and Feature -->
-        <mat-form-field class="w-full">
-          <mat-label>Title</mat-label>
-          <input matInput type="text" formControlName="title" />
-        </mat-form-field>
-        <div class="flex lg:flex-row flex-col gap-x-2">
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Feature</mat-label>
-            <input matInput type="text" formControlName="feature" />
-          </mat-form-field>
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Score (1 to 10)</mat-label>
-            <input matInput type="number" formControlName="score" />
-          </mat-form-field>
-        </div>
-
-        <!-- IMAGE -->
-        <button
-          mat-raised-button
-          class="w-full mb-5"
-          color="primary"
-          (click)="imageInput.click()"
-        >
-          Image
-        </button>
-        <input
-          hidden
-          (change)="onImageSelected()"
-          #imageInput
-          type="file"
-          id="file"
-        />
-        <!-- Button Link -->
-        <div class="flex flex-col lg:flex-row items-center lg:gap-x-2">
-          <mat-radio-group
-            formControlName="buttonType"
-            class="w-full lg:w-1/2 flex flex-row lg:gap-x-5 items-center mb-5"
-          >
-            <mat-radio-button value="text">Text button</mat-radio-button>
-            <mat-radio-button value="image">Image button</mat-radio-button>
-          </mat-radio-group>
-          <mat-form-field
-            *ngIf="form.get('buttonType')?.value === 'text'"
-            class="w-full lg:w-1/2"
-          >
-            <mat-label>Button text</mat-label>
-            <input matInput type="text" formControlName="buttonText" />
-          </mat-form-field>
-          <button
-            *ngIf="form.get('buttonType')?.value === 'image'"
-            mat-raised-button
-            class="w-full lg:w-1/2 h-14 mb-5"
-            [ngStyle]="{ height: '56px' }"
-            (click)="buttonImageInput.click()"
-          >
-            Upload image
-          </button>
-
-          <input
-            hidden
-            (change)="onImageSelected()"
-            #buttonImageInput
-            type="file"
-            id="file"
-          />
-        </div>
-
-        <!-- Button Type and Button Text or Upload Button Image -->
-        <mat-form-field class="w-full">
-          <mat-label>Link URL</mat-label>
-          <input matInput type="text" formControlName="buttonLink" />
-        </mat-form-field>
-
-        <!-- Quill Editor -->
-        <app-text-editor
-          height="h-48"
-          [form]="form"
-          control="description"
-        ></app-text-editor>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-raised-button color="primary" [mat-dialog-close]="true">
-        Submit
+    <!-- Absolute Actions -->
+    <div class="flex absolute -top-5 right-5 items-center">
+      <button
+        (click)="delete(card, i)"
+        class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+      >
+        <mat-icon>delete</mat-icon>
       </button>
-    </mat-dialog-actions>
-  </ng-template>
-</ng-container>
 
-<ng-template #loader>
-  <app-loader></app-loader>
-</ng-template>
+      <button
+        (click)="edit(card, i)"
+        class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <!-- Image Section -->
+    <div class="w-full md:w-1/4 flex flex-col justify-center mb-4 md:mb-0">
+      <img
+        *ngIf="card.image"
+        [src]="card.image"
+        alt="{{ card.title }}"
+        class="object-contain"
+      />
+    </div>
+
+    <!-- Middle Section -->
+    <div class="w-full md:w-full lg:w-1/2 px-4 mb-4 md:mb-0">
+      <!-- Highlighted Badge -->
+      <span
+        class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+      >
+        {{ card.badge }}
+      </span>
+      <!-- Product Title -->
+      <h2 class="text-xl font-semibold mt-2">
+        {{ card.title }}
+      </h2>
+      <!-- Star Rating & Score -->
+      <div class="flex items-center mt-2">
+        <div class="flex text-yellow-400">
+          <!-- Add the stars based on rating -->
+          <mat-icon>star</mat-icon>
+          <mat-icon>star</mat-icon>
+          <mat-icon>star</mat-icon>
+          <mat-icon>star_half</mat-icon>
+          <mat-icon>star_border</mat-icon>
+        </div>
+        <span class="ml-2 font-semibold">{{ card.ratings }}</span>
+      </div>
+      <!-- Features -->
+      <ul>
+        <li *ngFor="let feature of features" class="flex items-center">
+          <span class="mr-0.5">{{ feature.name }}</span
+          ><span>{{ feature.values[card.id] }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right Section (CTA) -->
+    <div class="w-full md:w-1/4 flex flex-col justify-center gap-y-4">
+      <button
+        class="text-white bg-amazonBlue py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
+      >
+        {{ card.buttonText }}
+      </button>
+    </div>
+  </div>
+</ng-container>

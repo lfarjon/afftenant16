@@ -1,55 +1,67 @@
 import { v4 as uuid } from 'uuid';
+import { Link } from './links';
+import { Feature } from './feature';
 
 export interface RankingCards {
   id: string;
+  linkId: string;
   title: string;
-  feature: string;
+  badge: string;
+  image: string;
   buttonLink: string;
   buttonText: string;
-  buttonLink2: string;
-  buttonText2: string;
-  score: number;
-  description: string;
+  ratings: number;
 }
+export interface ComparisonData {
+  rankingCards: RankingCards[];
+  features: Feature[];
+}
+
+export const createRankingCardsData = (links: Link[]): RankingCards[] => {
+  return links.map((link) => {
+    const linkData = {
+      id: uuid(),
+      linkId: link.id,
+      title: link.title,
+      buttonLink: link.url,
+      buttonText: 'View product',
+      image: link.imageUrl,
+      ratings: 4.5,
+      badge: 'First choice',
+    };
+    return linkData;
+  });
+};
 
 export const dummyRankingCardsData: RankingCards[] = [
   {
     id: uuid(),
+    linkId: '',
     title: 'Dual band apple watch 5g',
-    feature: 'Editor choice',
+    badge: 'Editor choice',
     buttonLink: 'https://www.nba.com/',
     buttonText: 'View on Amazon',
-    buttonLink2: 'https://www.nba.com/',
-    buttonText2: 'View on Amazon',
-    score: 9.7,
-    description: `
-        <ul><li>Band Sizes: Fits wrists with a circumference of 135-200 mm</li><li>Display Size: 1.3″ (33.0 mm) 260 x 260 memory-in-pixel (MIP)</li><li>Colors: Black, Shadow Gray or Dust Rose, White, Powder Gray</li></ul><p><br></p><p>This is a sample description of the product, offering users an insight into its features.&nbsp;<strong>Note:</strong>&nbsp;Always make sure to check the product's specifications before purchasing.</p>
-        `,
+    image: 'assets/placeholders/450x250.png',
+    ratings: 9.7,
   },
   {
     id: uuid(),
+    linkId: '',
     title: 'Dual band apple watch 5g',
-    feature: 'Editor choice',
+    badge: 'Editor choice',
     buttonLink: 'https://www.nba.com/',
     buttonText: 'View on Amazon',
-    buttonLink2: 'https://www.nba.com/',
-    buttonText2: 'View on Amazon',
-    score: 9.7,
-    description: `
-        <ul><li>Band Sizes: Fits wrists with a circumference of 135-200 mm</li><li>Display Size: 1.3″ (33.0 mm) 260 x 260 memory-in-pixel (MIP)</li><li>Colors: Black, Shadow Gray or Dust Rose, White, Powder Gray</li></ul><p><br></p><p>This is a sample description of the product, offering users an insight into its features.&nbsp;<strong>Note:</strong>&nbsp;Always make sure to check the product's specifications before purchasing.</p>
-        `,
+    image: 'assets/placeholders/450x250.png',
+    ratings: 9.7,
   },
   {
     id: uuid(),
+    linkId: '',
     title: 'Dual band apple watch 5g',
-    feature: 'Editor choice',
+    badge: 'Editor choice',
     buttonLink: 'https://www.nba.com/',
     buttonText: 'View on Amazon',
-    buttonLink2: 'https://www.nba.com/',
-    buttonText2: 'View on Amazon',
-    score: 9.7,
-    description: `
-        <ul><li>Band Sizes: Fits wrists with a circumference of 135-200 mm</li><li>Display Size: 1.3″ (33.0 mm) 260 x 260 memory-in-pixel (MIP)</li><li>Colors: Black, Shadow Gray or Dust Rose, White, Powder Gray</li></ul><p><br></p><p>This is a sample description of the product, offering users an insight into its features.&nbsp;<strong>Note:</strong>&nbsp;Always make sure to check the product's specifications before purchasing.</p>
-        `,
+    image: 'assets/placeholders/450x250.png',
+    ratings: 9.7,
   },
 ];
