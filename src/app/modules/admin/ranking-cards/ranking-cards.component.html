@@ -50,15 +50,7 @@
       </h2>
       <!-- Star Rating & Score -->
       <div class="flex items-center mt-2">
-        <div class="flex text-yellow-400">
-          <!-- Add the stars based on rating -->
-          <mat-icon>star</mat-icon>
-          <mat-icon>star</mat-icon>
-          <mat-icon>star</mat-icon>
-          <mat-icon>star_half</mat-icon>
-          <mat-icon>star_border</mat-icon>
-        </div>
-        <span class="ml-2 font-semibold">{{ card.ratings }}</span>
+        <app-star-rating [ratings]="card.ratings"></app-star-rating>
       </div>
       <!-- Features -->
       <ul>

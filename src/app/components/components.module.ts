@@ -34,6 +34,7 @@ import { TextEditorComponent } from './text-editor/text-editor.component';
 import { QuillModule } from 'ngx-quill';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
     TextEditorComponent,
     ImageUploaderComponent,
     ConfirmComponent,
+    StarRatingComponent,
   ],
   imports: [
     CommonModule,
@@ -90,6 +92,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
     TextEditorComponent,
     ImageUploaderComponent,
     ConfirmComponent,
+    StarRatingComponent,
   ],
   providers: [
     { provide: FIREBASE_APP_NAME, useValue: environment.firebase },

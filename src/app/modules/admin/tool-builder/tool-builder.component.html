@@ -29,6 +29,13 @@
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'TOP_3_BOX'"
     ></app-top-three>
+    <app-versus-box
+      [products]="products"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
+      *ngSwitchCase="'VERSUS_BOX'"
+    ></app-versus-box>
     <app-product-box
       *ngSwitchCase="'PRODUCT_BOX'"
       [product]="product"
@@ -36,6 +43,25 @@
       (editProduct)="openDialog($event)"
       (deleteProduct)="deleteProduct($event)"
     ></app-product-box>
+    <app-summary-box
+      *ngSwitchCase="'SUMMARY_BOX'"
+      [product]="product"
+      [features]="features"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
+    ></app-summary-box>
+    <app-product-slider
+      *ngSwitchCase="'PRODUCT_SLIDER'"
+      [products]="products"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
+    ></app-product-slider>
+    <app-product-collage
+      *ngSwitchCase="'PRODUCT_COLLAGE'"
+      [products]="products"
+      (editProduct)="openDialog($event)"
+      (deleteProduct)="deleteProduct($event)"
+    ></app-product-collage>
     <!-- ... other components -->
     <div *ngSwitchDefault>Select a tool to begin.</div>
   </div>
@@ -46,50 +72,63 @@
     <mat-dialog-content>
       <form [formGroup]="productForm" class="flex flex-col w-full">
         <!-- ADD NEW LINK -->
-        <ng-container *ngIf="this.newProduct">
+        <ng-container *ngIf="this.newProduct || this.allowLinkChange">
           <app-link-selector
             (linkSelected)="patchLink($event)"
             [form]="productForm"
             [multiple]="false"
+            [newProduct]="newProduct"
           ></app-link-selector>
         </ng-container>
-        <!-- Title and Badge -->
-        <div class="flex lg:flex-row flex-col gap-x-2">
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Title</mat-label>
-            <input matInput type="text" formControlName="title" />
-          </mat-form-field>
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Badge</mat-label>
-            <input matInput type="text" formControlName="badge" />
-          </mat-form-field>
-        </div>
-        <!-- Ratings and CTA-->
-        <div class="flex lg:flex-row flex-col gap-x-2">
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Score (1 to 10)</mat-label>
-            <input matInput type="number" formControlName="ratings" />
-          </mat-form-field>
-          <mat-form-field class="w-full lg:w-1/2">
-            <mat-label>Button text</mat-label>
-            <input matInput type="text" formControlName="buttonText" />
-          </mat-form-field>
-        </div>
-      </form>
-      <form [formGroup]="featuresForm">
-        <!-- FEATURES -->
-        <ng-container formArrayName="features">
-          <div
-            *ngFor="let control of globalFeatures.controls; let i = index"
-            [formGroupName]="i"
-          >
+        <ng-container *ngIf="justTitle">
+          <div class="flex lg:flex-row flex-col gap-x-2">
             <mat-form-field class="w-full">
-              <mat-label>{{ control.value.name }}</mat-label>
-              <input matInput type="text" formControlName="value" required />
+              <mat-label>Title</mat-label>
+              <input matInput type="text" formControlName="title" />
+            </mat-form-field>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="showForm">
+          <!-- Title and Badge -->
+          <div class="flex lg:flex-row flex-col gap-x-2">
+            <mat-form-field class="w-full lg:w-1/2">
+              <mat-label>Title</mat-label>
+              <input matInput type="text" formControlName="title" />
+            </mat-form-field>
+            <mat-form-field class="w-full lg:w-1/2">
+              <mat-label>Badge</mat-label>
+              <input matInput type="text" formControlName="badge" />
+            </mat-form-field>
+          </div>
+          <!-- Ratings and CTA-->
+          <div class="flex lg:flex-row flex-col gap-x-2">
+            <mat-form-field class="w-full lg:w-1/2">
+              <mat-label>Score (1 to 10)</mat-label>
+              <input matInput type="number" formControlName="ratings" />
+            </mat-form-field>
+            <mat-form-field class="w-full lg:w-1/2">
+              <mat-label>Button text</mat-label>
+              <input matInput type="text" formControlName="buttonText" />
             </mat-form-field>
           </div>
         </ng-container>
       </form>
+      <ng-container *ngIf="showFeatures">
+        <form [formGroup]="featuresForm">
+          <!-- FEATURES -->
+          <ng-container formArrayName="features">
+            <div
+              *ngFor="let control of globalFeatures.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field class="w-full">
+                <mat-label>{{ control.value.name }}</mat-label>
+                <input matInput type="text" formControlName="value" required />
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </form>
+      </ng-container>
     </mat-dialog-content>
     <mat-dialog-actions>
       <div class="w-full flex items-center justify-between">

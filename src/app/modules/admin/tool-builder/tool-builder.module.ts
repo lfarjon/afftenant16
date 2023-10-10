@@ -17,6 +17,10 @@ import { LinkSelectorModule } from '../link-selector/link-selector.module';
 import { AddLinkModule } from '../add-link/add-link.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { TopThreeModule } from '../top-three/top-three.module';
+import { VersusBoxModule } from '../versus-box/versus-box.module';
+import { SummaryBoxModule } from '../summary-box/summary-box.module';
+import { ProductSliderModule } from '../product-slider/product-slider.module';
+import { ProductCollageModule } from '../product-collage/product-collage.module';
 
 @NgModule({
   declarations: [ToolBuilderComponent],
@@ -36,7 +40,11 @@ import { TopThreeModule } from '../top-three/top-three.module';
     ComparisonMatrixModule,
     ComparisonTableModule,
     TopThreeModule,
+    VersusBoxModule,
     ProductBoxModule,
+    SummaryBoxModule,
+    ProductSliderModule,
+    ProductCollageModule,
   ],
 })
 export class ToolBuilderModule {}

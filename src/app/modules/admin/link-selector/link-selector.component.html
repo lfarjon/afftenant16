@@ -1,7 +1,9 @@
 <form [formGroup]="form" class="w-full">
   <ng-container *ngIf="multiple === true">
     <mat-form-field class="w-full">
-      <mat-label>Add links</mat-label>
+      <mat-label>
+        {{ newProduct ? "Add Links" : "Change link" }}
+      </mat-label>
       <input
         matInput
         (keyup)="applyFilter($event)"
@@ -53,7 +55,7 @@
   </ng-container>
   <ng-container *ngIf="multiple === false">
     <mat-form-field class="w-full">
-      <mat-label>Add link</mat-label>
+      {{ newProduct ? "Add Link" : "Change link" }}
       <input
         matInput
         (keyup)="applyFilter($event)"

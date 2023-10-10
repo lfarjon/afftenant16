@@ -16,6 +16,8 @@ import { LinksService } from 'src/app/core/services/links.service';
 import { Link } from 'src/app/core/models/links';
 import { Feature } from 'src/app/core/models/feature';
 import { Product } from 'src/app/core/models/product';
+import { ActivatedRoute } from '@angular/router';
+import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
   selector: 'app-ranking-cards',
@@ -31,7 +33,14 @@ export class RankingCardsComponent implements OnDestroy {
   dummyData = dummyRankingCardsData;
   private unsubscribeAll = new Subject();
 
-  constructor(private dialog: MatDialog, private linkService: LinksService) {}
+  constructor(
+    private routeDataService: RouteDataService,
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private linkService: LinksService
+  ) {
+    this.updateRouteData();
+  }
 
   ngOnDestroy() {
     this.unsubscribeAll.next(true);
@@ -69,6 +78,24 @@ export class RankingCardsComponent implements OnDestroy {
       if (result === true) {
       }
     });
+  }
+
+  updateRouteData() {
+    //Update Route Data
+    const initialData = this.route.snapshot.data; // get initial route data
+    this.routeDataService.setRouteData(initialData);
+    // Update with the required route data
+    const updatedData = {
+      second_cta: 'Add card',
+      second_action: 'ADD_TOOL',
+      second_icon: 'add_circle',
+      third_cta: 'Add feature',
+      third_action: 'ADD_FEATURE',
+      third_icon: 'checklist',
+      // Other properties...
+    };
+    const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
+    this.routeDataService.setRouteData(mergedData);
   }
 
   edit(data: any, index: number) {

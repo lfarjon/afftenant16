@@ -27,6 +27,7 @@ import { LinksService } from 'src/app/core/services/links.service';
 export class LinkSelectorComponent implements OnDestroy {
   @Input() form!: FormGroup;
   @Input() multiple!: boolean;
+  @Input() newProduct: boolean = true;
   @Output() linkSelected = new EventEmitter<Link>();
   @Output() limitSelected = new EventEmitter<Link[]>();
   links$: Observable<Link[]>; // Replace 'Link' with your actual link type

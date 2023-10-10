@@ -1,19 +1,28 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Feature } from 'src/app/core/models/feature';
-import { Product, ProductBox } from 'src/app/core/models/product';
+import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-product-box',
-  templateUrl: './product-box.component.html',
-  styleUrls: ['./product-box.component.scss'],
+  selector: 'app-product-collage',
+  templateUrl: './product-collage.component.html',
+  styleUrls: ['./product-collage.component.scss'],
 })
-export class ProductBoxComponent {
-  @Input() product!: ProductBox;
+export class ProductCollageComponent {
+  @Input() products!: Product[];
   @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
+
+  columnsPerRow = 1; // Adjust this value based on the number of columns per row
 
   constructor(
     private routeDataService: RouteDataService,
@@ -28,7 +37,7 @@ export class ProductBoxComponent {
     this.routeDataService.setRouteData(initialData);
     // Update with the required route data
     const updatedData = {
-      second_cta: 'Add card',
+      second_cta: 'Add product',
       second_action: 'ADD_TOOL',
       second_icon: 'add_circle',
       third_cta: 'Add feature',

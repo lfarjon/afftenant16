@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Feature } from 'src/app/core/models/feature';
-import { Product, ProductBox } from 'src/app/core/models/product';
+import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-product-box',
-  templateUrl: './product-box.component.html',
-  styleUrls: ['./product-box.component.scss'],
+  selector: 'app-versus-box',
+  templateUrl: './versus-box.component.html',
+  styleUrls: ['./versus-box.component.scss'],
 })
-export class ProductBoxComponent {
-  @Input() product!: ProductBox;
+export class VersusBoxComponent {
+  @Input() products!: Product[];
   @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
@@ -28,12 +28,10 @@ export class ProductBoxComponent {
     this.routeDataService.setRouteData(initialData);
     // Update with the required route data
     const updatedData = {
-      second_cta: 'Add card',
-      second_action: 'ADD_TOOL',
-      second_icon: 'add_circle',
-      third_cta: 'Add feature',
-      third_action: 'ADD_FEATURE',
-      third_icon: 'checklist',
+      second_cta: 'Add feature',
+      second_action: 'ADD_FEATURE',
+      second_icon: 'checklist',
+
       // Other properties...
     };
     const mergedData = { ...initialData, ...updatedData }; // merge new data with current data

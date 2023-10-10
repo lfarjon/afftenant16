@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Feature } from 'src/app/core/models/feature';
-import { Product, ProductBox } from 'src/app/core/models/product';
+import { SummaryBox } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-product-box',
-  templateUrl: './product-box.component.html',
-  styleUrls: ['./product-box.component.scss'],
+  selector: 'app-summary-box',
+  templateUrl: './summary-box.component.html',
+  styleUrls: ['./summary-box.component.scss'],
 })
-export class ProductBoxComponent {
-  @Input() product!: ProductBox;
+export class SummaryBoxComponent {
+  @Input() product!: SummaryBox;
   @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();

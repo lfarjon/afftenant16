@@ -8,38 +8,33 @@
     />
   </div>
   <div
-    class="md:col-span-6 col-span-12 flex flex-col items-start justify-center bg-slate-100 p-5 md:p-10 drop-shadow-md rounded"
+    class="md:col-span-6 col-span-12 flex flex-col items-start justify-center bg-slate-100 p-5 md:p-10 drop-shadow-md rounded gap-y-4"
   >
-    <!-- Highlighted Badge -->
-    <span
-      class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-    >
-      {{ product.badge }}
-    </span>
-    <!-- Product Title -->
-    <h2 class="text-xl lg:text-3xl font-semibold mt-2">
-      {{ product.title }}
-    </h2>
-    <!-- Star Rating & Score -->
-    <div class="flex items-center mt-2 mb-3">
-      <div class="flex text-yellow-400">
-        <!-- Add the stars based on rating -->
-        <mat-icon>star</mat-icon>
-        <mat-icon>star</mat-icon>
-        <mat-icon>star</mat-icon>
-        <mat-icon>star_half</mat-icon>
-        <mat-icon>star_border</mat-icon>
-      </div>
-      <span class="ml-2 font-semibold">{{ product.ratings }}</span>
+    <div class="flex flex-col justify-center items-start gap-y-2">
+      <!-- Highlighted Badge -->
+      <span
+        class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+      >
+        {{ product.badge }}
+      </span>
+      <!-- Product Title -->
+      <h2 class="text-xl lg:text-3xl font-semibold">
+        {{ product.title }}
+      </h2>
     </div>
+    <!-- Star Rating & Score -->
+    <app-star-rating [ratings]="product.ratings"></app-star-rating>
     <!-- Features -->
     <ul class="relative">
       <li *ngFor="let feature of features">
         {{ feature }}
       </li>
     </ul>
+    <!-- Description -->
+    <div [innerHTML]="product.description" class="quill-content"></div>
+
     <!-- CTA -->
-    <div class="w-full flex flex-col justify-center pt-5">
+    <div class="w-full flex flex-col justify-center">
       <button
         class="text-white bg-primary py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
       >

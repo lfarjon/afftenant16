@@ -1,0 +1,9 @@
+ul li:before {
+  color: #10b981; /* This is the Tailwind green-500 color value */
+  content: "✓";
+}
+
+ul.cons li:before {
+  color: #ff0000; /* This is the Tailwind green-500 color value */
+  content: "x";
+}

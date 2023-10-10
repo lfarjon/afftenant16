@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +11,6 @@ import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.ser
 import { ConfirmationService } from 'src/app/core/services/confirmation.service';
 import { CtaService } from 'src/app/core/services/cta.service';
 import { LinksService } from 'src/app/core/services/links.service';
-import { RouteDataService } from 'src/app/core/services/route-data.service';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -21,28 +20,30 @@ import { v4 as uuid } from 'uuid';
 })
 export class ToolBuilderComponent {
   @ViewChild('formDialog') formDialog!: TemplateRef<any>;
+  showFeatures: boolean = true;
+  showForm: boolean = true;
+  justTitle: boolean = false;
   selectedTool$: Observable<AffiliateTool>;
   productForm!: FormGroup;
   featuresForm!: FormGroup;
   newProduct: boolean = false;
   products: Product[] = [];
-  product!: Product;
+  product!: any;
   features: Feature[] = [];
   tool!: AffiliateTool;
+  allowLinkChange: boolean = false;
 
   private unsubscribeAll = new Subject();
 
   constructor(
     private toolsService: AffiliateToolsService,
     private confirmationService: ConfirmationService,
-    private routeDataService: RouteDataService,
     private linkService: LinksService,
     private ctaService: CtaService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private dialog: MatDialog
   ) {
-    this.updateRouteData();
     //CTA OBSERVING
     this.ctaService.action$
       .pipe(takeUntil(this.unsubscribeAll))
@@ -67,6 +68,19 @@ export class ToolBuilderComponent {
         take(1),
         tap((tool: AffiliateTool) => {
           this.tool = tool;
+          //check if changing links is allowed in edit
+          this.allowLinkChange = true;
+
+          if (
+            this.tool.type === 'PRODUCT_COLLAGE' ||
+            this.tool.type === 'PRODUCT_SLIDER'
+          ) {
+            this.showFeatures = false;
+            this.showForm = false;
+          }
+
+          if (this.tool.type === 'PRODUCT_SLIDER') this.justTitle = true;
+
           Array.isArray(tool.data)
             ? (this.products = tool.data)
             : (this.product = tool.data!);
@@ -85,24 +99,6 @@ export class ToolBuilderComponent {
   ngOnDestroy() {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
-  }
-
-  updateRouteData() {
-    //Update Route Data
-    const initialData = this.route.snapshot.data; // get initial route data
-    this.routeDataService.setRouteData(initialData);
-    // Update with the required route data
-    const updatedData = {
-      second_cta: 'Add card',
-      second_action: 'ADD_TOOL',
-      second_icon: 'add_circle',
-      third_cta: 'Add feature',
-      third_action: 'ADD_FEATURE',
-      third_icon: 'checklist',
-      // Other properties...
-    };
-    const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
-    this.routeDataService.setRouteData(mergedData);
   }
 
   initProductForm() {

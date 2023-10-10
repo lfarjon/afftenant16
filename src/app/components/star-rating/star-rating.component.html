@@ -1,0 +1,9 @@
+<div class="flex items-center">
+  <div class="flex text-yellow-400">
+    <!-- Loop through the ratings and display filled or unfilled stars -->
+    <ng-container *ngFor="let rating of getStarIcons(ratings!)">
+      <mat-icon>{{ rating }}</mat-icon>
+    </ng-container>
+  </div>
+  <span class="ml-2 font-semibold">{{ ratings }}</span>
+</div>

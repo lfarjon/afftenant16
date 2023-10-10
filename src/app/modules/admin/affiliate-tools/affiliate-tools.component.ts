@@ -21,8 +21,12 @@ import {
   buildProductFeatures,
   dummyFeatures,
 } from 'src/app/core/models/feature';
-import { createProduct, createProducts } from 'src/app/core/models/product';
-import { MatSelectChange } from '@angular/material/select';
+import {
+  createProduct,
+  createProducts,
+  createSummaryBox,
+  createVSBox,
+} from 'src/app/core/models/product';
 
 @Component({
   selector: 'app-affiliate-tools',
@@ -54,8 +58,7 @@ export class AffiliateToolsComponent {
     { type: 'VERSUS_BOX', displayName: 'Versus box', multiple: true, max: 2 },
 
     { type: 'PRODUCT_BOX', displayName: 'Product box', multiple: false },
-    { type: 'PROS_CONS_BOX', displayName: 'Pros & cons box', multiple: false },
-    { type: 'RATING_BOX', displayName: 'Rating box', multiple: true },
+    { type: 'SUMMARY_BOX', displayName: 'Summary box', multiple: false },
     { type: 'PRODUCT_SLIDER', displayName: 'Product slider', multiple: true },
     { type: 'PRODUCT_COLLAGE', displayName: 'Product collage', multiple: true },
   ];
@@ -213,8 +216,20 @@ export class AffiliateToolsComponent {
       case 'TOP_3_BOX':
         data = createProducts(links as Link[]);
         break;
+      case 'VERSUS_BOX':
+        data = createVSBox(links as Link[]);
+        break;
       case 'PRODUCT_BOX':
         data = createProduct(links as Link);
+        break;
+      case 'SUMMARY_BOX':
+        data = createSummaryBox(links as Link);
+        break;
+      case 'PRODUCT_SLIDER':
+        data = createProducts(links as Link[]);
+        break;
+      case 'PRODUCT_COLLAGE':
+        data = createProducts(links as Link[]);
         break;
       default:
         break;

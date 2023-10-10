@@ -1,0 +1,21 @@
+.collage-container {
+  position: relative;
+  max-width: 100%;
+}
+
+.collage-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Define styles for the clickable areas (optional) */
+area {
+  outline: none; /* Remove default blue border on click */
+  cursor: pointer; /* Change cursor on hover to indicate interactivity */
+  transition: opacity 0.3s; /* Add a transition effect for opacity */
+}
+
+/* Adjust the opacity of clickable areas on hover (optional) */
+area:hover {
+  opacity: 0.7;
+}

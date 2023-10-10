@@ -1,6 +1,5 @@
-import { Link } from './links';
+import { lorem } from './lorem';
 import { Product } from './product';
-import { LoremIpsum } from 'lorem-ipsum';
 
 export interface Feature {
   name: string;
@@ -8,17 +7,6 @@ export interface Feature {
 }
 
 export const dummyFeatures = ['Feature A', 'Feature B', 'Feature C'];
-
-const lorem = new LoremIpsum({
-  sentencesPerParagraph: {
-    max: 2,
-    min: 1,
-  },
-  wordsPerSentence: {
-    max: 4,
-    min: 3,
-  },
-});
 
 export const buildFeatures = (
   products: Product[],
