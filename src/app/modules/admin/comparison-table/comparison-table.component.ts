@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Feature } from 'src/app/core/models/feature';
 import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
@@ -11,7 +10,6 @@ import { RouteDataService } from 'src/app/core/services/route-data.service';
 })
 export class ComparisonTableComponent {
   @Input() products!: Product[];
-  @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
 

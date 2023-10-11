@@ -35,8 +35,8 @@
     <app-star-rating [ratings]="product.ratings"></app-star-rating>
     <!-- Features -->
     <ul class="relative">
-      <li *ngFor="let feature of features">
-        {{ feature }}
+      <li *ngFor="let feature of product.localFeatures">
+        {{ feature.name }}{{ feature.value }}
       </li>
     </ul>
     <!-- Description -->

@@ -5,7 +5,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { AffiliateTool } from '../models/affiliate-tool';
-import { Feature } from '../models/feature';
+import { GlobalFeature } from '../models/feature';
 
 @Injectable({
   providedIn: 'root',
@@ -24,17 +24,24 @@ export class AffiliateToolsService {
   saveTool(
     tool: AffiliateTool,
     data?: any,
-    features?: Feature[],
+    globalFeatures?: GlobalFeature[],
     merge?: boolean
   ): Promise<any> {
     const toolRef = this.afs.doc('affiliate-tools/' + tool?.id);
-    if (data && features) {
+    if (data) {
       tool = {
         ...tool,
         data: data,
-        features: features,
       };
     }
+
+    if (!!globalFeatures) {
+      tool = {
+        ...tool,
+        globalFeatures: globalFeatures,
+      };
+    }
+
     return toolRef.set(tool, { merge: merge ? merge : true });
   }
 }

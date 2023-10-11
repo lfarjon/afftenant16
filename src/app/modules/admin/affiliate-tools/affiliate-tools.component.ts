@@ -17,8 +17,9 @@ import { Link } from 'src/app/core/models/links';
 import { AddLinkComponent } from '../add-link/add-link.component';
 
 import {
-  buildFeatures,
-  buildProductFeatures,
+  addLocalFeaturesToProduct,
+  addLocalFeaturesToProducts,
+  buildGlobalFeatures,
   dummyFeatures,
 } from 'src/app/core/models/feature';
 import {
@@ -180,18 +181,34 @@ export class AffiliateToolsComponent {
     } as AffiliateTool;
 
     const links = this.toolForm.value.links;
+
     if (links) {
-      const products = this.generateData(
+      let products = this.generateData(
         this.toolForm.value.tool,
         this.toolForm.value.links
       );
 
+      //Build local or global features
+      if (this.toolForm.value.tool.type === 'COMPARISON_MATRIX') {
+        // If MATRIX, build global features
+        const globalFeatures = buildGlobalFeatures(products, dummyFeatures);
+
+        tool = {
+          ...tool,
+          globalFeatures: globalFeatures,
+        };
+      } else {
+        // Else build local (product level) features
+        if (Array.isArray(products)) {
+          products = addLocalFeaturesToProducts(products);
+        } else {
+          products = addLocalFeaturesToProduct(products);
+        }
+      }
+
       tool = {
         ...tool,
         data: products,
-        features: Array.isArray(links)
-          ? buildFeatures(products, dummyFeatures)
-          : buildProductFeatures(),
       };
     }
 

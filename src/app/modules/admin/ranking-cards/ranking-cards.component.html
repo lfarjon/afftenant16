@@ -54,9 +54,12 @@
       </div>
       <!-- Features -->
       <ul>
-        <li *ngFor="let feature of features" class="flex items-center">
+        <li
+          *ngFor="let feature of card.localFeatures"
+          class="flex items-center"
+        >
           <span class="mr-0.5">{{ feature.name }}</span
-          ><span>{{ feature.values[card.id] }}</span>
+          ><span>{{ feature.value }}</span>
         </li>
       </ul>
     </div>

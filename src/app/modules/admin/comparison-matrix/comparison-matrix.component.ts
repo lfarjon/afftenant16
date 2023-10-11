@@ -1,12 +1,13 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   Output,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Feature } from 'src/app/core/models/feature';
+import { GlobalFeature } from 'src/app/core/models/feature';
 import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
@@ -15,17 +16,22 @@ import { RouteDataService } from 'src/app/core/services/route-data.service';
   templateUrl: './comparison-matrix.component.html',
   styleUrls: ['./comparison-matrix.component.scss'],
 })
-export class ComparisonMatrixComponent {
+export class ComparisonMatrixComponent implements AfterViewInit {
   @Input() products!: Product[];
-  @Input() features!: Feature[];
+  @Input() globalFeatures!: GlobalFeature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
 
   constructor(
     private routeDataService: RouteDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) {
     this.updateRouteData();
+  }
+
+  ngAfterViewInit() {
+    this.cd.detectChanges();
   }
 
   updateRouteData() {
@@ -37,7 +43,7 @@ export class ComparisonMatrixComponent {
       second_cta: 'Add product',
       second_action: 'ADD_TOOL',
       second_icon: 'add_circle',
-      third_cta: 'Add feature',
+      third_cta: 'Add comparison feature',
       third_action: 'ADD_FEATURE',
       third_icon: 'checklist',
       // Other properties...

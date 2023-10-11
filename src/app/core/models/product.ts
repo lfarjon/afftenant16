@@ -1,6 +1,7 @@
 import { Link } from './links';
 import { v4 as uuid } from 'uuid';
 import { lorem } from './lorem';
+import { LocalFeature } from './feature';
 
 export interface Product {
   id: string;
@@ -11,6 +12,7 @@ export interface Product {
   buttonLink: string;
   buttonText: string;
   ratings?: number;
+  localFeatures?: LocalFeature[];
   description?: string;
   pros?: string[];
   cons?: string[];

@@ -1,10 +1,20 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { AffiliateTool } from 'src/app/core/models/affiliate-tool';
-import { Feature } from 'src/app/core/models/feature';
+import {
+  GlobalFeature,
+  LocalFeature,
+  buildGlobalFeatures,
+} from 'src/app/core/models/feature';
 import { Link } from 'src/app/core/models/links';
 import { Product } from 'src/app/core/models/product';
 import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
@@ -20,6 +30,7 @@ import { v4 as uuid } from 'uuid';
 })
 export class ToolBuilderComponent {
   @ViewChild('formDialog') formDialog!: TemplateRef<any>;
+  @ViewChild('globalFeaturesDialog') globalFeaturesDialog!: TemplateRef<any>;
   showFeatures: boolean = true;
   showForm: boolean = true;
   showDescription: boolean = false;
@@ -27,11 +38,11 @@ export class ToolBuilderComponent {
   justTitle: boolean = false;
   selectedTool$: Observable<AffiliateTool>;
   productForm!: FormGroup;
-  featuresForm!: FormGroup;
+  globalFeaturesForm!: FormGroup;
   newProduct: boolean = false;
   products: Product[] = [];
   product!: any;
-  features: Feature[] = [];
+  globalFeatures: GlobalFeature[] = [];
   tool!: AffiliateTool;
   allowLinkChange: boolean = false;
 
@@ -44,7 +55,8 @@ export class ToolBuilderComponent {
     private ctaService: CtaService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cd: ChangeDetectorRef
   ) {
     //CTA OBSERVING
     this.ctaService.action$
@@ -58,10 +70,10 @@ export class ToolBuilderComponent {
           this.openDialog();
           this.ctaService.clearAction();
         }
-        // if (action === 'ADD_FEATURE') {
-        //   this.openFeaturesDialog();
-        //   this.ctaService.clearAction();
-        // }
+        if (action === 'ADD_FEATURE') {
+          this.openFeaturesDialog();
+          this.ctaService.clearAction();
+        }
       });
     const toolId = this.route.snapshot.params['toolId'];
     this.selectedTool$ = this.toolsService.getTool(toolId).valueChanges();
@@ -97,20 +109,24 @@ export class ToolBuilderComponent {
             ? (this.products = tool.data)
             : (this.product = tool.data!);
 
-          this.features = tool.features;
+          this.globalFeatures = tool.globalFeatures!;
         })
       )
       .subscribe();
 
     this.initProductForm();
-    this.featuresForm = this.fb.group({
-      features: this.fb.array([]),
-    });
+    this.initGlobalFeaturesForm();
   }
 
   ngOnDestroy() {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
+  }
+
+  initGlobalFeaturesForm() {
+    this.globalFeaturesForm = this.fb.group({
+      features: this.fb.array([]),
+    });
   }
 
   initProductForm() {
@@ -133,11 +149,16 @@ export class ToolBuilderComponent {
       description: [''],
       pros: this.fb.array([]),
       cons: this.fb.array([]),
+      localFeatures: this.fb.array([]),
     });
   }
 
-  get globalFeatures() {
-    return this.featuresForm.get('features') as FormArray;
+  get globalFeaturesValue() {
+    return this.globalFeaturesForm.get('features') as FormArray;
+  }
+
+  get localFeatures() {
+    return this.productForm.get('localFeatures') as FormArray;
   }
 
   get pros() {
@@ -146,6 +167,21 @@ export class ToolBuilderComponent {
 
   get cons() {
     return this.productForm.get('cons') as FormArray;
+  }
+
+  addLocalFeature(localFeature?: LocalFeature) {
+    const newLocalFeature = this.fb.group({
+      name: '',
+      value: ['', Validators.required],
+    });
+
+    localFeature && newLocalFeature.patchValue(localFeature);
+
+    this.localFeatures.push(newLocalFeature);
+  }
+
+  removeLocalFeature(i: number) {
+    this.localFeatures.removeAt(i);
   }
 
   addPro(pro?: string) {
@@ -185,6 +221,20 @@ export class ToolBuilderComponent {
       this.newProduct = false;
       this.productForm.patchValue(data);
 
+      if (this.tool.type !== 'COMPARISON_MATRIX') {
+        data.localFeatures?.map((feature) => {
+          this.addLocalFeature(feature);
+        });
+      } else {
+        this.globalFeatures.map((feature) => {
+          const globalFeaturesForm = this.fb.group({
+            name: feature.name,
+            value: feature.values[data.id],
+          });
+          this.globalFeaturesValue.push(globalFeaturesForm);
+        });
+      }
+
       if (this.tool.type === 'SUMMARY_BOX') {
         data.pros?.map((pro) => {
           this.addPro(pro);
@@ -193,21 +243,6 @@ export class ToolBuilderComponent {
           this.addCon(con);
         });
       }
-
-      this.features.map((feature) => {
-        if (multiple) {
-          const featureForm = this.fb.group({
-            name: feature.name,
-            value: feature.values[data.id],
-          });
-          this.globalFeatures.push(featureForm);
-        } else {
-          const featureForm = this.fb.group({
-            value: feature,
-          });
-          this.globalFeatures.push(featureForm);
-        }
-      });
     } else {
       // Add new data including the features
       this.newProduct = true;
@@ -220,13 +255,15 @@ export class ToolBuilderComponent {
         this.addCon();
       }
 
-      this.features.map((feature) => {
-        const featureForm = this.fb.group({
-          name: feature.name,
-          value: '',
+      if (this.tool.type === 'COMPARISON_MATRIX') {
+        this.globalFeatures.map((feature) => {
+          const featureForm = this.fb.group({
+            name: feature.name,
+            value: '',
+          });
+          this.globalFeaturesValue.push(featureForm);
         });
-        this.globalFeatures.push(featureForm);
-      });
+      }
     }
     //Now open the dialog
     const dialogRef = this.dialog.open(this.formDialog, {
@@ -241,7 +278,7 @@ export class ToolBuilderComponent {
           if (multiple) {
             this.editProduct(
               this.productForm.value,
-              this.featuresForm.value,
+              this.globalFeaturesForm.value,
               index,
               multiple
             );
@@ -260,18 +297,18 @@ export class ToolBuilderComponent {
                 cons: cons,
                 pros: pros,
               };
-              console.log(product);
             }
-            this.editProduct(product, this.featuresForm.value);
+
+            this.editProduct(product, this.globalFeaturesForm.value);
           }
         } else {
-          this.addProduct(this.featuresForm.value);
+          this.addProduct(this.globalFeaturesForm.value);
         }
       }
 
       this.productForm.reset();
       this.initProductForm();
-      this.globalFeatures.clear();
+      this.globalFeaturesValue.clear();
     });
   }
 
@@ -288,20 +325,16 @@ export class ToolBuilderComponent {
       this.product = product;
     }
 
-    //Replace the product's features in the features array
-    this.features.map((feature, i: number) => {
-      features.map((feat: any, j: number) => {
-        if (multiple) {
+    if (this.tool.type === 'COMPARISON_MATRIX') {
+      //Replace the product's features in the features array
+      this.globalFeatures.map((feature, i: number) => {
+        features.map((feat: any, j: number) => {
           if (feat.name === feature.name) {
             feature.values[product.id] = feat.value;
           }
-        } else {
-          if (i === j) {
-            this.features[i] = feat.value;
-          }
-        }
+        });
       });
-    });
+    }
   }
 
   addProduct({ features }: any) {
@@ -317,7 +350,7 @@ export class ToolBuilderComponent {
     });
 
     //Replace the product's features in the features array
-    this.features.map((feature) => {
+    this.globalFeatures.map((feature) => {
       features.map((feat: any) => {
         if (feat.name === feature.name) {
           feature.values[form.id] = feat.value;
@@ -341,20 +374,92 @@ export class ToolBuilderComponent {
 
   saveTool() {
     const merge = false;
-    if (this.products.length > 0) {
+    if (this.tool.type === 'COMPARISON_MATRIX') {
       this.toolsService
-        .saveTool(this.tool, this.products, this.features, merge)
+        .saveTool(this.tool, this.products, this.globalFeatures, merge)
         .then(() =>
           this.confirmationService.handleSuccess('Successfully saved!')
         )
         .catch((err) => this.confirmationService.handleError(err));
     } else {
-      this.toolsService
-        .saveTool(this.tool, this.product, this.features, merge)
-        .then(() =>
-          this.confirmationService.handleSuccess('Successfully saved!')
-        )
-        .catch((err) => this.confirmationService.handleError(err));
+      if (this.products.length > 0) {
+        this.toolsService
+          .saveTool(this.tool, this.products, undefined, merge)
+          .then(() =>
+            this.confirmationService.handleSuccess('Successfully saved!')
+          )
+          .catch((err) => this.confirmationService.handleError(err));
+      } else {
+        this.toolsService
+          .saveTool(this.tool, this.product, undefined, merge)
+          .then(() =>
+            this.confirmationService.handleSuccess('Successfully saved!')
+          )
+          .catch((err) => this.confirmationService.handleError(err));
+      }
     }
+  }
+
+  addGlobalFeature(feature?: GlobalFeature) {
+    const newGlobalFeature = this.fb.group({
+      name: '',
+    });
+
+    feature?.name && newGlobalFeature.patchValue({ name: feature.name });
+
+    this.globalFeaturesValue.push(newGlobalFeature);
+  }
+
+  removeGlobalFeature(i: number) {
+    this.globalFeaturesValue.removeAt(i);
+    this.globalFeatures.splice(i, 1);
+  }
+
+  openFeaturesDialog() {
+    //patch the global features
+    this.globalFeatures.map((feature) => {
+      this.addGlobalFeature(feature);
+    });
+    //Now open the dialog
+    const dialogRef = this.dialog.open(this.globalFeaturesDialog, {
+      panelClass: ['lg:w-3/5', 'w-full', 'h-auto', 'min-h-fit'],
+      maxWidth: '100vw',
+    });
+
+    //Once dialog is closed, update features
+    dialogRef.afterClosed().subscribe((result) => {
+      const changedFeatures = this.globalFeaturesForm.value.features;
+      if (result === true) {
+        //Make the name changes of existing features
+        this.globalFeatures.map((feature, i: number) => {
+          changedFeatures.map((feat, j: number) => {
+            if (i === j) {
+              feature.name = feat.name;
+            }
+          });
+        });
+        //check if there are any new features
+        const newFeatures: string[] = [];
+        if (changedFeatures.length > this.globalFeatures.length) {
+          for (
+            let i = this.globalFeatures.length;
+            i < changedFeatures.length;
+            i++
+          ) {
+            newFeatures.push(changedFeatures[i].name);
+          }
+        }
+        if (newFeatures.length > 0) {
+          const newlyBuiltFeatures = buildGlobalFeatures(
+            this.products,
+            newFeatures
+          );
+          this.globalFeatures = this.globalFeatures.concat(newlyBuiltFeatures);
+        }
+      }
+      this.globalFeaturesForm.reset();
+      this.initGlobalFeaturesForm();
+      this.globalFeaturesValue.clear();
+    });
   }
 }

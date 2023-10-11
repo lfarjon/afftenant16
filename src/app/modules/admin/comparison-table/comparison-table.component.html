@@ -30,9 +30,9 @@
             <div class="text-xl mb-2 font-semibold">
               {{ product.title }}
             </div>
-            <div *ngFor="let feature of features">
+            <div *ngFor="let feature of product.localFeatures">
               <span class="mr-1 font-semibold">{{ feature.name }}:</span
-              ><span class="font-light">{{ feature.values[product.id] }}</span>
+              ><span class="font-light">{{ feature.value }}</span>
             </div>
           </div>
         </td>

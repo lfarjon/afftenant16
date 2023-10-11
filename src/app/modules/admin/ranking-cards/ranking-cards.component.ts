@@ -7,14 +7,10 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject, take, tap } from 'rxjs';
-import {
-  RankingCards,
-  dummyRankingCardsData,
-} from 'src/app/core/models/ranking-cards';
+
 import { AddLinkComponent } from '../add-link/add-link.component';
 import { LinksService } from 'src/app/core/services/links.service';
 import { Link } from 'src/app/core/models/links';
-import { Feature } from 'src/app/core/models/feature';
 import { Product } from 'src/app/core/models/product';
 import { ActivatedRoute } from '@angular/router';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
@@ -26,11 +22,9 @@ import { RouteDataService } from 'src/app/core/services/route-data.service';
 })
 export class RankingCardsComponent implements OnDestroy {
   @Input() products!: Product[];
-  @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
 
-  dummyData = dummyRankingCardsData;
   private unsubscribeAll = new Subject();
 
   constructor(
@@ -54,7 +48,7 @@ export class RankingCardsComponent implements OnDestroy {
   //   });
   // }
 
-  editLink({ linkId }: RankingCards) {
+  editLink({ linkId }: Product) {
     this.linkService
       .getLink(linkId)
       .valueChanges()

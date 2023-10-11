@@ -3,7 +3,6 @@
   <div [ngSwitch]="selectedTool.type">
     <app-ranking-cards
       [products]="products"
-      [features]="features"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'RANKING_CARDS'"
@@ -11,27 +10,24 @@
     <app-comparison-matrix
       *ngSwitchCase="'COMPARISON_MATRIX'"
       [products]="products"
-      [features]="features"
+      [globalFeatures]="globalFeatures"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
     ></app-comparison-matrix>
     <app-comparison-table
       [products]="products"
-      [features]="features"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'COMPARISON_TABLE'"
     ></app-comparison-table>
     <app-top-three
       [products]="products"
-      [features]="features"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'TOP_3_BOX'"
     ></app-top-three>
     <app-versus-box
       [products]="products"
-      [features]="features"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'VERSUS_BOX'"
@@ -39,14 +35,12 @@
     <app-product-box
       *ngSwitchCase="'PRODUCT_BOX'"
       [product]="product"
-      [features]="features"
       (editProduct)="openDialog($event)"
       (deleteProduct)="deleteProduct($event)"
     ></app-product-box>
     <app-summary-box
       *ngSwitchCase="'SUMMARY_BOX'"
       [product]="product"
-      [features]="features"
       (editProduct)="openDialog($event)"
       (deleteProduct)="deleteProduct($event)"
     ></app-summary-box>
@@ -112,6 +106,49 @@
             </mat-form-field>
           </div>
         </ng-container>
+        <!-- LOCAL FEATURES -->
+        <ng-container *ngIf="showFeatures">
+          <ng-container formArrayName="localFeatures">
+            <div
+              class="flex lg:flex-row flex-col items-center gap-x-2"
+              *ngFor="let control of localFeatures.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <button (click)="removeLocalFeature(i)">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <mat-form-field class="w-full lg:w-1/2">
+                <mat-label>Feature name (optional)</mat-label>
+                <input matInput type="text" formControlName="name" />
+              </mat-form-field>
+              <mat-form-field class="w-full lg:w-1/2">
+                <mat-label>Feature value</mat-label>
+                <input matInput type="text" formControlName="value" required />
+              </mat-form-field>
+            </div>
+            <button (click)="addLocalFeature()">
+              <mat-icon>add_circle</mat-icon>
+            </button>
+          </ng-container>
+        </ng-container>
+        <!-- GLOBAL FEATURES -->
+        <form [formGroup]="globalFeaturesForm">
+          <!-- FEATURES -->
+          <ng-container formArrayName="features">
+            <div
+              *ngFor="
+                let control of globalFeaturesValue.controls;
+                let i = index
+              "
+              [formGroupName]="i"
+            >
+              <mat-form-field class="w-full">
+                <mat-label>{{ control.value.name }}</mat-label>
+                <input matInput type="text" formControlName="value" required />
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </form>
         <ng-container *ngIf="showDescription">
           <!-- Quill Editor -->
           <app-text-editor
@@ -168,24 +205,6 @@
           </div>
         </ng-container>
       </form>
-      <ng-container *ngIf="showFeatures">
-        <form [formGroup]="featuresForm">
-          <!-- FEATURES -->
-          <ng-container formArrayName="features">
-            <div
-              *ngFor="let control of globalFeatures.controls; let i = index"
-              [formGroupName]="i"
-            >
-              <mat-form-field class="w-full">
-                <mat-label>{{
-                  control.value.name ? control.value.name : "Feature " + (i + 1)
-                }}</mat-label>
-                <input matInput type="text" formControlName="value" required />
-              </mat-form-field>
-            </div>
-          </ng-container>
-        </form>
-      </ng-container>
     </mat-dialog-content>
     <mat-dialog-actions>
       <div class="w-full flex items-center justify-between">
@@ -197,6 +216,40 @@
         >
           Edit link
         </button> -->
+        <button mat-raised-button color="primary" [mat-dialog-close]="true">
+          Submit
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </ng-template>
+  <ng-template #globalFeaturesDialog>
+    <!-- GLOBAL FEATURES -->
+    <h2 mat-dialog-title>{{ "Edit comparison features" }}</h2>
+    <mat-dialog-content>
+      <form [formGroup]="globalFeaturesForm">
+        <!-- FEATURES -->
+        <ng-container formArrayName="features">
+          <div
+            class="flex items-center gap-x-1"
+            *ngFor="let control of globalFeaturesValue.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <button (click)="removeGlobalFeature(i)">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-form-field class="w-full">
+              <mat-label>{{ control.value.name }}</mat-label>
+              <input matInput type="text" formControlName="name" required />
+            </mat-form-field>
+          </div>
+          <button (click)="addGlobalFeature()">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </ng-container>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="w-full flex items-center justify-between">
         <button mat-raised-button color="primary" [mat-dialog-close]="true">
           Submit
         </button>

@@ -32,8 +32,11 @@
       </h2>
       <!-- Features -->
       <ul>
-        <li *ngFor="let feature of features" class="flex items-center">
-          {{ feature }}
+        <li
+          *ngFor="let feature of product.localFeatures"
+          class="flex items-center"
+        >
+          {{ feature.name }} {{ feature.value }}
         </li>
       </ul>
     </div>

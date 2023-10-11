@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Feature } from 'src/app/core/models/feature';
 import { Product } from 'src/app/core/models/product';
 
 @Component({
@@ -9,7 +8,6 @@ import { Product } from 'src/app/core/models/product';
 })
 export class TopThreeComponent {
   @Input() products!: Product[];
-  @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
 

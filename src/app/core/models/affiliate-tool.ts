@@ -1,4 +1,4 @@
-import { Feature } from './feature';
+import { GlobalFeature } from './feature';
 import { Product } from './product';
 
 export interface AffiliateTool {
@@ -21,6 +21,6 @@ export interface AffiliateTool {
     title: string;
     description: string;
   };
-  features: Feature[];
+  globalFeatures?: GlobalFeature[];
   data?: Product | Product[];
 }
