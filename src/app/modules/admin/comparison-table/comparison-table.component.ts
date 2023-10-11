@@ -29,10 +29,6 @@ export class ComparisonTableComponent {
       second_cta: 'Add product',
       second_action: 'ADD_TOOL',
       second_icon: 'add_circle',
-      third_cta: 'Add feature',
-      third_action: 'ADD_FEATURE',
-      third_icon: 'checklist',
-      // Other properties...
     };
     const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
     this.routeDataService.setRouteData(mergedData);

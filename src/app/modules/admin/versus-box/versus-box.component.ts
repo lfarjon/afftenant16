@@ -24,16 +24,6 @@ export class VersusBoxComponent {
     //Update Route Data
     const initialData = this.route.snapshot.data; // get initial route data
     this.routeDataService.setRouteData(initialData);
-    // Update with the required route data
-    const updatedData = {
-      second_cta: 'Add feature',
-      second_action: 'ADD_FEATURE',
-      second_icon: 'checklist',
-
-      // Other properties...
-    };
-    const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
-    this.routeDataService.setRouteData(mergedData);
   }
 
   edit(data: any, index: number) {

@@ -41,13 +41,6 @@ export class RankingCardsComponent implements OnDestroy {
     this.unsubscribeAll.complete();
   }
 
-  // openFeaturesDialog() {
-  //   const dialogRef = this.dialog.open(this.featuresDialog, {
-  //     panelClass: ['lg:w-3/5', 'w-full', 'h-auto', 'min-h-fit'],
-  //     maxWidth: '100vw',
-  //   });
-  // }
-
   editLink({ linkId }: Product) {
     this.linkService
       .getLink(linkId)
@@ -83,9 +76,6 @@ export class RankingCardsComponent implements OnDestroy {
       second_cta: 'Add card',
       second_action: 'ADD_TOOL',
       second_icon: 'add_circle',
-      third_cta: 'Add feature',
-      third_action: 'ADD_FEATURE',
-      third_icon: 'checklist',
       // Other properties...
     };
     const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
