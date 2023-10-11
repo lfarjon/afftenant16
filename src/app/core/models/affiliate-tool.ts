@@ -1,5 +1,5 @@
 import { Feature } from './feature';
-import { Product, ProductBox } from './product';
+import { Product } from './product';
 
 export interface AffiliateTool {
   id: string;
@@ -22,5 +22,5 @@ export interface AffiliateTool {
     description: string;
   };
   features: Feature[];
-  data?: Product | Product[] | ProductBox;
+  data?: Product | Product[];
 }

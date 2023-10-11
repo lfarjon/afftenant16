@@ -4,7 +4,7 @@
     <app-ranking-cards
       [products]="products"
       [features]="features"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'RANKING_CARDS'"
     ></app-ranking-cards>
@@ -12,27 +12,27 @@
       *ngSwitchCase="'COMPARISON_MATRIX'"
       [products]="products"
       [features]="features"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
     ></app-comparison-matrix>
     <app-comparison-table
       [products]="products"
       [features]="features"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'COMPARISON_TABLE'"
     ></app-comparison-table>
     <app-top-three
       [products]="products"
       [features]="features"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'TOP_3_BOX'"
     ></app-top-three>
     <app-versus-box
       [products]="products"
       [features]="features"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'VERSUS_BOX'"
     ></app-versus-box>
@@ -53,13 +53,13 @@
     <app-product-slider
       *ngSwitchCase="'PRODUCT_SLIDER'"
       [products]="products"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
     ></app-product-slider>
     <app-product-collage
       *ngSwitchCase="'PRODUCT_COLLAGE'"
       [products]="products"
-      (editProduct)="openDialog($event)"
+      (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
     ></app-product-collage>
     <!-- ... other components -->
@@ -68,7 +68,7 @@
 
   <!-- FORM TO BUILD THE TOOL -->
   <ng-template #formDialog>
-    <h2 mat-dialog-title>{{ newProduct ? "Add product" : "Edit product" }}</h2>
+    <h2 mat-dialog-title>{{ newProduct ? "Add" : "Edit" }}</h2>
     <mat-dialog-content>
       <form [formGroup]="productForm" class="flex flex-col w-full">
         <!-- ADD NEW LINK -->
@@ -112,6 +112,61 @@
             </mat-form-field>
           </div>
         </ng-container>
+        <ng-container *ngIf="showDescription">
+          <!-- Quill Editor -->
+          <app-text-editor
+            height="h-48"
+            [form]="productForm"
+            control="description"
+          ></app-text-editor>
+        </ng-container>
+        <ng-container *ngIf="showProsAndCons === true">
+          <div
+            class="flex flex-col lg:flex-row items-center justify-center gap-2"
+          >
+            <ng-container formArrayName="pros">
+              <div class="flex flex-col w-full lg:w-1/2">
+                <div
+                  class="flex items-center gap-x-1"
+                  *ngFor="let pro of pros.controls; let i = index"
+                  [formGroupName]="i"
+                >
+                  <button (click)="removePro(i)">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+
+                  <mat-form-field class="w-full">
+                    <mat-label>Pro:</mat-label>
+                    <input matInput type="text" formControlName="pro" />
+                  </mat-form-field>
+                </div>
+                <button (click)="addPro()">
+                  <mat-icon class="text-green-800">add_circle</mat-icon>
+                </button>
+              </div>
+            </ng-container>
+            <ng-container formArrayName="cons">
+              <div class="flex flex-col w-full lg:w-1/2">
+                <div
+                  class="flex items-center gap-x-1"
+                  *ngFor="let con of cons.controls; let i = index"
+                  [formGroupName]="i"
+                >
+                  <button (click)="removeCon(i)">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <mat-form-field class="w-full">
+                    <mat-label>Con:</mat-label>
+                    <input matInput type="text" formControlName="con" />
+                  </mat-form-field>
+                </div>
+                <button (click)="addCon()">
+                  <mat-icon class="text-red-800">add_circle</mat-icon>
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
       </form>
       <ng-container *ngIf="showFeatures">
         <form [formGroup]="featuresForm">
@@ -122,7 +177,9 @@
               [formGroupName]="i"
             >
               <mat-form-field class="w-full">
-                <mat-label>{{ control.value.name }}</mat-label>
+                <mat-label>{{
+                  control.value.name ? control.value.name : "Feature " + (i + 1)
+                }}</mat-label>
                 <input matInput type="text" formControlName="value" required />
               </mat-form-field>
             </div>
@@ -148,5 +205,7 @@
   </ng-template>
 </ng-container>
 <ng-template #loader>
-  <app-loader></app-loader>
+  <div class="flex items-center justify-center w-full p-5">
+    <app-loader></app-loader>
+  </div>
 </ng-template>

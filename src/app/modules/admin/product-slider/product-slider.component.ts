@@ -8,8 +8,9 @@ import {
   Output,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Product } from 'src/app/core/models/product';
+import { LayoutService } from 'src/app/core/services/layout.service';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 import Swiper, { SwiperOptions } from 'swiper';
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
@@ -42,14 +43,18 @@ export class ProductSliderComponent implements OnDestroy, AfterViewInit {
     slideNextClass: 'next-class',
   };
 
+  isHandset$: Observable<boolean>;
+
   private unsubscribeAll = new Subject();
 
   constructor(
     private routeDataService: RouteDataService,
+    private layoutService: LayoutService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {
     this.updateRouteData();
+    this.isHandset$ = this.layoutService.isHandset$;
   }
 
   ngAfterViewInit(): void {
@@ -62,12 +67,10 @@ export class ProductSliderComponent implements OnDestroy, AfterViewInit {
     this.routeDataService.setRouteData(initialData);
     // Update with the required route data
     const updatedData = {
-      second_cta: 'Add card',
+      second_cta: 'Add slide',
       second_action: 'ADD_TOOL',
       second_icon: 'add_circle',
-      third_cta: 'Add feature',
-      third_action: 'ADD_FEATURE',
-      third_icon: 'checklist',
+
       // Other properties...
     };
     const mergedData = { ...initialData, ...updatedData }; // merge new data with current data

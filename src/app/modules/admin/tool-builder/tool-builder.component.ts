@@ -22,6 +22,8 @@ export class ToolBuilderComponent {
   @ViewChild('formDialog') formDialog!: TemplateRef<any>;
   showFeatures: boolean = true;
   showForm: boolean = true;
+  showDescription: boolean = false;
+  showProsAndCons: boolean = false;
   justTitle: boolean = false;
   selectedTool$: Observable<AffiliateTool>;
   productForm!: FormGroup;
@@ -81,6 +83,16 @@ export class ToolBuilderComponent {
 
           if (this.tool.type === 'PRODUCT_SLIDER') this.justTitle = true;
 
+          if (
+            this.tool.type === 'SUMMARY_BOX' ||
+            this.tool.type === 'PRODUCT_BOX'
+          ) {
+            this.showDescription = true;
+          }
+          if (this.tool.type === 'SUMMARY_BOX') {
+            this.showProsAndCons = true;
+          }
+
           Array.isArray(tool.data)
             ? (this.products = tool.data)
             : (this.product = tool.data!);
@@ -118,6 +130,9 @@ export class ToolBuilderComponent {
         '',
         [Validators.required, Validators.min(1), Validators.max(10)],
       ], // Added range validation for scores between 1 and 10.
+      description: [''],
+      pros: this.fb.array([]),
+      cons: this.fb.array([]),
     });
   }
 
@@ -125,18 +140,73 @@ export class ToolBuilderComponent {
     return this.featuresForm.get('features') as FormArray;
   }
 
-  openDialog({ data, index }: { data?: Product; index?: any } = {}) {
+  get pros() {
+    return this.productForm.get('pros') as FormArray;
+  }
+
+  get cons() {
+    return this.productForm.get('cons') as FormArray;
+  }
+
+  addPro(pro?: string) {
+    const newPro = this.fb.group({
+      pro: [''],
+    });
+
+    pro && newPro.patchValue({ pro: pro });
+
+    this.pros.push(newPro);
+  }
+
+  removePro(i: number) {
+    this.pros.removeAt(i);
+  }
+
+  addCon(con?: string) {
+    const newCon = this.fb.group({
+      con: [''],
+    });
+
+    con && newCon.patchValue({ con: con });
+    this.cons.push(newCon);
+  }
+
+  removeCon(i: number) {
+    this.cons.removeAt(i);
+  }
+
+  openDialog(
+    { data, index }: { data?: Product; index?: number } = {},
+    multiple?: boolean
+  ) {
     // Prep the data first
     if (data) {
       //EDIT the data including the features
       this.newProduct = false;
       this.productForm.patchValue(data);
-      this.features.map((feature) => {
-        const featureForm = this.fb.group({
-          name: feature.name,
-          value: feature.values[data.id],
+
+      if (this.tool.type === 'SUMMARY_BOX') {
+        data.pros?.map((pro) => {
+          this.addPro(pro);
         });
-        this.globalFeatures.push(featureForm);
+        data.cons?.map((con) => {
+          this.addCon(con);
+        });
+      }
+
+      this.features.map((feature) => {
+        if (multiple) {
+          const featureForm = this.fb.group({
+            name: feature.name,
+            value: feature.values[data.id],
+          });
+          this.globalFeatures.push(featureForm);
+        } else {
+          const featureForm = this.fb.group({
+            value: feature,
+          });
+          this.globalFeatures.push(featureForm);
+        }
       });
     } else {
       // Add new data including the features
@@ -144,6 +214,12 @@ export class ToolBuilderComponent {
       this.productForm.patchValue({
         id: uuid(),
       });
+
+      if (this.tool.type === 'SUMMARY_BOX') {
+        this.addPro();
+        this.addCon();
+      }
+
       this.features.map((feature) => {
         const featureForm = this.fb.group({
           name: feature.name,
@@ -162,11 +238,32 @@ export class ToolBuilderComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         if (!!data) {
-          this.editProduct(
-            this.productForm.value,
-            this.featuresForm.value,
-            index!
-          );
+          if (multiple) {
+            this.editProduct(
+              this.productForm.value,
+              this.featuresForm.value,
+              index,
+              multiple
+            );
+          } else {
+            let product: any = this.productForm.value;
+            // IF SUMMARY BOX, format the pros and cons before passing it as Product type
+            if (this.tool.type === 'SUMMARY_BOX') {
+              const pros: string[] = [];
+              const cons: string[] = [];
+
+              product.pros.map((pro: any) => pros.push(pro.pro));
+              product.cons.map((con: any) => cons.push(con.con));
+
+              product = {
+                ...product,
+                cons: cons,
+                pros: pros,
+              };
+              console.log(product);
+            }
+            this.editProduct(product, this.featuresForm.value);
+          }
         } else {
           this.addProduct(this.featuresForm.value);
         }
@@ -178,15 +275,30 @@ export class ToolBuilderComponent {
     });
   }
 
-  editProduct(product: Product, { features }: any, index: number) {
-    //insert edit product in products array
-    this.products.splice(index, 1, product);
+  editProduct(
+    product: Product,
+    { features }: any,
+    index?: number,
+    multiple?: boolean
+  ) {
+    if (multiple) {
+      //insert edit product in products array
+      this.products.splice(index!, 1, product);
+    } else {
+      this.product = product;
+    }
 
     //Replace the product's features in the features array
-    this.features.map((feature) => {
-      features.map((feat: any) => {
-        if (feat.name === feature.name) {
-          feature.values[product.id] = feat.value;
+    this.features.map((feature, i: number) => {
+      features.map((feat: any, j: number) => {
+        if (multiple) {
+          if (feat.name === feature.name) {
+            feature.values[product.id] = feat.value;
+          }
+        } else {
+          if (i === j) {
+            this.features[i] = feat.value;
+          }
         }
       });
     });
@@ -229,10 +341,20 @@ export class ToolBuilderComponent {
 
   saveTool() {
     const merge = false;
-
-    this.toolsService
-      .saveTool(this.tool, this.products, this.features, merge)
-      .then(() => this.confirmationService.handleSuccess('Successfully saved!'))
-      .catch((err) => this.confirmationService.handleError(err));
+    if (this.products.length > 0) {
+      this.toolsService
+        .saveTool(this.tool, this.products, this.features, merge)
+        .then(() =>
+          this.confirmationService.handleSuccess('Successfully saved!')
+        )
+        .catch((err) => this.confirmationService.handleError(err));
+    } else {
+      this.toolsService
+        .saveTool(this.tool, this.product, this.features, merge)
+        .then(() =>
+          this.confirmationService.handleSuccess('Successfully saved!')
+        )
+        .catch((err) => this.confirmationService.handleError(err));
+    }
   }
 }

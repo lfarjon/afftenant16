@@ -21,6 +21,7 @@ import { VersusBoxModule } from '../versus-box/versus-box.module';
 import { SummaryBoxModule } from '../summary-box/summary-box.module';
 import { ProductSliderModule } from '../product-slider/product-slider.module';
 import { ProductCollageModule } from '../product-collage/product-collage.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [ToolBuilderComponent],
@@ -45,6 +46,7 @@ import { ProductCollageModule } from '../product-collage/product-collage.module'
     SummaryBoxModule,
     ProductSliderModule,
     ProductCollageModule,
+    MatIconModule,
   ],
 })
 export class ToolBuilderModule {}

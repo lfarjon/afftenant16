@@ -11,15 +11,9 @@ export interface Product {
   buttonLink: string;
   buttonText: string;
   ratings?: number;
-}
-
-export interface ProductBox extends Product {
-  description: string;
-}
-
-export interface SummaryBox extends ProductBox {
-  pros: string[];
-  cons: string[];
+  description?: string;
+  pros?: string[];
+  cons?: string[];
 }
 
 export const createProducts = (links: Link[]): Product[] => {
@@ -38,7 +32,7 @@ export const createProducts = (links: Link[]): Product[] => {
   });
 };
 
-export const createProduct = (link: Link): ProductBox => ({
+export const createProduct = (link: Link): Product => ({
   id: uuid(),
   linkId: link.id,
   title: link.title,
@@ -66,7 +60,7 @@ export const createVSBox = (links: Link[]): Product[] => {
   });
 };
 
-export const createSummaryBox = (link: Link): SummaryBox => ({
+export const createSummaryBox = (link: Link): Product => ({
   id: uuid(),
   linkId: link.id,
   title: link.title,

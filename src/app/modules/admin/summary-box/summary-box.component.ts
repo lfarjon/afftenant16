@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Feature } from 'src/app/core/models/feature';
-import { SummaryBox } from 'src/app/core/models/product';
+import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { RouteDataService } from 'src/app/core/services/route-data.service';
   styleUrls: ['./summary-box.component.scss'],
 })
 export class SummaryBoxComponent {
-  @Input() product!: SummaryBox;
+  @Input() product!: Product;
   @Input() features!: Feature[];
   @Output() editProduct = new EventEmitter<any>();
   @Output() deleteProduct = new EventEmitter<any>();
@@ -28,9 +28,6 @@ export class SummaryBoxComponent {
     this.routeDataService.setRouteData(initialData);
     // Update with the required route data
     const updatedData = {
-      second_cta: 'Add card',
-      second_action: 'ADD_TOOL',
-      second_icon: 'add_circle',
       third_cta: 'Add feature',
       third_action: 'ADD_FEATURE',
       third_icon: 'checklist',
@@ -40,17 +37,9 @@ export class SummaryBoxComponent {
     this.routeDataService.setRouteData(mergedData);
   }
 
-  edit(data: any, index: number) {
+  edit(data: any) {
     this.editProduct.emit({
       data: data,
-      index: index,
-    });
-  }
-
-  delete(data: any, index: number) {
-    this.deleteProduct.emit({
-      data: data,
-      index: index,
     });
   }
 }
