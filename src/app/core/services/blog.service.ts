@@ -13,7 +13,9 @@ export class BlogService {
   constructor(private afs: AngularFirestore) {}
 
   getArticles(): AngularFirestoreCollection<Article> {
-    return this.afs.collection('articles');
+    return this.afs.collection('articles', (ref) =>
+      ref.where('websiteId', '==', JSON.parse(localStorage.getItem('website')!))
+    );
   }
 
   getArticle(id: string): AngularFirestoreDocument<any> {

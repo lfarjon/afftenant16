@@ -63,8 +63,8 @@ export const adminRoutes: Route[] = [
       ),
     data: {
       title: 'Article',
-      // cta: 'Save article',
-      // action: 'SAVE_ARTICLE',
+      cta: 'Publish',
+      action: 'PUBLISH_ARTICLE',
     },
   },
   {

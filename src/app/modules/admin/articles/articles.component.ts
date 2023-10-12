@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { Article } from 'src/app/core/models/article';
+import { lorem } from 'src/app/core/models/lorem';
 import { BlogService } from 'src/app/core/services/blog.service';
 import { CtaService } from 'src/app/core/services/cta.service';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
@@ -64,15 +65,17 @@ export class ArticlesComponent implements OnInit {
     const article: Article = {
       articleId: uuid(),
       websiteId: JSON.parse(localStorage.getItem('website')!),
-      title: '',
+      title: lorem.generateSentences(1),
       handle: '',
       content: '',
-      last_saved: new Date(),
+      tags: [''],
+      updated_at: new Date(),
+      published_at: new Date(),
       metafields: {
         title: '',
         description: '',
       },
-      status: 'DRAFT',
+      published: false,
     };
 
     this.blogService.saveArticle(article).then(() => {

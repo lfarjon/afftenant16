@@ -33,6 +33,15 @@ import { SecondaryMenuComponent } from 'src/app/modules/admin/theme/blocks/secon
 import { AnnouncementComponent } from 'src/app/modules/admin/theme/blocks/announcement/announcement.component';
 import { FooterEmailComponent } from 'src/app/modules/admin/theme/blocks/footer-email/footer-email.component';
 import { CopyrightComponent } from 'src/app/modules/admin/theme/blocks/copyright/copyright.component';
+import { RankingCardsComponent } from 'src/app/modules/admin/ranking-cards/ranking-cards.component';
+import { ComparisonTableComponent } from 'src/app/modules/admin/comparison-table/comparison-table.component';
+import { ComparisonMatrixComponent } from 'src/app/modules/admin/comparison-matrix/comparison-matrix.component';
+import { ProductBoxComponent } from 'src/app/modules/admin/product-box/product-box.component';
+import { TopThreeComponent } from 'src/app/modules/admin/top-three/top-three.component';
+import { SummaryBoxComponent } from 'src/app/modules/admin/summary-box/summary-box.component';
+import { VersusBoxComponent } from 'src/app/modules/admin/versus-box/versus-box.component';
+import { ProductSliderComponent } from 'src/app/modules/admin/product-slider/product-slider.component';
+import { ProductCollageComponent } from 'src/app/modules/admin/product-collage/product-collage.component';
 
 export const componentTypeMapping: Record<string, Type<any>> = {
   'theme-header': HeaderComponent,
@@ -73,4 +82,16 @@ export const blockTypeMapping: Record<string, Type<any>> = {
   'block-announcement': AnnouncementComponent,
   'block-email-signup': FooterEmailComponent,
   'block-copyright': CopyrightComponent,
+};
+
+export const affiliateToolMapping: Record<string, Type<any>> = {
+  'aff-ranking-cards': RankingCardsComponent,
+  'aff-comparison-table': ComparisonTableComponent,
+  'aff-comparison-matrix': ComparisonMatrixComponent,
+  'aff-product-box': ProductBoxComponent,
+  'aff-top-3-box': TopThreeComponent,
+  'aff-summary-box': SummaryBoxComponent,
+  'aff-versus-box': VersusBoxComponent,
+  'aff-product-slider': ProductSliderComponent,
+  'aff-product-collage': ProductCollageComponent,
 };

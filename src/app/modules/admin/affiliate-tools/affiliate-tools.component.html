@@ -4,7 +4,7 @@
       <app-table
         class="w-full"
         [data]="tools"
-        [displayedColumns]="['title', 'last_saved']"
+        [displayedColumns]="['title', 'updated_at']"
         (selectionChange)="handleSelectionChange($event)"
         (rowAction)="handleAction($event)"
       ></app-table>

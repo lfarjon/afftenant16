@@ -4,7 +4,7 @@ import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-comparison-table',
+  selector: 'aff-comparison-table',
   templateUrl: './comparison-table.component.html',
   styleUrls: ['./comparison-table.component.scss'],
 })

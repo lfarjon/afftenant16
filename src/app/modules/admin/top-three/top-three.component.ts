@@ -4,7 +4,7 @@ import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-top-three',
+  selector: 'aff-top-three',
   templateUrl: './top-three.component.html',
   styleUrls: ['./top-three.component.scss'],
 })

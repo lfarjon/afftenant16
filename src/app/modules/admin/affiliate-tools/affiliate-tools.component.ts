@@ -172,7 +172,7 @@ export class AffiliateToolsComponent {
       id: uuid(),
       websiteId: JSON.parse(localStorage.getItem('website')!),
       title: this.toolForm.value.title,
-      last_saved: new Date(),
+      updated_at: new Date(),
       metafields: {
         title: '',
         description: '',

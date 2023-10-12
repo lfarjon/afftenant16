@@ -17,7 +17,7 @@ import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 @Component({
-  selector: 'app-product-slider',
+  selector: 'aff-product-slider',
   templateUrl: './product-slider.component.html',
   styleUrls: ['./product-slider.component.scss'],
 })

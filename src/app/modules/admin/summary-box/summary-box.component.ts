@@ -4,7 +4,7 @@ import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-summary-box',
+  selector: 'aff-summary-box',
   templateUrl: './summary-box.component.html',
   styleUrls: ['./summary-box.component.scss'],
 })

@@ -1,57 +1,30 @@
 <ng-container *ngIf="article$ | async as article">
-  <div class="flex flex-col lg:flex-row min-h-screen p-5 w-full gap-5">
-    <div class="flex flex-col w-full">
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input matInput type="text" />
-      </mat-form-field>
-      <app-text-editor></app-text-editor>
-    </div>
-
-    <div class="lg:w-2/5 w-full flex flex-col">
-      <div class="rounded-lg p-2 flex flex-col">
-        <span>
-          <mat-slide-toggle>{{ article.status }}</mat-slide-toggle>
-        </span>
-        <span>
-          <span class="font-semibold">Last saved:</span>
-          {{ article.last_saved | date : "short" }}
-        </span>
-        <div class="border-t -mx-2 mt-2 p-2 flex items-center justify-between">
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6 text-warn"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-              />
-            </svg>
-          </button>
-          <div class="flex gap-5">
-            <button
-              *ngIf="article.status === 'PUBLISHED'"
-              mat-stroked-button
-              color="primary"
-            >
-              Draft
-            </button>
-            <button mat-raised-button color="primary">
-              {{ article.status === "DRAFT" ? "Publish" : "Update" }}
-            </button>
-          </div>
-        </div>
+  <form [formGroup]="articleForm">
+    <div class="flex flex-col lg:flex-row min-h-screen p-5 w-full gap-5">
+      <div class="flex flex-col w-full">
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input matInput type="text" formControlName="title" />
+        </mat-form-field>
+        <app-text-editor height="h-48" [form]="articleForm" control="content">
+        </app-text-editor>
       </div>
-      <mat-form-field class="w-full">
-        <mat-label>Tags</mat-label>
-        <input matInput type="text" />
-      </mat-form-field>
+
+      <div class="lg:w-2/5 w-full flex flex-col">
+        <div class="rounded-lg p-2 flex flex-col">
+          <!-- <span>
+          <mat-slide-toggle>{{ article.status }}</mat-slide-toggle>
+        </span> -->
+          <span>
+            <span class="font-semibold">Last saved:</span>
+            {{ article.updated_at | date : "short" }}
+          </span>
+        </div>
+        <mat-form-field class="w-full">
+          <mat-label>Tags</mat-label>
+          <input matInput type="text" />
+        </mat-form-field>
+      </div>
     </div>
-  </div>
+  </form>
 </ng-container>

@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-ranking-cards',
+  selector: 'aff-ranking-cards',
   templateUrl: './ranking-cards.component.html',
   styleUrls: ['./ranking-cards.component.scss'],
 })

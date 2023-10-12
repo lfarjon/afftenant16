@@ -14,7 +14,9 @@ export class AffiliateToolsService {
   constructor(private afs: AngularFirestore) {}
 
   getTools(): AngularFirestoreCollection<AffiliateTool> {
-    return this.afs.collection('affiliate-tools');
+    return this.afs.collection('affiliate-tools', (ref) =>
+      ref.where('websiteId', '==', JSON.parse(localStorage.getItem('website')!))
+    );
   }
 
   getTool(id: string): AngularFirestoreDocument<any> {
@@ -28,6 +30,12 @@ export class AffiliateToolsService {
     merge?: boolean
   ): Promise<any> {
     const toolRef = this.afs.doc('affiliate-tools/' + tool?.id);
+
+    tool = {
+      ...tool,
+      updated_at: new Date(),
+    };
+
     if (data) {
       tool = {
         ...tool,

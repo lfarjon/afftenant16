@@ -1,15 +1,27 @@
 <div class="flex min-h-screen w-full p-5">
   <ng-container *ngIf="articles$ | async as articles; else loader">
-    <app-table
-      class="w-full"
-      [data]="articles"
-      [displayedColumns]="['title', 'status', 'last_saved']"
-      (selectionChange)="handleSelectionChange($event)"
-      (rowAction)="handleAction($event)"
-    ></app-table>
+    <ng-container *ngIf="articles.length > 0; else addArticle">
+      <app-table
+        class="w-full"
+        [data]="articles"
+        [displayedColumns]="['title', 'published', 'updated_at']"
+        (selectionChange)="handleSelectionChange($event)"
+        (rowAction)="handleAction($event)"
+      ></app-table>
+    </ng-container>
   </ng-container>
-
   <ng-template #loader>
     <app-loader class="m-auto"></app-loader>
+  </ng-template>
+  <ng-template #addArticle>
+    <div class="mx-auto mt-10 flex flex-col">
+      <span class="font-semibold text-center mb-5"> No articles yet. </span>
+      <app-cta
+        buttonText="Add an article"
+        action="NEW_ARTICLE"
+        color="primary"
+        type="raised"
+      ></app-cta>
+    </div>
   </ng-template>
 </div>

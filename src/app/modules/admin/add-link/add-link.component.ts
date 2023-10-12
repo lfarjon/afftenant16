@@ -112,7 +112,10 @@ export class AddLinkComponent {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.categories.push({ name: value.trim() });
+      this.categories.push({
+        name: value.trim(),
+        websiteId: JSON.parse(localStorage.getItem('website')!),
+      });
     }
 
     if (input) {
@@ -132,7 +135,10 @@ export class AddLinkComponent {
   selectedCategory(event: any): void {
     const selectedName = event.option.viewValue;
     if (!this.categories.some((category) => category.name === selectedName)) {
-      this.categories.push({ name: selectedName });
+      this.categories.push({
+        name: selectedName,
+        websiteId: JSON.parse(localStorage.getItem('website')!),
+      });
     }
   }
 
@@ -162,6 +168,7 @@ export class AddLinkComponent {
       ...link,
       categories: this.categories,
       published_at: new Date(),
+      websiteId: JSON.parse(localStorage.getItem('website')!),
     };
   }
 

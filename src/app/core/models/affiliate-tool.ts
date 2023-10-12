@@ -15,7 +15,7 @@ export interface AffiliateTool {
     | 'PRODUCT_SLIDER'
     | 'PRODUCT_COLLAGE';
   multiple: boolean;
-  last_saved: Date;
+  updated_at: Date;
   title: string;
   metafields: {
     title: string;

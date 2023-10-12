@@ -4,11 +4,13 @@ export interface Article {
   title: string;
   handle: string;
   content: string;
+  tags: string[];
   metafields: {
     title: string;
     description: string;
   };
+  published: boolean;
   author?: string | null;
-  last_saved?: Date;
-  status: 'DRAFT' | 'PUBLISHED';
+  published_at?: Date;
+  updated_at?: Date;
 }

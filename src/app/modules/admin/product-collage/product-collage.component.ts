@@ -4,7 +4,7 @@ import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-product-collage',
+  selector: 'aff-product-collage',
   templateUrl: './product-collage.component.html',
   styleUrls: ['./product-collage.component.scss'],
 })

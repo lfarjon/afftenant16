@@ -12,7 +12,7 @@ import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-comparison-matrix',
+  selector: 'aff-comparison-matrix',
   templateUrl: './comparison-matrix.component.html',
   styleUrls: ['./comparison-matrix.component.scss'],
 })

@@ -1,61 +1,61 @@
 <ng-container *ngIf="selectedTool$ | async as selectedTool; else loader">
   <!-- Dynamic tool content will be displayed here -->
   <div [ngSwitch]="selectedTool.type">
-    <app-ranking-cards
+    <aff-ranking-cards
       [products]="products"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'RANKING_CARDS'"
-    ></app-ranking-cards>
-    <app-comparison-matrix
+    ></aff-ranking-cards>
+    <aff-comparison-matrix
       *ngSwitchCase="'COMPARISON_MATRIX'"
       [products]="products"
       [globalFeatures]="globalFeatures"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
-    ></app-comparison-matrix>
-    <app-comparison-table
+    ></aff-comparison-matrix>
+    <aff-comparison-table
       [products]="products"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'COMPARISON_TABLE'"
-    ></app-comparison-table>
-    <app-top-three
+    ></aff-comparison-table>
+    <aff-top-three
       [products]="products"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'TOP_3_BOX'"
-    ></app-top-three>
-    <app-versus-box
+    ></aff-top-three>
+    <aff-versus-box
       [products]="products"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
       *ngSwitchCase="'VERSUS_BOX'"
-    ></app-versus-box>
-    <app-product-box
+    ></aff-versus-box>
+    <aff-product-box
       *ngSwitchCase="'PRODUCT_BOX'"
       [product]="product"
       (editProduct)="openDialog($event)"
       (deleteProduct)="deleteProduct($event)"
-    ></app-product-box>
-    <app-summary-box
+    ></aff-product-box>
+    <aff-summary-box
       *ngSwitchCase="'SUMMARY_BOX'"
       [product]="product"
       (editProduct)="openDialog($event)"
       (deleteProduct)="deleteProduct($event)"
-    ></app-summary-box>
-    <app-product-slider
+    ></aff-summary-box>
+    <aff-product-slider
       *ngSwitchCase="'PRODUCT_SLIDER'"
       [products]="products"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
-    ></app-product-slider>
-    <app-product-collage
+    ></aff-product-slider>
+    <aff-product-collage
       *ngSwitchCase="'PRODUCT_COLLAGE'"
       [products]="products"
       (editProduct)="openDialog($event, true)"
       (deleteProduct)="deleteProduct($event)"
-    ></app-product-collage>
+    ></aff-product-collage>
     <!-- ... other components -->
     <div *ngSwitchDefault>Select a tool to begin.</div>
   </div>

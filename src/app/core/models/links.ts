@@ -3,6 +3,7 @@ import { Category } from './category';
 
 export interface Link {
   id: string;
+  websiteId: string;
   imageUrl: string;
   active: boolean;
   title: string;

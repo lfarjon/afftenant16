@@ -4,7 +4,7 @@ import { Product } from 'src/app/core/models/product';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 
 @Component({
-  selector: 'app-versus-box',
+  selector: 'aff-versus-box',
   templateUrl: './versus-box.component.html',
   styleUrls: ['./versus-box.component.scss'],
 })
