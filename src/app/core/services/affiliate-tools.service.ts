@@ -4,8 +4,8 @@ import {
   AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { AffiliateTool } from '../models/affiliate-tool';
 import { GlobalFeature } from '../models/feature';
+import { DynamicSection } from '../models/dynamic-section';
 
 @Injectable({
   providedIn: 'root',
@@ -13,23 +13,23 @@ import { GlobalFeature } from '../models/feature';
 export class AffiliateToolsService {
   constructor(private afs: AngularFirestore) {}
 
-  getTools(): AngularFirestoreCollection<AffiliateTool> {
+  getTools(): AngularFirestoreCollection<DynamicSection> {
     return this.afs.collection('affiliate-tools', (ref) =>
       ref.where('websiteId', '==', JSON.parse(localStorage.getItem('website')!))
     );
   }
 
-  getTool(id: string): AngularFirestoreDocument<any> {
-    return this.afs.doc<AffiliateTool>('affiliate-tools/' + id);
+  getTool(sectionId: string): AngularFirestoreDocument<any> {
+    return this.afs.doc<DynamicSection>('affiliate-tools/' + sectionId);
   }
 
   saveTool(
-    tool: AffiliateTool,
+    tool: DynamicSection,
     data?: any,
     globalFeatures?: GlobalFeature[],
     merge?: boolean
   ): Promise<any> {
-    const toolRef = this.afs.doc('affiliate-tools/' + tool?.id);
+    const toolRef = this.afs.doc('affiliate-tools/' + tool?.sectionId);
 
     tool = {
       ...tool,

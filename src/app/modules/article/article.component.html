@@ -1,0 +1,12 @@
+<ng-container *ngIf="article$ | async as article">
+  <div class="p-5">
+    <div *ngFor="let sections of article.templateSections; let i = index">
+      <div>
+        <ng-template dynamicChildLoader></ng-template>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<!-- <ng-container *ngFor="let content of articleForm.value.content">
+    <app-quill-view [content]="content.editorContent"></app-quill-view>
+  </ng-container> -->

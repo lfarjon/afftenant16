@@ -1,0 +1,58 @@
+<div
+  id="toolbar"
+  class="flex justify-between items-center gap-x-2 border-t border-b border-slate-200 -mx-5"
+>
+  <!-- Custom Toolbar -->
+  <div class="flex items-center gap-x-2 px-5 p-2">
+    <button class="flex items-center" (click)="applyFormat('bold', true)">
+      <mat-icon>format_bold</mat-icon>
+    </button>
+    <button class="flex items-center" (click)="applyFormat('italic', true)">
+      <mat-icon>format_italic</mat-icon>
+    </button>
+    <button class="flex items-center" (click)="applyFormat('align', 'center')">
+      <mat-icon>format_align_center</mat-icon>
+    </button>
+    <button class="flex items-center" (click)="applyFormat('code', true)">
+      <mat-icon>code</mat-icon>
+    </button>
+    <button class="flex items-center" (click)="triggerImageUpload()">
+      <mat-icon>image</mat-icon>
+    </button>
+    <input
+      type="file"
+      #imageInput
+      (change)="imageSelected($event)"
+      style="display: none"
+    />
+  </div>
+  <div class="flex items-center px-5 p-2">
+    <button class="flex items-center" (click)="toggleFullscreen()">
+      <mat-icon>{{
+        (fullscreen$ | async) ? "fullscreen_exit" : "fullscreen"
+      }}</mat-icon>
+    </button>
+  </div>
+  <!-- Your editors go here -->
+  <!-- Add more controls as per your need -->
+</div>
+
+<app-quill-toolbar></app-quill-toolbar>
+<form [formGroup]="form">
+  <ng-container formArrayName="content">
+    <div
+      *ngFor="let editorControl of contentArray.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <quill-editor
+        formControlName="editorContent"
+        [modules]="editorModules"
+        (onEditorCreated)="editorCreated($event)"
+        (onContentChanged)="updateContent(i, $event)"
+        (click)="activateEditor('editor-' + i)"
+        class="overflow-scroll w-full border border-slate-100 rounded"
+      >
+      </quill-editor>
+    </div>
+  </ng-container>
+</form>

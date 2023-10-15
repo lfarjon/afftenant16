@@ -1,4 +1,9 @@
-import { AfterViewChecked, ChangeDetectorRef, Component } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+} from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { Observable, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { adminNavListItems } from 'src/app/core/menus/admin.menu';
@@ -13,7 +18,7 @@ import { WebsiteService } from 'src/app/core/services/website.service';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent implements AfterViewChecked {
+export class AdminComponent implements AfterViewChecked, OnDestroy {
   navListItems: (NavListWithIcon | NavListWithLabel)[] = adminNavListItems;
   routeData: Data;
   isHandset$: Observable<boolean>;

@@ -1,0 +1,54 @@
+<div class="w-full grid grid-cols-12 p-5 relative">
+  <!-- Absolute Actions -->
+  <div class="flex absolute -top-5 right-5 items-center">
+    <button
+      (click)="edit(data)"
+      class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <div class="md:col-span-6 col-span-12 flex items-center justify-center">
+    <img
+      *ngIf="data.image"
+      [src]="data.image"
+      alt="{{ data.title }}"
+      class="object-contain"
+    />
+  </div>
+  <div
+    class="md:col-span-6 col-span-12 flex flex-col items-start justify-center bg-slate-100 p-5 md:p-10 drop-shadow-md rounded gap-y-4"
+  >
+    <div class="flex flex-col justify-center items-start gap-y-2">
+      <!-- Highlighted Badge -->
+      <span
+        class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+      >
+        {{ data.badge }}
+      </span>
+      <!-- data Title -->
+      <h2 class="text-xl lg:text-3xl font-semibold">
+        {{ data.title }}
+      </h2>
+    </div>
+    <!-- Star Rating & Score -->
+    <app-star-rating [ratings]="data.ratings"></app-star-rating>
+    <!-- Features -->
+    <ul class="relative">
+      <li *ngFor="let feature of data.localFeatures">
+        {{ feature.name }}{{ feature.value }}
+      </li>
+    </ul>
+    <!-- Description -->
+    <div [innerHTML]="data.description" class="quill-content"></div>
+
+    <!-- CTA -->
+    <div class="w-full flex flex-col justify-center">
+      <button
+        class="text-white bg-primary py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
+      >
+        {{ data.buttonText }}
+      </button>
+    </div>
+  </div>
+</div>

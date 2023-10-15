@@ -1,0 +1,71 @@
+<!-- UI (FINAL RESULT) -->
+<div class="grid grid-cols-12 gap-4 p-5">
+  <ng-container *ngFor="let card of data; let i = index">
+    <div
+      class="col-span-12 lg:col-span-4 relative flex flex-col p-4 bg-white shadow-md rounded-md gap-y-5"
+    >
+      <!-- Absolute Actions -->
+      <div class="flex absolute -top-5 left-5 items-center w-full">
+        <button
+          (click)="delete(card, i)"
+          class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button
+          (click)="edit(card, i)"
+          class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <!-- Image Section -->
+      <div class="w-full flex flex-col justify-center">
+        <img
+          *ngIf="card.image"
+          [src]="card.image"
+          alt="{{ card.title }}"
+          class="object-contain h-48"
+        />
+      </div>
+
+      <!-- Middle Section -->
+      <div class="flex flex-col w-full gap-y-2.5">
+        <!-- Highlighted Badge -->
+        <span
+          class="mx-auto bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+        >
+          {{ card.badge }}
+        </span>
+        <!-- Product Title -->
+        <h2 class="text-xl font-semibold text-center">
+          {{ card.title }}
+        </h2>
+        <!-- Star Rating & Score -->
+        <div class="mx-auto flex items-center text-center">
+          <app-star-rating [ratings]="card.ratings"></app-star-rating>
+        </div>
+        <!-- Features -->
+        <ul class="">
+          <li
+            *ngFor="let feature of card.localFeatures"
+            class="flex items-center"
+          >
+            <span class="mr-1 font-semibold">{{ feature.name }}:</span
+            ><span>{{ feature.value }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- (CTA) -->
+      <div class="w-full flex flex-col justify-center">
+        <button
+          class="text-white bg-amazonBlue py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
+        >
+          {{ card.buttonText }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

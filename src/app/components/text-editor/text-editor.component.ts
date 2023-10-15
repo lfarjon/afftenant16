@@ -3,6 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { QuillEditorComponent } from 'ngx-quill';
 import Quill from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
+import Image from 'quill/formats/image';
+
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 @Component({
@@ -17,8 +19,18 @@ export class TextEditorComponent {
   @Input() public form!: FormGroup;
   @Input() control!: string;
   @Input() height!: string;
-  editorModules = {
+  editorModules: any = {
     toolbar: '#toolbar',
     blotFormatter: {},
+    formats: [...'height', 'width', 'class', 'style'],
   };
+
+  // In your app-text-editor component
+  addTextToEditor(toolType: string) {
+    const editorControl = this.form.get(this.control);
+    if (editorControl) {
+      const toolTag = `<div data-tool="${toolType}"></div>`;
+      editorControl.setValue(editorControl.value + toolTag);
+    }
+  }
 }

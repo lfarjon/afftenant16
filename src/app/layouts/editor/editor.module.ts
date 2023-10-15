@@ -13,10 +13,10 @@ import { HeaderPanelComponent } from './header-panel/header-panel.component';
 import { FooterPanelComponent } from './footer-panel/footer-panel.component';
 import { TemplatePanelComponent } from './template-panel/template-panel.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BlockEditorModule } from 'src/app/modules/admin/block-editor/block-editor.module';
+import { BlockEditorModule } from 'src/app/modules/block-editor/block-editor.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AddPageModule } from 'src/app/modules/admin/add-page/add-page.module';
+import { AddPageModule } from 'src/app/modules/add-page/add-page.module';
 import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({

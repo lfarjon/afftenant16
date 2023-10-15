@@ -9,8 +9,8 @@ import {
 import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 import { Block } from 'src/app/core/models/block';
 import { DynamicSection } from 'src/app/core/models/dynamic-section';
-import { BlockService } from 'src/app/core/services/theme-editor/block.service';
-import { TemplateService } from 'src/app/core/services/theme-editor/template.service';
+import { BlockService } from 'src/app/core/services/block.service';
+import { TemplateService } from 'src/app/core/services/template.service';
 
 @Component({
   selector: 'app-header-panel',

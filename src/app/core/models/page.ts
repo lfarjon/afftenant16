@@ -16,6 +16,7 @@ export interface Page {
   author?: string | null;
   published_at?: Date;
   url?: Record<string, unknown>;
+  published: boolean;
   templateSections: any[];
 }
 
@@ -31,6 +32,7 @@ export const defaultPages: Page[] = [
       title: 'home',
       description: '',
     },
+    published: false,
     templateSections: templateSections,
   },
   {
@@ -44,6 +46,7 @@ export const defaultPages: Page[] = [
       title: 'contact',
       description: '',
     },
+    published: false,
     templateSections: templateSections,
   },
   {
@@ -57,6 +60,7 @@ export const defaultPages: Page[] = [
       title: 'about',
       description: '',
     },
+    published: false,
     templateSections: templateSections,
   },
 ] as Page[];

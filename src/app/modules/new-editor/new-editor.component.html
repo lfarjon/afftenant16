@@ -1,0 +1,13 @@
+<div class="flex flex-row h-[calc(100vh-56px)] lg:h-[calc(100vh-64px)]">
+  <div class="flex-1 bg-white overflow-y-auto">
+    <app-article></app-article>
+  </div>
+  <div class="flex-none lg:flex lg:w-3/12 hidden bg-white overflow-y-auto">
+    <app-block-selector></app-block-selector>
+  </div>
+</div>
+
+<ng-template #bottomSheet>
+  <!-- BOTTOMSHEET -->
+  <app-block-selector></app-block-selector>
+</ng-template>

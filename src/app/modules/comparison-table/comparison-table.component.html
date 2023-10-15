@@ -1,0 +1,63 @@
+<div class="p-5">
+  <!-- UI (FINAL RESULT) -->
+  <table
+    class="mx-auto w-auto divide-y divide-gray-200 shadow-md rounded-md relative m-4"
+  >
+    <!-- Table Header -->
+    <thead>
+      <tr>
+        <!-- Colum for Image -->
+        <th>Image</th>
+        <th>Product</th>
+        <th>Ratings</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody>
+      <tr
+        *ngFor="let product of data; let i = index"
+        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      >
+        <td
+          class="w-48 h-48 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
+          <img [src]="product.image" class="w-48 object-contain" />
+        </td>
+        <td class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+          <div class="flex flex-col items-start justify-center">
+            <div class="text-xl mb-2 font-semibold">
+              {{ product.title }}
+            </div>
+            <div *ngFor="let feature of product.localFeatures">
+              <span class="mr-1 font-semibold">{{ feature.name }}:</span
+              ><span class="font-light">{{ feature.value }}</span>
+            </div>
+          </div>
+        </td>
+        <td class="px-6 py-4">
+          <app-star-rating [ratings]="product.ratings"></app-star-rating>
+        </td>
+        <td class="w-48">
+          <button
+            [attr.href]="product.buttonLink"
+            class="p-3 rounded bg-primary text-white w-48"
+          >
+            {{ product.buttonText }}
+          </button>
+        </td>
+        <td>
+          <div class="flex items-center gap-x-1">
+            <button (click)="edit(product, i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="delete(product, i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

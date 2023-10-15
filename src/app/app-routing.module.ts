@@ -10,8 +10,6 @@ export const routes: Route[] = [
     component: PublicComponent,
     path: '',
     loadChildren: () =>
-      import('src/app/modules/public/home/home.module').then(
-        (m) => m.HomeModule
-      ),
+      import('src/app/pages/home/home.module').then((m) => m.HomeModule),
   },
 ];

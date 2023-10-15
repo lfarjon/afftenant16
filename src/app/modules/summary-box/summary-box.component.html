@@ -1,0 +1,91 @@
+<div class="flex flex-col bg-white shadow-md rounded-md m-4 gap-y-10 p-4">
+  <div class="relative flex flex-col md:flex-row">
+    <div class="flex absolute -top-5 right-5 items-center">
+      <button
+        (click)="edit(data)"
+        class="m-2 bg-gray-200 w-10 h-10 flex items-center justify-center text-sm rounded-lg"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <!-- Image Section -->
+    <div class="w-full md:w-1/4 flex flex-col justify-center mb-4 md:mb-0">
+      <img
+        *ngIf="data.image"
+        [src]="data.image"
+        alt="{{ data.title }}"
+        class="object-contain"
+      />
+    </div>
+
+    <!-- Middle Section -->
+    <div class="w-full md:w-full lg:w-1/2 px-4 mb-4 md:mb-0">
+      <!-- Highlighted Badge -->
+      <span
+        class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+      >
+        {{ data.badge }}
+      </span>
+      <!-- data Title -->
+      <h2 class="text-xl font-semibold mt-2">
+        {{ data.title }}
+      </h2>
+      <!-- Features -->
+      <ul>
+        <li
+          *ngFor="let feature of data.localFeatures"
+          class="flex items-center"
+        >
+          {{ feature.name }} {{ feature.value }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right Section (CTA) -->
+    <div class="w-full md:w-1/4 flex flex-col justify-center gap-y-4">
+      <!-- Star Rating & Score -->
+      <div class="flex items-center mt-2">
+        <app-star-rating [ratings]="data.ratings"></app-star-rating>
+      </div>
+      <button
+        class="text-white bg-amazonBlue py-2 px-4 rounded-md hover:bg-amazonDarkBlue"
+      >
+        {{ data.buttonText }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div [innerHTML]="data.description" class="quill-content"></div>
+
+  <!-- Pros and Cons -->
+  <div class="grid grid-cols-12 gap-5 w-full">
+    <div
+      class="col-span-12 lg:col-span-6 flex flex-col gap-2.5 items-start justify-center"
+    >
+      <span
+        class="bg-green-100 text-green-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+        >PROS</span
+      >
+      <ul>
+        <li *ngFor="let pro of data.pros">
+          {{ pro }}
+        </li>
+      </ul>
+    </div>
+
+    <div
+      class="col-span-12 lg:col-span-6 flex flex-col gap-2.5 items-start justify-center"
+    >
+      <span
+        class="bg-red-100 text-red-800 text-xl font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+        >CONS</span
+      >
+      <ul class="cons">
+        <li *ngFor="let con of data.cons">
+          {{ con }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

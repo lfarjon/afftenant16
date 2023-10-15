@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs';
 import { Block } from './block';
 import { v4 as uuid } from 'uuid';
+import { Product } from './product';
+import { GlobalFeature } from './feature';
 export interface DynamicSection {
   sectionId: string;
   type: string;
@@ -14,12 +16,21 @@ export interface DynamicSection {
   allowDelete: boolean;
   allowAddBlocks: boolean;
   isSelected: boolean;
+  websiteId?: string;
   style?: {
     tailwind?: string;
     background?: string;
     color?: string;
   };
   blocks?: Observable<Block[]>;
+  multiple?: boolean;
+  updated_at?: Date;
+  metafields?: {
+    title: string;
+    description: string;
+  };
+  globalFeatures?: GlobalFeature[];
+  data?: Product | Product[];
 }
 
 export const availableSections: Record<string, string[]> = {

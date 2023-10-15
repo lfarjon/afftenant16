@@ -1,53 +1,16 @@
-<mat-toolbar
-  color="primary"
-  class="flex flex-row justify-between align-center sticky z-20 inset-0"
->
-  <div class="flex flex-row items-center">
-    <mat-icon *ngIf="isHandset$ | async" class="mr-2" (click)="drawer.toggle()"
-      >menu</mat-icon
-    >
-    <div class="flex flex-col">
-      <span class="text-base mb-0">{{ routeData["title"] }}</span>
-      <ng-container *ngIf="website$ | async as website">
-        <span class="text-sm font-light">{{ website.domain }}</span>
-      </ng-container>
-    </div>
-  </div>
-  <div class="flex items-center gap-x-2">
-    <ng-container *ngIf="routeData['third_cta']">
-      <app-cta
-        [buttonText]="routeData['third_cta']"
-        [icon]="routeData['third_icon']"
-        [action]="routeData['third_action']"
-        type="flat"
-      ></app-cta>
-    </ng-container>
-    <ng-container *ngIf="routeData['second_cta']">
-      <app-cta
-        [buttonText]="routeData['second_cta']"
-        [icon]="routeData['second_icon']"
-        [action]="routeData['second_action']"
-        type="flat"
-      ></app-cta>
-    </ng-container>
-    <ng-container *ngIf="routeData['cta']">
-      <app-cta
-        [color]="'accent'"
-        [buttonText]="routeData['cta']"
-        [action]="routeData['action']"
-        type="raised"
-      ></app-cta>
-    </ng-container>
-  </div>
-</mat-toolbar>
 <mat-drawer-container autosize class="h-screen relative">
   <mat-drawer
     #drawer
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)"
-    class="w-4/5 md:w-1/5"
+    class="w-16"
   >
-    <div class="flex flex-col gap-2 w-full p-2 min-h-screen">
+    <div class="flex flex-col justify-between items-center p-2 p-2 h-screen">
+      <button
+        class="px-2 py-2 flex items-center justify-center rounded w-full hover:bg-accent"
+      >
+        H
+      </button>
       <ul class="w-full">
         <li
           class="w-full"
@@ -55,24 +18,66 @@
           [routerLink]="item.routerLink"
         >
           <button
-            class="px-2 py-2 flex items-center justify-between rounded w-full hover:bg-accent"
+            class="px-2 py-2 flex items-center justify-center rounded w-full hover:bg-accent"
           >
-            <span class="text-sm text-left">{{ item.label }}</span>
             <mat-icon>{{ item.icon }}</mat-icon>
           </button>
         </li>
-        <li class="border-t mt-2 pt-2 w-full" [routerLink]="'/admin/websites'">
-          <button
-            class="px-2 py-2 flex items-center justify-between rounded w-full hover:bg-accent"
-          >
-            <span class="text-sm text-left">Switch websites</span>
-            <mat-icon>dashboard_customize</mat-icon>
-          </button>
-        </li>
       </ul>
+      <button
+        [routerLink]="'/admin/websites'"
+        class="px-2 py-2 flex items-center justify-center rounded w-full hover:bg-accent"
+      >
+        <mat-icon>windows</mat-icon>
+      </button>
     </div>
   </mat-drawer>
   <mat-drawer-content>
+    <mat-toolbar
+      color="primary"
+      class="flex flex-row justify-between align-center sticky z-20 inset-0"
+    >
+      <div class="flex flex-row items-center">
+        <mat-icon
+          *ngIf="isHandset$ | async"
+          class="mr-2"
+          (click)="drawer.toggle()"
+          >menu</mat-icon
+        >
+        <div class="flex flex-col">
+          <span class="text-base mb-0">{{ routeData["title"] }}</span>
+          <ng-container *ngIf="website$ | async as website">
+            <span class="text-sm font-light">{{ website.domain }}</span>
+          </ng-container>
+        </div>
+      </div>
+      <div class="flex items-center gap-x-2">
+        <ng-container *ngIf="routeData['third_cta']">
+          <app-cta
+            [buttonText]="routeData['third_cta']"
+            [icon]="routeData['third_icon']"
+            [action]="routeData['third_action']"
+            type="flat"
+          ></app-cta>
+        </ng-container>
+        <ng-container *ngIf="routeData['second_cta']">
+          <app-cta
+            [buttonText]="routeData['second_cta']"
+            [icon]="routeData['second_icon']"
+            [action]="routeData['second_action']"
+            type="flat"
+          ></app-cta>
+        </ng-container>
+        <ng-container *ngIf="routeData['cta']">
+          <app-cta
+            [color]="'accent'"
+            [buttonText]="routeData['cta']"
+            [action]="routeData['action']"
+            type="raised"
+          ></app-cta>
+        </ng-container>
+      </div>
+    </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

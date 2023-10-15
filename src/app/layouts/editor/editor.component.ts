@@ -16,11 +16,12 @@ import { ShadeGeneratorService } from 'src/app/core/services/shade-generator.ser
 import {
   BlockEditing,
   BlockService,
-} from 'src/app/core/services/theme-editor/block.service';
-import { TemplateService } from 'src/app/core/services/theme-editor/template.service';
+} from 'src/app/core/services/block.service';
+import { TemplateService } from 'src/app/core/services/template.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { WebsiteService } from 'src/app/core/services/website.service';
-import { AddPageComponent } from 'src/app/modules/admin/add-page/add-page.component';
+import { AddPageComponent } from 'src/app/modules/add-page/add-page.component';
+import { PageService } from 'src/app/core/services/page.service';
 
 @Component({
   selector: 'app-editor',
@@ -65,6 +66,7 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
     private ctaService: CtaService,
     private templateService: TemplateService,
     private websiteService: WebsiteService,
+    private pageService: PageService,
     private fb: FormBuilder,
     private dialog: MatDialog,
     private shadeService: ShadeGeneratorService
@@ -162,7 +164,7 @@ export class EditorComponent implements OnDestroy, AfterViewInit {
 
   makeDefaultPage(page: Page) {
     const addingPage = false;
-    this.websiteService.togglePageDefault(page, addingPage);
+    this.pageService.togglePageDefault(page, addingPage);
   }
 
   openViewportMenu() {}

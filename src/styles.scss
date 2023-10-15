@@ -96,6 +96,7 @@ $invoice-generator-theme: mat.define-light-theme(
 
 @import "~quill/dist/quill.core.css";
 @import "~quill/dist/quill.snow.css"; /* Feel free to use other themes like bubble */
+@import "~highlight.js/styles/github.css";
 
 /* You can add global styles to this file, and also import other style files */
 

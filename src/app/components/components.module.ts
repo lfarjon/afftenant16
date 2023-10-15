@@ -35,6 +35,7 @@ import { QuillModule } from 'ngx-quill';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { StarRatingComponent } from './star-rating/star-rating.component';
+import { QuillToolbarModule } from './quill-toolbar/quill-toolbar.module';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { StarRatingComponent } from './star-rating/star-rating.component';
     FormsModule,
     AngularFireStorageModule,
     QuillModule,
+    QuillToolbarModule,
   ],
   exports: [
     LoaderComponent,

@@ -6,9 +6,20 @@ export const adminRoutes: Route[] = [
   //Admin Routes
   {
     component: AdminComponent,
+    path: 'admin/new-editor',
+    loadChildren: () =>
+      import('src/app/modules/new-editor/new-editor.module').then(
+        (m) => m.NewEditorModule
+      ),
+    data: {
+      title: 'Editor',
+    },
+  },
+  {
+    component: AdminComponent,
     path: 'admin',
     loadChildren: () =>
-      import('src/app/modules/admin/dashboard/dashboard.module').then(
+      import('src/app/modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
     data: {
@@ -19,7 +30,7 @@ export const adminRoutes: Route[] = [
     component: AdminComponent,
     path: 'admin/websites',
     loadChildren: () =>
-      import('src/app/modules/admin/websites/websites.module').then(
+      import('src/app/modules/websites/websites.module').then(
         (m) => m.WebsitesModule
       ),
     data: {
@@ -32,7 +43,7 @@ export const adminRoutes: Route[] = [
     component: AdminComponent,
     path: 'admin/links',
     loadChildren: () =>
-      import('src/app/modules/admin/links-page/links-page.module').then(
+      import('src/app/modules/links-page/links-page.module').then(
         (m) => m.LinksPageModule
       ),
     data: {
@@ -45,7 +56,7 @@ export const adminRoutes: Route[] = [
     component: AdminComponent,
     path: 'admin/articles',
     loadChildren: () =>
-      import('src/app/modules/admin/articles/articles.module').then(
+      import('src/app/modules/articles/articles.module').then(
         (m) => m.ArticlesModule
       ),
     data: {
@@ -56,24 +67,36 @@ export const adminRoutes: Route[] = [
   },
   {
     component: AdminComponent,
-    path: 'admin/article/:articleId',
+    path: 'admin/article/:id',
     loadChildren: () =>
-      import('src/app/modules/admin/article/article.module').then(
-        (m) => m.ArticleModule
+      import('src/app/modules/new-editor/new-editor.module').then(
+        (m) => m.NewEditorModule
       ),
     data: {
       title: 'Article',
       cta: 'Publish',
       action: 'PUBLISH_ARTICLE',
+      type: 'ARTICLE',
     },
   },
+  // {
+  //   component: AdminComponent,
+  //   path: 'admin/article/:articleId',
+  //   loadChildren: () =>
+  //     import('src/app/modules/article/article.module').then(
+  //       (m) => m.ArticleModule
+  //     ),
+  //   data: {
+  //     title: 'Article',
+  //     cta: 'Publish',
+  //     action: 'PUBLISH_ARTICLE',
+  //   },
+  // },
   {
     component: EditorComponent,
     path: 'admin/theme',
     loadChildren: () =>
-      import('src/app/modules/admin/theme/theme.module').then(
-        (m) => m.ThemeModule
-      ),
+      import('src/app/modules/theme/theme.module').then((m) => m.ThemeModule),
     data: {
       theme: true,
       title: 'Theme editor',
@@ -87,9 +110,9 @@ export const adminRoutes: Route[] = [
     component: AdminComponent,
     path: 'admin/affiliate-tools',
     loadChildren: () =>
-      import(
-        'src/app/modules/admin/affiliate-tools/affiliate-tools.module'
-      ).then((m) => m.AffiliateToolsModule),
+      import('src/app/modules/affiliate-tools/affiliate-tools.module').then(
+        (m) => m.AffiliateToolsModule
+      ),
     data: {
       title: 'Affiliate tools',
       cta: 'New tool',
@@ -100,7 +123,7 @@ export const adminRoutes: Route[] = [
     component: AdminComponent,
     path: 'admin/tool-builder/:toolId',
     loadChildren: () =>
-      import('src/app/modules/admin/tool-builder/tool-builder.module').then(
+      import('src/app/modules/tool-builder/tool-builder.module').then(
         (m) => m.ToolBuilderModule
       ),
     data: {

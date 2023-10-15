@@ -18,10 +18,10 @@ import {
   sidenavSections,
   templateSections,
 } from 'src/app/core/models/dynamic-section';
-import { BlockService } from 'src/app/core/services/theme-editor/block.service';
-import { DragDropService } from 'src/app/core/services/theme-editor/drag-drop.service';
-import { SectionService } from 'src/app/core/services/theme-editor/section.service';
-import { TemplateService } from 'src/app/core/services/theme-editor/template.service';
+import { BlockService } from 'src/app/core/services/block.service';
+import { DragDropService } from 'src/app/core/services/drag-drop.service';
+import { SectionService } from 'src/app/core/services/section.service';
+import { TemplateService } from 'src/app/core/services/template.service';
 
 @Component({
   selector: 'app-expansion-panel',
