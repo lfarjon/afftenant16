@@ -42,7 +42,7 @@ import { SummaryBoxComponent } from 'src/app/modules/summary-box/summary-box.com
 import { VersusBoxComponent } from 'src/app/modules/versus-box/versus-box.component';
 import { ProductSliderComponent } from 'src/app/modules/product-slider/product-slider.component';
 import { ProductCollageComponent } from 'src/app/modules/product-collage/product-collage.component';
-import { TextViewerComponent } from 'src/app/modules/quill-viewer/quill-view.component';
+import { QuillViewComponent } from 'ngx-quill';
 
 export const componentTypeMapping: Record<
   string,
@@ -85,12 +85,12 @@ export const componentTypeMapping: Record<
   },
   'theme-image-banner': {
     component: ImageBannerComponent,
-    icon: '',
+    icon: 'image_banner',
     name: 'Image banner',
   },
   'theme-image-text': {
     component: ImageTextComponent,
-    icon: '',
+    icon: 'image_banner',
     name: 'Image text',
   },
   'theme-contact-form': {
@@ -130,11 +130,12 @@ export const textTypeMapping: Record<
   { component: Type<any>; icon: string; name: string }
 > = {
   'text-quill-view': {
-    component: TextViewerComponent,
-    icon: 'text',
+    component: QuillViewComponent,
+    icon: 'segment',
     name: 'Paragraph',
   },
 };
+
 export const blockTypeMapping: Record<
   string,
   { component: Type<any>; icon: string }
@@ -256,6 +257,15 @@ export const sectionTypeMappingArray: {
   icon: string;
   name: string;
 }[] = Object.entries(componentTypeMapping).map(
+  ([key, { component, icon, name }]) => ({ key, component, icon, name })
+);
+
+export const textTypeMappingArray: {
+  key: string;
+  component: Type<any>;
+  icon: string;
+  name: string;
+}[] = Object.entries(textTypeMapping).map(
   ([key, { component, icon, name }]) => ({ key, component, icon, name })
 );
 

@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { QuillEditorComponent } from 'ngx-quill';
 import Quill from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
-import Image from 'quill/formats/image';
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 

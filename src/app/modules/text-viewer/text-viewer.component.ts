@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -14,11 +15,11 @@ hljs.configure({
   languages: ['javascript', 'ruby', 'python', 'rust'],
 });
 @Component({
-  selector: 'text-quill-view',
-  templateUrl: './quill-view.component.html',
-  styleUrls: ['./quill-view.component.scss'],
+  selector: 'text-viewer',
+  templateUrl: './text-viewer.component.html',
+  styleUrls: ['./text-viewer.component.scss'],
 })
-export class TextViewerComponent {
+export class TextViewerComponent implements OnInit {
   @ViewChild(QuillViewComponent, { static: false }) quillView: any;
   @Input() content: string = '';
 
@@ -29,4 +30,6 @@ export class TextViewerComponent {
     },
   };
   constructor(private cd: ChangeDetectorRef) {}
+
+  ngOnInit(): void {}
 }

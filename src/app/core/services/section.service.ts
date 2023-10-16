@@ -3,6 +3,7 @@ import { DynamicChildLoaderDirective } from '../directives/dynamic-child-loader.
 import {
   affiliateToolMapping,
   componentTypeMapping,
+  textTypeMapping,
 } from '../models/component-mapping';
 import { availableSections, DynamicSection } from '../models/dynamic-section';
 import { BlogService } from './blog.service';
@@ -21,11 +22,15 @@ import {
   dummyFeatures,
 } from '../models/feature';
 import { BlockService } from './block.service';
+import hljs from 'highlight.js';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SectionService {
+  isSelected$ = new BehaviorSubject<string>('');
+
   constructor(
     private blogService: BlogService,
     private blockService: BlockService
@@ -56,12 +61,17 @@ export class SectionService {
     //generate section from block
     const newSection = this.generateSection(block, blockType);
     //add block to sections
-    currentSections.push(newSection);
+    currentSections.push({
+      ...newSection,
+      order: currentSections.length,
+    });
 
     article.next({
       ...article.value,
       templateSections: [...currentSections],
     });
+
+    this.isSelected$.next(newSection.sectionId);
   }
 
   handlePage(id: string, block: any, blockType: string) {
@@ -88,6 +98,9 @@ export class SectionService {
         break;
       case 'GENERAL_BLOCKS':
         section = this.handleGeneralBlocks(section, type);
+        break;
+      case 'TEXT_BLOCKS':
+        section = this.handleTextBlocks(section, type);
         break;
       default:
         break;
@@ -123,6 +136,10 @@ export class SectionService {
       data: products,
     };
 
+    return section;
+  }
+
+  handleTextBlocks(section: DynamicSection, type: string): DynamicSection {
     return section;
   }
 
@@ -216,8 +233,9 @@ export class SectionService {
     sections?.forEach((section: DynamicSection, index: number) => {
       const component =
         componentTypeMapping[section.type] ||
-        affiliateToolMapping[section.type];
-      console.log(component);
+        affiliateToolMapping[section.type] ||
+        textTypeMapping[section.type];
+
       if (component) {
         this.loadComponent(
           component.component,
@@ -250,6 +268,18 @@ export class SectionService {
       section.type === 'theme-sidenav'
     ) {
       componentInstance.drawer = inputs;
+    }
+
+    if (section.type === 'text-quill-view') {
+      const viewerModules: any = {
+        blotFormatter: {},
+        syntax: {
+          highlight: (text: string) => hljs.highlightAuto(text).value,
+        },
+      };
+      componentInstance.preserveWhitespace = true;
+      componentInstance.modules = viewerModules;
+      componentInstance.content = 'Ta mere on test';
     }
   }
 

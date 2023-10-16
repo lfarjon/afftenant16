@@ -1,6 +1,8 @@
+import { C } from '@angular/cdk/keycodes';
 import {
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   OnInit,
   QueryList,
@@ -8,13 +10,16 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, map, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, map, take, takeUntil, tap } from 'rxjs';
 import { DynamicChildLoaderDirective } from 'src/app/core/directives/dynamic-child-loader.directive';
 import { Article } from 'src/app/core/models/article';
 import { DynamicSection } from 'src/app/core/models/dynamic-section';
 import { AffiliateToolsService } from 'src/app/core/services/affiliate-tools.service';
 import { BlogService } from 'src/app/core/services/blog.service';
+import { DragDropService } from 'src/app/core/services/drag-drop.service';
+import { LayoutService } from 'src/app/core/services/layout.service';
 import { RouteDataService } from 'src/app/core/services/route-data.service';
 import { SectionService } from 'src/app/core/services/section.service';
 
@@ -29,6 +34,11 @@ export class ArticleComponent implements OnInit, OnDestroy {
   @ViewChild('contentContainer', { static: false })
   contentContainer!: ElementRef;
 
+  @Input()
+  drawer!: MatDrawer;
+  isHandset$: Observable<boolean>;
+  isSelected$ = this.sectionService.isSelected$;
+
   article$!: Observable<Article>;
   articleForm!: FormGroup;
   fullscreen$: Observable<boolean>;
@@ -36,12 +46,15 @@ export class ArticleComponent implements OnInit, OnDestroy {
   private unsubscribeAll = new Subject();
 
   constructor(
+    public dragDropService: DragDropService,
     private fb: FormBuilder,
     private blogService: BlogService,
     private route: ActivatedRoute,
     private routeDataService: RouteDataService,
-    private sectionService: SectionService
+    private sectionService: SectionService,
+    private layoutService: LayoutService
   ) {
+    this.isHandset$ = this.layoutService.isHandset$;
     this.fullscreen$ = this.blogService.fullscreen$;
 
     const articleId = this.route.snapshot.params['id'];
@@ -115,5 +128,26 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   get contentArray(): FormArray {
     return this.articleForm.get('content') as FormArray;
+  }
+
+  drop(event: any, components: DynamicSection[]) {
+    this.dragDropService
+      .drop(event, components)
+      .pipe(
+        take(1),
+        tap((sections) => {
+          const article = this.blogService.article$.value;
+
+          this.blogService.article$.next({
+            ...article,
+            templateSections: sections,
+          });
+        })
+      )
+      .subscribe();
+  }
+
+  selectSection(component: DynamicSection) {
+    this.sectionService.isSelected$.next(component.sectionId);
   }
 }

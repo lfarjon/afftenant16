@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import {
   affiliateToolMappingArray,
   sectionTypeMappingArray,
+  textTypeMappingArray,
 } from 'src/app/core/models/component-mapping';
 import { SectionService } from 'src/app/core/services/section.service';
 
@@ -13,6 +14,7 @@ import { SectionService } from 'src/app/core/services/section.service';
   styleUrls: ['./block-selector.component.scss'],
 })
 export class BlockSelectorComponent implements OnDestroy {
+  textBlocks = [...textTypeMappingArray];
   sections = [...sectionTypeMappingArray];
   tools = [...affiliateToolMappingArray];
   currentlyEditing: string;

@@ -1,5 +1,22 @@
-<div class="flex flex-col items-center justify-center gap-y-5 p-5">
-  <div class="font-semibold text-xl text-center">Block selector</div>
+<div
+  class="w-full relative flex flex-col items-center justify-center gap-y-5 p-5"
+>
+  <div
+    class="sticky bg-white p-5 z-10 w-full border-b drop-shadow-b-md top-0 font-semibold text-xl text-center"
+  >
+    Block selector
+  </div>
+  <div class="font-semibold">Text</div>
+  <div class="grid grid-cols-12 gap-2">
+    <div
+      *ngFor="let block of textBlocks"
+      class="cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
+      (click)="addBlock(block, 'TEXT_BLOCKS')"
+    >
+      <mat-icon>{{ block.icon }}</mat-icon>
+      <div class="text-center text-sm">{{ block.name }}</div>
+    </div>
+  </div>
   <div class="font-semibold">Sections</div>
   <div class="grid grid-cols-12 gap-2">
     <div

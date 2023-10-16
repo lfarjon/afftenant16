@@ -3,7 +3,26 @@
     <app-article></app-article>
   </div>
   <div class="flex-none lg:flex lg:w-3/12 hidden bg-white overflow-y-auto">
-    <app-block-selector></app-block-selector>
+    <ng-container *ngIf="(isSelected$ | async) === ''; else editorForms">
+      <app-block-selector></app-block-selector>
+    </ng-container>
+    <ng-template #editorForms>
+      <div
+        class="w-full relative flex flex-col items-center justify-start gap-y-5 p-5"
+      >
+        <div
+          class="flex justify-between bg-white p-5 z-10 w-full border-b drop-shadow-b-md top-0 font-semibold text-xl text-center"
+        >
+          <button (click)="clearSelection()" class="flex-none w-6">
+            <mat-icon>undo</mat-icon>
+          </button>
+          <span class="flex-1">Editing</span>
+          <button class="flex-none w-6">
+            <mat-icon>done</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>
 

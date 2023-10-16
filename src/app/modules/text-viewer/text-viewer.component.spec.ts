@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextViewerComponent } from './quill-view.component';
+import { TextViewerComponent } from './text-viewer.component';
 
 describe('QuillViewComponent', () => {
   let component: TextViewerComponent;

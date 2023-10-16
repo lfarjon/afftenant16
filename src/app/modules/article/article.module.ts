@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ArticleEditorModule } from 'src/app/components/article-editor/article-editor.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [ArticleComponent],
@@ -21,6 +22,7 @@ import { ArticleEditorModule } from 'src/app/components/article-editor/article-e
     MatButtonModule,
     MatSlideToggleModule,
     ArticleEditorModule,
+    DragDropModule,
   ],
   exports: [ArticleComponent],
 })

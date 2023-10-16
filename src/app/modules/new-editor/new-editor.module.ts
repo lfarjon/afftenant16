@@ -6,6 +6,7 @@ import { routes } from './new-editor.routing';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { ArticleModule } from '../article/article.module';
 import { BlockSelectorModule } from '../block-selector/block-selector.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [NewEditorComponent],
@@ -15,6 +16,7 @@ import { BlockSelectorModule } from '../block-selector/block-selector.module';
     MatBottomSheetModule,
     BlockSelectorModule,
     ArticleModule,
+    MatIconModule,
   ],
 })
 export class NewEditorModule {}

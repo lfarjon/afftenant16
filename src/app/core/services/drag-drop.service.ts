@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Block } from '../models/block';
 import { DynamicSection } from '../models/dynamic-section';
+import { Article } from '../models/article';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class DragDropService {
     const newComponents = [...components];
     moveItemInArray(newComponents, event.previousIndex, event.currentIndex);
     newComponents.forEach((component, index) => {
+      console.log(index);
       component.order = index + 1;
     });
     return of(newComponents);
