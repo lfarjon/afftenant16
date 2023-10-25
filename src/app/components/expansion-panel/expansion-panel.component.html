@@ -53,7 +53,7 @@
     </button>
     <ng-container *ngIf="component.sectionId === isSelected">
       <div class="pl-8 w-full">
-        <ng-container *ngIf="component.blocks | async as blocks">
+        <ng-container *ngIf="component.blocks as blocks">
           <div
             cdkDropList
             (cdkDropListDropped)="dropBlock(component, $event, blocks)"
@@ -63,7 +63,7 @@
               (cdkDragStarted)="dragDropService.onDragStart()"
               (cdkDragEnded)="dragDropService.onDragEnd()"
               [cdkDragDisabled]="block.dragDisabled"
-              *ngFor="let block of blocks; let y = index"
+              *ngFor="let block of blocks | async; let y = index"
             >
               <div class="flex flex-col">
                 <button

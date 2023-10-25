@@ -1,4 +1,4 @@
-<ng-container *ngIf="!(isHandset$ | async) || !!!icon">
+<ng-container *ngIf="(!(isHandset$ | async) && buttonText) || !!!icon">
   <ng-container *ngIf="type === 'raised'">
     <button mat-raised-button [color]="color" (click)="doAction()">
       {{ buttonText }}

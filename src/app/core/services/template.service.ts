@@ -123,11 +123,7 @@ export class TemplateService {
     this.template$.next(this.template);
   }
 
-  drop(
-    event: CdkDragDrop<string[]>,
-    components: DynamicSection[],
-    section: string
-  ) {
+  drop(event: CdkDragDrop<any>, components: DynamicSection[], section: string) {
     this.dragDropService
       .drop(event, components)
       .pipe(

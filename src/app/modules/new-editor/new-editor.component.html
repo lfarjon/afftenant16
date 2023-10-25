@@ -1,9 +1,58 @@
-<div class="flex flex-row h-[calc(100vh-56px)] lg:h-[calc(100vh-64px)]">
+<div
+  class="flex flex-row h-[calc(100vh-56px)] lg:h-[calc(100vh-64px)]"
+  cdkDropListGroup
+>
   <div class="flex-1 bg-white overflow-y-auto">
-    <app-article></app-article>
+    <ng-container *ngIf="article$ | async as article">
+      <div class="p-5">
+        <div
+          cdkDropList
+          [cdkDropListData]="article.templateSections"
+          (cdkDropListDropped)="drop($event, article.templateSections)"
+          class="component-list w-full min-h-[calc(50vh)] lg:min-h-[calc(50vh)] flex flex-col"
+        >
+          <div
+            class="relative component-box"
+            [style.order]="component.order"
+            cdkDrag
+            (cdkDragStarted)="dragDropService.onDragStart()"
+            (cdkDragEnded)="dragDropService.onDragEnd()"
+            *ngFor="let component of article.templateSections; let i = index"
+            [attr.id]="'section-' + component.sectionId"
+          >
+            <ng-container
+              *ngIf="selectedSection$.value?.sectionId === component.sectionId"
+            >
+              <div
+                class="absolute top-0 right-0 transform cursor-move text-white z-10 flex flex-row items-center gap-2 bg-accent p-2 rounded-bl-lg w-auto opacity-90"
+              >
+                <app-mobile-edit
+                  class="lg:hidden"
+                  [section]="component"
+                ></app-mobile-edit>
+                <app-drag-handle
+                  cdkDragHandle
+                  [component]="component"
+                ></app-drag-handle>
+              </div>
+            </ng-container>
+            <!-- <div *cdkDragPlaceholder></div> -->
+            <div
+              (click)="selectSection(component)"
+              [ngClass]="{
+                'border-offset-2 border-2 border-accent':
+                  selectedSection$.value?.sectionId === component.sectionId
+              }"
+            >
+              <ng-template dynamicChildLoader></ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
   <div class="flex-none lg:flex lg:w-3/12 hidden bg-white overflow-y-auto">
-    <ng-container *ngIf="(isSelected$ | async) === ''; else editorForms">
+    <ng-container *ngIf="(selectedSection$ | async) === null; else editorForms">
       <app-block-selector></app-block-selector>
     </ng-container>
     <ng-template #editorForms>
@@ -21,6 +70,21 @@
             <mat-icon>done</mat-icon>
           </button>
         </div>
+        <ng-container *ngIf="editingBlock$.value === null">
+          <app-block-expander
+            class="w-full"
+            [selectedSection$]="selectedSection$"
+          ></app-block-expander>
+        </ng-container>
+        <ng-container *ngIf="editingBlock$.value !== null">
+          <form [formGroup]="form" class="flex flex-col w-full">
+            <formly-form
+              [fields]="editingBlock$.value.fields"
+              [model]="editingBlock$.value.model"
+              [options]="options"
+            ></formly-form>
+          </form>
+        </ng-container>
       </div>
     </ng-template>
   </div>

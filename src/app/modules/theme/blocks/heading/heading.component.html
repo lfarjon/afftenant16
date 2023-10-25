@@ -1,31 +1,33 @@
-<ng-container *ngIf="block$ | async as block">
-  <ng-container *ngIf="styles$ | async as styles">
-    <h1
-      class="text-4xl font-bold mb-4"
-      [ngStyle]="{
-        color:
-          context === 'image-banner'
-            ? '#ffffff'
-            : styles.baseContent
-            ? styles.baseContent
-            : darkOrLight(styles.base100)
-      }"
-    >
-      {{ block.model?.headingText }}
-    </h1>
-  </ng-container>
+<ng-container *ngIf="styles$ | async as styles">
+  <h1
+    (click)="editBlock(block)"
+    class="text-4xl font-bold mb-4 hover:border-offset-2 hover:border-2 hover:border-accent cursor-pointer"
+    [ngStyle]="{
+      color:
+        context === 'image-banner'
+          ? '#ffffff'
+          : styles.baseContent
+          ? styles.baseContent
+          : darkOrLight(styles.base100)
+    }"
+  >
+    {{ sectionService.getBlockForm(block)?.model?.headingText }}
+  </h1>
+  <form
+    [formGroup]="sectionService.getBlockForm(block)?.form!"
+    class="flex flex-col"
+  >
+    <formly-form
+      class="hidden"
+      [fields]="sectionService.getBlockForm(block)?.fields!"
+      [model]="sectionService.getBlockForm(block)?.model"
+      [options]="options"
+    ></formly-form>
+  </form>
 </ng-container>
-<ng-template #editorRef let-data>
+<!-- <ng-template #editorRef let-data>
   <h2 mat-dialog-title>Heading</h2>
   <mat-dialog-content>
-    <form [formGroup]="form" class="flex flex-col">
-      <formly-form
-        [fields]="fields"
-        [model]="data.model"
-        [options]="options"
-      ></formly-form>
-    </form>
-
     PREVIEW
     <h1 class="text-4xl text-black font-bold mb-4">
       {{ data.model?.headingText }}
@@ -42,4 +44,4 @@
       Submit
     </button>
   </mat-dialog-actions>
-</ng-template>
+</ng-template> -->

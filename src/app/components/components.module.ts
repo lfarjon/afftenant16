@@ -37,6 +37,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { QuillToolbarModule } from './quill-toolbar/quill-toolbar.module';
 import { DomSanitizer } from '@angular/platform-browser';
+import { BlockExpanderComponent } from './block-expander/block-expander.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     ImageUploaderComponent,
     ConfirmComponent,
     StarRatingComponent,
+    BlockExpanderComponent,
   ],
   imports: [
     CommonModule,
@@ -97,6 +99,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     ConfirmComponent,
     StarRatingComponent,
     MatIconModule,
+    BlockExpanderComponent,
   ],
   providers: [
     { provide: FIREBASE_APP_NAME, useValue: environment.firebase },

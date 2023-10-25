@@ -1,4 +1,4 @@
-import { Injectable, QueryList, Type } from '@angular/core';
+import { ChangeDetectorRef, Injectable, QueryList, Type } from '@angular/core';
 import { DynamicChildLoaderDirective } from '../directives/dynamic-child-loader.directive';
 import {
   affiliateToolMapping,
@@ -24,12 +24,24 @@ import {
 import { BlockService } from './block.service';
 import hljs from 'highlight.js';
 import { BehaviorSubject } from 'rxjs';
+import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormGroup } from '@angular/forms';
+import { Block } from '../models/block';
+
+interface FormTools {
+  fields: FormlyFieldConfig[];
+  form: FormGroup;
+  model: any;
+  options: FormlyFormOptions;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class SectionService {
-  isSelected$ = new BehaviorSubject<string>('');
+  selectedSection$ = new BehaviorSubject<DynamicSection | null>(null);
+
+  private forms = new Map<string, FormTools>();
 
   constructor(
     private blogService: BlogService,
@@ -37,6 +49,7 @@ export class SectionService {
   ) {}
 
   addBlockToAsset(
+    insertIndex: number,
     id: string,
     assetType: string,
     block: any,
@@ -44,7 +57,7 @@ export class SectionService {
   ) {
     switch (assetType) {
       case 'ARTICLE':
-        this.handleArticle(id, block, blockType);
+        this.handleArticle(insertIndex, id, block, blockType);
         break;
       case 'PAGE':
         this.handlePage(id, block, blockType);
@@ -54,24 +67,43 @@ export class SectionService {
     }
   }
 
-  handleArticle(id: string, block: any, blockType: string) {
+  handleArticle(index: number, id: string, block: any, blockType: string) {
     //get asset
     const article = this.blogService.article$;
     const currentSections = article.value.templateSections;
     //generate section from block
     const newSection = this.generateSection(block, blockType);
-    //add block to sections
-    currentSections.push({
-      ...newSection,
-      order: currentSections.length,
-    });
 
+    //add block to sections
+    currentSections.splice(index, 0, newSection);
+    currentSections.map((s, i) => (s.order = i + 1));
+
+    //update article
     article.next({
       ...article.value,
       templateSections: [...currentSections],
     });
 
-    this.isSelected$.next(newSection.sectionId);
+    //this.selectedSection$.next(newSection);
+  }
+
+  // prepareSectionForm(section: DynamicSection) {
+  //   this.forms.set((section.sectionId), {
+  //     fields: section
+  //   })
+  // }
+
+  prepareBlockForm(block: Block) {
+    this.forms.set(block.blockId, {
+      fields: block.fields,
+      model: block.model,
+      form: new FormGroup({}),
+      options: {},
+    });
+  }
+
+  getBlockForm({ blockId }: Block) {
+    return this.forms.get(blockId);
   }
 
   handlePage(id: string, block: any, blockType: string) {
@@ -140,6 +172,10 @@ export class SectionService {
   }
 
   handleTextBlocks(section: DynamicSection, type: string): DynamicSection {
+    section = {
+      ...section,
+      data: [],
+    };
     return section;
   }
 
@@ -152,11 +188,18 @@ export class SectionService {
       true
     );
 
-    //Add the blocks to the section
-    section = {
-      ...section,
-      blocks: this.blockService.getBlocksValues(section.sectionId),
-    } as unknown as DynamicSection;
+    const blocks = this.blockService.getBlocksValues(section.sectionId);
+    if (blocks) {
+      //Add the blocks to the section
+      section = {
+        ...section,
+        blocks: blocks,
+      } as DynamicSection;
+
+      blocks?.map((block) => {
+        this.prepareBlockForm(block);
+      });
+    }
 
     return section;
   }
@@ -270,16 +313,22 @@ export class SectionService {
       componentInstance.drawer = inputs;
     }
 
-    if (section.type === 'text-quill-view') {
-      const viewerModules: any = {
-        blotFormatter: {},
-        syntax: {
-          highlight: (text: string) => hljs.highlightAuto(text).value,
-        },
-      };
-      componentInstance.preserveWhitespace = true;
-      componentInstance.modules = viewerModules;
-      componentInstance.content = 'Ta mere on test';
+    if (section.type === 'block-paragraph') {
+      componentInstance.content = `
+      <p class="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">Deliver great service experiences fast - without the complexity of traditional ITSM solutions.Accelerate critical development work and deploy.</p>
+      <p class="text-gray-500 dark:text-gray-400">Track work across the enterprise through an open, collaborative platform. Link issues across Jira and ingest data from other software development tools, so your IT support and operations teams have richer contextual information to rapidly respond to requests, incidents, and changes.</p>      
+      `;
+      //QUILL STUFF
+      // const viewerModules: any = {
+      //   blotFormatter: {},
+      //   syntax: {
+      //     highlight: (text: string) => hljs.highlightAuto(text).value,
+      //   },
+      // };
+      // componentInstance.preserveWhitespace = true;
+      // componentInstance.modules = viewerModules;
+    }
+    if (section.type === 'quill-quote') {
     }
   }
 

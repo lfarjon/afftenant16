@@ -1,5 +1,6 @@
 import { C } from '@angular/cdk/keycodes';
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -37,7 +38,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   @Input()
   drawer!: MatDrawer;
   isHandset$: Observable<boolean>;
-  isSelected$ = this.sectionService.isSelected$;
+  selectedSection$ = this.sectionService.selectedSection$;
 
   article$!: Observable<Article>;
   articleForm!: FormGroup;
@@ -52,7 +53,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private routeDataService: RouteDataService,
     private sectionService: SectionService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private cd: ChangeDetectorRef
   ) {
     this.isHandset$ = this.layoutService.isHandset$;
     this.fullscreen$ = this.blogService.fullscreen$;
@@ -76,13 +78,15 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.blogService.article$
       .pipe(
         tap(({ templateSections }) => {
-          console.log(this.dynamicChildren);
           setTimeout(
-            () =>
+            () => {
               this.sectionService.loadSectionsComponents(
                 this.dynamicChildren,
                 templateSections
-              ),
+              );
+              this.cd.detectChanges();
+            },
+
             0
           );
         }),
@@ -110,8 +114,11 @@ export class ArticleComponent implements OnInit, OnDestroy {
       cta: published ? 'Save draft' : 'Publish',
       action: published ? 'SAVE_DRAFT_ARTICLE' : 'PUBLISH_ARTICLE',
       second_cta: 'Preview',
+      second_icon: 'preview',
       second_action: 'PREVIEW_ARCTICLE',
-      third_cta: 'Saved',
+      third_cta: '',
+      third_action: 'OPEN_BLOCK_SELECTOR',
+      third_icon: 'dashboard_customize',
       // Other properties...
     };
     const mergedData = { ...initialData, ...updatedData }; // merge new data with current data
@@ -131,6 +138,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   drop(event: any, components: DynamicSection[]) {
+    console.log('drop zone');
     this.dragDropService
       .drop(event, components)
       .pipe(
@@ -147,7 +155,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  selectSection(component: DynamicSection) {
-    this.sectionService.isSelected$.next(component.sectionId);
+  selectSection(section: DynamicSection) {
+    this.sectionService.selectedSection$.next(section);
   }
 }

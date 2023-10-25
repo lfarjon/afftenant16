@@ -22,7 +22,7 @@ export interface DynamicSection {
     background?: string;
     color?: string;
   };
-  blocks?: Observable<Block[]>;
+  blocks?: any;
   multiple?: boolean;
   updated_at?: Date;
   metafields?: {

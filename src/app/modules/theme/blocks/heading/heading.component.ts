@@ -12,7 +12,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, map, of, switchMap, takeUntil, tap } from 'rxjs';
 import { blockHeadingField } from 'src/app/core/forms/block-heading-form';
 import { Block } from 'src/app/core/models/block';
 import { ShadeGeneratorService } from 'src/app/core/services/shade-generator.service';
@@ -21,6 +21,7 @@ import {
   BlockService,
 } from 'src/app/core/services/block.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
+import { SectionService } from 'src/app/core/services/section.service';
 
 @Component({
   selector: 'block-heading',
@@ -32,11 +33,12 @@ export class HeadingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('editorRef') editorRef!: TemplateRef<any>;
 
   //Input the BlockId and sectionId
+  @Input() block!: Block;
   @Input() blockId!: string;
   @Input() sectionId!: string;
   @Input() context!: string;
 
-  block$!: Observable<Block> | undefined;
+  block$!: Observable<Block>;
   editing$!: Observable<BlockEditing>;
 
   fields: FormlyFieldConfig[] = [];
@@ -48,6 +50,7 @@ export class HeadingComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribeAll = new Subject();
 
   constructor(
+    public sectionService: SectionService,
     private blockService: BlockService,
     private dialog: MatDialog,
     private cd: ChangeDetectorRef,
@@ -55,7 +58,6 @@ export class HeadingComponent implements OnInit, AfterViewInit, OnDestroy {
     private shadeService: ShadeGeneratorService
   ) {
     this.styles$ = this.themeService.getTheme(false).valueChanges();
-    this.fields = [...blockHeadingField];
   }
 
   ngOnInit(): void {}
@@ -69,18 +71,24 @@ export class HeadingComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         tap(({ editing, block }) => {
           if (editing && block?.blockId === this.blockId) {
-            this.openEditor();
           }
         })
       )
       .subscribe();
-    this.block$ = this.blockService._blocks.get(this.blockId);
+
     this.cd.detectChanges();
   }
 
   ngOnDestroy() {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
+  }
+
+  editBlock(block: Block) {
+    this.blockService.editingBlock.next({
+      editing: true,
+      block: block,
+    });
   }
 
   openEditor() {

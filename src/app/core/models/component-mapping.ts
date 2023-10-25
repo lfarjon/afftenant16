@@ -43,6 +43,8 @@ import { VersusBoxComponent } from 'src/app/modules/versus-box/versus-box.compon
 import { ProductSliderComponent } from 'src/app/modules/product-slider/product-slider.component';
 import { ProductCollageComponent } from 'src/app/modules/product-collage/product-collage.component';
 import { QuillViewComponent } from 'ngx-quill';
+import { BlockQuoteComponent } from 'src/app/modules/block-quote/block-quote.component';
+import { ParagraphComponent } from 'src/app/modules/paragraph/paragraph.component';
 
 export const componentTypeMapping: Record<
   string,
@@ -93,6 +95,16 @@ export const componentTypeMapping: Record<
     icon: 'image_banner',
     name: 'Image text',
   },
+  'block-paragraph': {
+    component: ParagraphComponent,
+    icon: 'segment',
+    name: 'Paragraph',
+  },
+  'block-quote': {
+    component: BlockQuoteComponent,
+    icon: 'format_quote',
+    name: 'Quote',
+  },
   'theme-contact-form': {
     component: ContactFormComponent,
     icon: 'contact_mail',
@@ -129,10 +141,15 @@ export const textTypeMapping: Record<
   string,
   { component: Type<any>; icon: string; name: string }
 > = {
-  'text-quill-view': {
-    component: QuillViewComponent,
+  'block-paragraph': {
+    component: ParagraphComponent,
     icon: 'segment',
     name: 'Paragraph',
+  },
+  'block-quote': {
+    component: BlockQuoteComponent,
+    icon: 'format_quote',
+    name: 'Quote',
   },
 };
 

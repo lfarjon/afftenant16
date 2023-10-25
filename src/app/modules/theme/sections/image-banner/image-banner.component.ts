@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { DynamicBlockLoaderDirective } from 'src/app/core/directives/dynamic-block-loader.directive';
+import { Block } from 'src/app/core/models/block';
 import { DynamicSection } from 'src/app/core/models/dynamic-section';
 import { BlockService } from 'src/app/core/services/block.service';
 
@@ -25,7 +26,6 @@ export class ImageBannerComponent implements OnInit, AfterViewInit, OnDestroy {
   dynamicChildren!: QueryList<DynamicBlockLoaderDirective>;
   @Input() section!: DynamicSection;
   image: string = 'assets/placeholders/1200x600.png';
-
   private unsubscribeAll = new Subject();
   constructor(
     private blockService: BlockService,
@@ -35,30 +35,26 @@ export class ImageBannerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.blockService
-      .getBlocks(this.section.sectionId, this.section.type)
-      .pipe(
-        takeUntil(this.unsubscribeAll),
-        tap((blocks) => {
-          const image = blocks.find((block) => block.type === 'block-image')
-            ?.model.fileUrl;
-          if (image?.length > 0) {
-            this.image = image;
-          }
-          this.blockService.loadBlocksComponents(
-            this.section.sectionId,
-            blocks,
-            this.dynamicChildren,
-            'image-banner'
-          );
-          this.cd.detectChanges();
-        })
-      )
-      .subscribe();
+    const image = this.section.blocks.find(
+      (block: Block) => block.type === 'block-image'
+    )?.model.fileUrl;
+    if (image?.length > 0) {
+      this.image = image;
+    }
+
+    this.blockService.loadBlocksComponents(
+      this.section.sectionId,
+      this.section.blocks,
+      this.dynamicChildren,
+      'image-banner'
+    );
+    this.cd.detectChanges();
   }
 
   ngOnDestroy() {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
   }
+
+  editBlock() {}
 }

@@ -1,7 +1,10 @@
 import { DynamicSection } from './dynamic-section';
 import { v4 as uuid } from 'uuid';
 import { blockButtonModel } from '../forms/block-button-form';
-import { blockHeadingModel } from '../forms/block-heading-form';
+import {
+  blockHeadingField,
+  blockHeadingModel,
+} from '../forms/block-heading-form';
 import { blockButtonsModel } from '../forms/block-buttons-form';
 import { blockTextModel } from '../forms/block-text';
 import { blockSubHeadingModel } from '../forms/block-sub-heading';
@@ -15,9 +18,11 @@ import { blockImageModel } from '../forms/block-image';
 import { blockAnnouncementModel } from '../forms/block-announcement';
 import { blockEmailModel } from '../forms/block-email-signup';
 import { blockCopyrightModel } from '../forms/block-copyright';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 export interface Block extends DynamicSection {
   blockId: string;
   model: any;
+  fields: FormlyFieldConfig[];
 }
 
 export interface InitialBlock {
@@ -202,10 +207,11 @@ export const blocks: Block[] = [
     visible: true,
     dragDisabled: false,
     expanded: false,
-    model: blockHeadingModel,
+    model: { ...blockHeadingModel },
     allowHide: true,
     allowDrag: true,
     allowDelete: true,
+    fields: [...blockHeadingField],
   } as Block,
   {
     blockId: uuid(),

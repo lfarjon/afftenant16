@@ -1,22 +1,22 @@
 <ng-container *ngIf="article$ | async as article">
-  <div class="p-5">
-    <div
-      cdkDropList
-      (cdkDropListDropped)="drop($event, article.templateSections)"
-    >
+  <div class="p-5 w-full min-h-screen">
+    <div cdkDropList class="component-list">
       <div
-        class="relative"
+        class="relative component-box"
         [style.order]="component.order"
         cdkDrag
         [cdkDragDisabled]="
-          component.dragDisabled || isSelected$.value !== component.sectionId
+          component.dragDisabled ||
+          selectedSection$.value?.sectionId !== component.sectionId
         "
         (cdkDragStarted)="dragDropService.onDragStart()"
         (cdkDragEnded)="dragDropService.onDragEnd()"
         *ngFor="let component of article.templateSections; let i = index"
         [attr.id]="'section-' + component.sectionId"
       >
-        <ng-container *ngIf="isSelected$.value === component.sectionId">
+        <ng-container
+          *ngIf="selectedSection$.value?.sectionId === component.sectionId"
+        >
           <div
             class="absolute top-0 right-0 transform cursor-move text-white z-10 flex flex-row items-center gap-2 bg-accent p-2 rounded-bl-lg w-auto opacity-90"
           >
@@ -36,7 +36,7 @@
           (click)="selectSection(component)"
           [ngClass]="{
             'border-offset-2 border-2 border-accent':
-              isSelected$.value === component.sectionId
+              selectedSection$.value?.sectionId === component.sectionId
           }"
         >
           <ng-template dynamicChildLoader></ng-template>

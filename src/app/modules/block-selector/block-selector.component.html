@@ -1,4 +1,5 @@
 <div
+  cdkDropList
   class="w-full relative flex flex-col items-center justify-center gap-y-5 p-5"
 >
   <div
@@ -10,33 +11,59 @@
   <div class="grid grid-cols-12 gap-2">
     <div
       *ngFor="let block of textBlocks"
-      class="cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
-      (click)="addBlock(block, 'TEXT_BLOCKS')"
+      class="component-box z-20 cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
+      (cdkDragStarted)="dragDropService.onDragStart()"
+      (cdkDragEnded)="dragDropService.onDragEnd()"
+      cdkDrag
+      [cdkDragData]="{
+        id: currentlyEditing,
+        assetType: assetType,
+        block: block,
+        blockType: 'TEXT_BLOCKS'
+      }"
     >
       <mat-icon>{{ block.icon }}</mat-icon>
       <div class="text-center text-sm">{{ block.name }}</div>
+      <div *cdkDragPreview></div>
     </div>
   </div>
   <div class="font-semibold">Sections</div>
   <div class="grid grid-cols-12 gap-2">
     <div
-      *ngFor="let section of sections"
-      class="cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
-      (click)="addBlock(section, 'GENERAL_BLOCKS')"
+      *ngFor="let block of sections"
+      class="component-box z-20 cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
+      (cdkDragStarted)="dragDropService.onDragStart()"
+      (cdkDragEnded)="dragDropService.onDragEnd()"
+      cdkDrag
+      [cdkDragData]="{
+        id: currentlyEditing,
+        assetType: assetType,
+        block: block,
+        blockType: 'GENERAL_BLOCKS'
+      }"
     >
-      <mat-icon>{{ section.icon }}</mat-icon>
-      <div class="text-center text-sm">{{ section.name }}</div>
+      <mat-icon>{{ block.icon }}</mat-icon>
+      <div class="text-center text-sm">{{ block.name }}</div>
     </div>
   </div>
   <div class="font-semibold">Tools</div>
   <div class="grid grid-cols-12 gap-2">
     <div
-      *ngFor="let tool of tools"
+      *ngFor="let block of tools"
       class="cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
-      (click)="addBlock(tool, 'TOOL')"
+      class="component-box z-20 cursor-pointer p-3 relative hover:bg-slate-100 rounded col-span-4 flex flex-col gap-1 items-center justify-center"
+      (cdkDragStarted)="dragDropService.onDragStart()"
+      (cdkDragEnded)="dragDropService.onDragEnd()"
+      cdkDrag
+      [cdkDragData]="{
+        id: currentlyEditing,
+        assetType: assetType,
+        block: block,
+        blockType: 'TOOL'
+      }"
     >
-      <mat-icon>{{ tool.icon }}</mat-icon>
-      <div class="text-center text-sm">{{ tool.name }}</div>
+      <mat-icon>{{ block.icon }}</mat-icon>
+      <div class="text-center text-sm">{{ block.name }}</div>
       <div class="hidden absolute hover:flex">
         <mat-icon class="text-accent">add</mat-icon>
       </div>

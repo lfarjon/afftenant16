@@ -1,0 +1,52 @@
+<ng-container *ngIf="selectedSection$ | async as selectedSection">
+  <ng-container *ngIf="selectedSection.blocks as blocks">
+    <div
+      cdkDropList
+      (cdkDropListDropped)="dropBlock(selectedSection!, $event, blocks)"
+    >
+      <div
+        cdkDrag
+        (cdkDragStarted)="dragDropService.onDragStart()"
+        (cdkDragEnded)="dragDropService.onDragEnd()"
+        [cdkDragDisabled]="block.dragDisabled"
+        *ngFor="let block of blocks; let y = index"
+      >
+        <div class="flex flex-col">
+          <button
+            class="group px-2 py-2 flex items-center justify-between hover:bg-accent rounded"
+          >
+            <div
+              class="flex w-full justify-start items-center"
+              (click)="editBlock(block)"
+            >
+              <span class="text-sm text-left">{{ block.title }}</span>
+            </div>
+            <div class="flex items-center gap-x-2">
+              <ng-container *ngIf="block.allowHide">
+                <app-visibility-toggle
+                  [component]="block"
+                  (toggler)="toggleBlock(selectedSection!, block, y)"
+                ></app-visibility-toggle>
+              </ng-container>
+              <ng-container *ngIf="block.allowDrag">
+                <app-drag-handle
+                  cdkDragHandle
+                  [block]="block"
+                  [panel]="true"
+                ></app-drag-handle>
+              </ng-container>
+              <ng-container *ngIf="block.allowDelete">
+                <button
+                  class="flex items-center opacity-50 hover:opacity-100"
+                  (click)="removeBlock(selectedSection!, y)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

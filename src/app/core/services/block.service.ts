@@ -90,6 +90,10 @@ export class BlockService {
     return this._sectionBlocks.get(sectionId)?.value;
   }
 
+  getLiveBlocks(sectionId: string) {
+    return this._sectionBlocks.get(sectionId)!;
+  }
+
   getInitialBlocks(sectionType: string): InitialBlock[] {
     return initialBlocks[sectionType] || [];
   }
@@ -151,6 +155,7 @@ export class BlockService {
             componentInstance.blockId = block.blockId;
             componentInstance.sectionId = sectionId;
             componentInstance.context = context;
+            componentInstance.block = block;
           } else {
             console.warn(`Unknown component type: ${block.type}`);
           }
